@@ -1,0 +1,19 @@
+---
+interface Props {
+  text: string;
+  speed?: 'normal' | 'slow';
+  class?: string;
+}
+
+const { text, speed = 'normal', class: className = '' } = Astro.props;
+const animClass = speed === 'slow' ? 'animate-marquee-slow' : 'animate-marquee';
+// Repeat text enough times to ensure seamless loop
+const repeated = `${text} · `.repeat(12);
+---
+
+<div class:list={['overflow-hidden whitespace-nowrap', className]}>
+  <div class:list={['inline-flex', animClass]}>
+    <span class="pr-4">{repeated}</span>
+    <span class="pr-4">{repeated}</span>
+  </div>
+</div>

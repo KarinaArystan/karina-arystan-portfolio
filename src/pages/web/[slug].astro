@@ -1,0 +1,806 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'custom-graphic-novels' } },
+    { params: { slug: 'de-la-creme' } },
+    { params: { slug: 'million-dollar-luxe' } },
+  ];
+}
+
+const projects: Record<string, any> = {
+  'custom-graphic-novels': {
+    name: 'Custom Graphic Novels',
+    role: 'Brand Founder · Full-Stack Developer',
+    period: '2024 — Present',
+    context: 'Solo build · Remote',
+    url: 'https://www.customgraphicnovels.com/',
+    skills: ['Astro 5', 'Supabase', 'UI/UX Design', 'AI-Assisted Dev', 'E-Commerce', 'Full-Stack'],
+    description: [
+      'Custom Graphic Novels is a brand I built from the ground up — the product, the brand identity, and the entire web platform. The site is a full e-commerce experience: user registration, login, a multi-step order form, a customer portal with order tracking, and a "My Books" dashboard.',
+      'I designed and developed the entire platform solo using AI-assisted development with Claude Code. The stack is Astro 5 with Supabase for authentication and database, featuring a custom multi-step order flow that guides customers through creating their personalized graphic novel.',
+      'The brand did not exist before this project — I simultaneously created the product concept, developed the visual identity, and built the production-ready platform.',
+    ],
+    hero: '/images/web/cgn/hero.png',
+    next: { slug: 'de-la-creme', name: 'De La Creme' },
+  },
+  'de-la-creme': {
+    name: 'De La Creme',
+    role: 'Web Designer · Creative Director',
+    period: '2022 — 2023',
+    context: 'In-house · Los Angeles, CA',
+    url: 'https://www.delacreme.la',
+    skills: ['Figma', 'UI/UX Design', 'Web Design', 'Creative Direction', 'Figma-to-Dev Handoff', 'Brand Implementation'],
+    description: [
+      'De La Creme is a Los Angeles-based cannabis company specializing in gourmet concentrate and edible products. I led the web design process end-to-end — designing the full site in Figma and translating designs into detailed development briefs for an in-house technical team at Skira Creative. The site needed to carry one of the most visually distinct brand identities in the California cannabis market without compromising on usability or compliance requirements.',
+      'The design challenge was translating an aggressive, illustrative brand — electric yellow, hot magenta, drip effects, custom character art — into a site architecture that dispensary buyers, retail partners, and end consumers could all navigate clearly. Every page had to feel like De La Creme while functioning like a professional product catalog.',
+    ],
+    hero: '/images/brands/dlc/hero.png',
+    next: { slug: 'million-dollar-luxe', name: 'Million Dollar Luxe' },
+  },
+  'million-dollar-luxe': {
+    name: 'Million Dollar Luxe',
+    role: 'Director of Production · Web Design Lead',
+    period: '2023 — 2025',
+    context: 'Skira Creative LLC · Los Angeles, CA',
+    url: 'https://www.milliondollarluxe.com',
+    skills: ['Figma', 'UI/UX Design', 'Creative Direction', 'Web Design', 'Brand Strategy', 'Content Production', 'Video Direction'],
+    description: [
+      'Million Dollar Luxe is a luxury villa rental and concierge brand targeting Forbes-featured clients in Los Angeles. I led the web design process end-to-end as Director of Production at Skira Creative LLC.',
+      'I designed the complete website in Figma, creating a digital experience that reflects the ultra-premium positioning of the brand. The design was then translated into detailed briefs and specifications for the in-house development team.',
+      'The brand\'s partner network includes GQ, Netflix, Disney, and Airbnb — the web design needed to communicate that level of prestige while remaining functional as a booking and inquiry platform.',
+    ],
+    hero: '/images/web/mdl/website-mockup.jpg',
+    next: { slug: 'custom-graphic-novels', name: 'Custom Graphic Novels' },
+  },
+};
+
+const { slug } = Astro.params;
+const project = projects[slug as string];
+
+if (!project) {
+  return Astro.redirect('/');
+}
+
+const isCGN = slug === 'custom-graphic-novels';
+const isDLC = slug === 'de-la-creme';
+const isMDL = slug === 'million-dollar-luxe';
+---
+
+<BaseLayout title={`${project.name} — Web Design — Karina Arystan`}>
+  <article class="pt-28 lg:pt-36">
+    <!-- Back link -->
+    <div class="mx-auto max-w-7xl px-6 lg:px-12">
+      <a href="/#portfolio" class="inline-flex items-center gap-2 text-sm text-warm-gray transition-colors hover:text-terracotta">
+        &larr; Back to portfolio
+      </a>
+    </div>
+
+    <!-- Hero image -->
+    <div class="mt-8 px-6 lg:px-12">
+      <div class="mx-auto max-w-7xl overflow-hidden">
+        {project.hero ? (
+          <img
+            src={project.hero}
+            alt={`${project.name} homepage`}
+            class="w-full object-cover max-h-[600px]"
+            loading="eager"
+          />
+        ) : (
+          <div class="flex aspect-video items-center justify-center bg-cream-dark">
+            <span class="font-heading text-4xl text-warm-gray-light/30">{project.name}</span>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Project meta -->
+    <div class="mx-auto max-w-7xl px-6 pt-12 lg:px-12">
+      <div class="reveal flex flex-wrap items-start justify-between gap-8 border-b border-cream-dark pb-8">
+        <div>
+          <h1 class="font-heading text-4xl md:text-5xl">{project.name}</h1>
+          <p class="mt-2 text-lg text-warm-gray">{project.role}</p>
+        </div>
+        <div class="flex flex-wrap gap-6 text-sm">
+          <div>
+            <p class="font-medium uppercase tracking-wider text-warm-gray-light">Period</p>
+            <p class="mt-1 text-charcoal">{project.period}</p>
+          </div>
+          <div>
+            <p class="font-medium uppercase tracking-wider text-warm-gray-light">Context</p>
+            <p class="mt-1 text-charcoal">{project.context}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills tags -->
+    <div class="mx-auto max-w-7xl px-6 pt-6 lg:px-12">
+      <div class="reveal flex flex-wrap gap-2">
+        {project.skills.map((skill: string) => (
+          <span class="rounded-full bg-cream-dark px-4 py-1.5 text-sm font-medium text-warm-gray">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+      <div class="reveal mx-auto max-w-3xl">
+        <p class="mb-6 text-center text-sm font-medium uppercase tracking-widest text-terracotta">— About this project —</p>
+        <div class="rounded-2xl border border-cream-dark bg-cream-dark/30 px-8 py-10 md:px-12 md:py-12">
+          {isCGN ? (
+            <div class="flex flex-col gap-5">
+              <p class="text-lg leading-relaxed text-warm-gray">
+                Custom Graphic Novels is an e-commerce platform built entirely from scratch using Astro 5 and Supabase. The product — a fully custom illustrated graphic novel based on a couple's real love story — required a purchasing flow unlike anything in standard e-commerce: a multi-step order form collecting story details and reference photos, a customer portal for tracking production progress, and a My Books dashboard for accessing completed orders. Every piece of this infrastructure was designed and built solo.
+              </p>
+              <p class="text-lg leading-relaxed text-warm-gray">
+                The platform design challenge was making a highly custom, high-touch product feel approachable and clear. The order form needed to guide customers through submitting personal story details without feeling clinical or overwhelming. The portal needed to communicate production status for an item that takes weeks to produce. The site needed to convert visitors who had never encountered this product category before — because the category didn't exist.
+              </p>
+            </div>
+          ) : (
+            <div class="flex flex-col gap-5">
+              {project.description.map((paragraph: string) => (
+                <p class="text-lg leading-relaxed text-warm-gray">{paragraph}</p>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* ═══ CGN-SPECIFIC: Brand Identity (compressed) ═══ */}
+    {isCGN && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Brand Identity</p>
+          <p class="mb-10 max-w-3xl text-sm leading-relaxed text-warm-gray">
+            Visual foundation implemented across the platform. Full brand identity &rarr; <a href="/brands/cgn" class="font-medium text-charcoal underline decoration-terracotta/40 underline-offset-2 transition-colors hover:text-terracotta">View Brand Project</a>
+          </p>
+        </div>
+
+        {/* Primary logo — featured large */}
+        <div class="reveal mx-auto mb-6 max-w-3xl overflow-hidden rounded-2xl bg-cream-dark p-12">
+          <img src="/images/brands/cgn/logo.jpeg" alt="CGN logo — primary" class="h-full w-full object-contain" loading="lazy" />
+        </div>
+
+        {/* Logo variants — side by side */}
+        <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+            <img src="/images/brands/cgn/logo-color.png" alt="CGN logo — color on dark" class="h-full w-full object-contain" loading="lazy" />
+          </div>
+          <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-cream-dark p-10" data-reveal-item>
+            <img src="/images/brands/cgn/logo-blk.png" alt="CGN logo — black variant" class="h-full w-full object-contain" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ CGN-SPECIFIC: Website Showcase Section ═══ */}
+    {isCGN && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Website Showcase</p>
+          <p class="mb-8 max-w-3xl text-base leading-relaxed text-warm-gray">
+            The live customgraphicnovels.com site — designed and developed as a solo build using Astro, Supabase, and AI-assisted development.
+          </p>
+          <div class="mb-12">
+            <a
+              href="https://www.customgraphicnovels.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 rounded-full bg-terracotta px-6 py-2.5 text-sm font-semibold text-cream transition-all hover:bg-charcoal hover:shadow-lg"
+            >
+              Visit Live Site
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Homepage & Product Pages */}
+        <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="overflow-hidden bg-cream-dark" data-reveal-item>
+            <img src="/images/web/cgn/package-01.png" alt="CGN package section — product showcase" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden bg-cream-dark" data-reveal-item>
+            <img src="/images/web/cgn/package-02.png" alt="CGN package section — customization options" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+
+        {/* Heirloom Section */}
+        <div class="reveal mt-4 overflow-hidden bg-cream-dark">
+          <img src="/images/web/cgn/heirloom.png" alt="CGN heirloom section — premium product showcase" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+
+        {/* Material Swatch — popup image */}
+        <div class="reveal mt-4 overflow-hidden bg-cream-dark">
+          <img src="/images/web/cgn/swatch-popup.png" alt="CGN material swatch card popup" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+
+        {/* Material Swatch — video showcase (full-width) */}
+        <div class="reveal mt-4 overflow-hidden bg-cream-dark">
+          <video
+            class="w-full object-cover"
+            autoplay
+            loop
+            muted
+            playsinline
+          >
+            <source src="/videos/web/cgn/swatch-showcase.webm" type="video/webm" />
+            <source src="/videos/web/cgn/swatch-showcase.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        {/* Order Flow */}
+        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group>
+          <div class="overflow-hidden bg-cream-dark" data-reveal-item>
+            <img src="/images/web/cgn/order-form-01.png" alt="CGN order form — step 1" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden bg-cream-dark" data-reveal-item>
+            <img src="/images/web/cgn/order-form-02.png" alt="CGN order form — step 2" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden bg-cream-dark" data-reveal-item>
+            <img src="/images/web/cgn/order-form-upload.png" alt="CGN order form — photo upload" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+
+        {/* User Portal & Auth */}
+        <div class="mt-4 grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="overflow-hidden bg-cream-dark" data-reveal-item>
+            <img src="/images/web/cgn/portal-steps.png" alt="CGN customer portal — steps overview" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden bg-cream-dark" data-reveal-item>
+            <img src="/images/web/cgn/login.png" alt="CGN login page" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ CGN-SPECIFIC: Design Process ═══ */}
+    {isCGN && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Design Process</p>
+          <p class="mb-10 max-w-3xl text-base leading-relaxed text-warm-gray">
+            The platform was designed and built as a single-person operation using AI-assisted development. Design decisions were made directly in the build — no separate Figma handoff, no development team. Every component, interaction, and layout was iterated live in the codebase.
+          </p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-3" data-reveal-group>
+          <div class="rounded-2xl border border-cream-dark p-8 text-center" data-reveal-item>
+            <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Stack</p>
+            <p class="font-heading text-2xl text-charcoal">Astro 5 + Supabase</p>
+            <p class="mt-2 text-sm text-warm-gray">Static frontend + managed backend</p>
+          </div>
+          <div class="rounded-2xl border border-cream-dark p-8 text-center" data-reveal-item>
+            <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Auth & Portal</p>
+            <p class="font-heading text-2xl text-charcoal">Custom Built</p>
+            <p class="mt-2 text-sm text-warm-gray">Login, registration, order tracking</p>
+          </div>
+          <div class="rounded-2xl border border-cream-dark p-8 text-center" data-reveal-item>
+            <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Method</p>
+            <p class="font-heading text-2xl text-charcoal">AI-Assisted Dev</p>
+            <p class="mt-2 text-sm text-warm-gray">Claude Code — solo build</p>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ CGN-SPECIFIC: Cross-link Footer Bar ═══ */}
+    {isCGN && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal rounded-2xl border border-cream-dark bg-cream-dark/20 px-8 py-12 text-center md:px-16">
+          <p class="font-heading text-2xl text-charcoal md:text-3xl">See the full brand story</p>
+          <p class="mx-auto mt-3 max-w-xl text-base leading-relaxed text-warm-gray">
+            Visual identity, typography, illustration assets, logo system, and social content for Custom Graphic Novels — all in the brand development case study.
+          </p>
+          <a
+            href="/brands/cgn"
+            class="mt-8 inline-flex items-center gap-2 rounded-full bg-terracotta px-8 py-3 text-sm font-semibold text-cream transition-colors hover:bg-charcoal"
+          >
+            View Brand Development Project
+            <span>&rarr;</span>
+          </a>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Brand Identity + Logos ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Brand Identity</p>
+          <p class="mb-10 max-w-3xl text-sm leading-relaxed text-warm-gray">
+            Visual foundation implemented across the site. Full brand story &rarr; <a href="/brands/dlc" class="font-medium text-charcoal underline decoration-terracotta/40 underline-offset-2 transition-colors hover:text-terracotta">View Brand Project</a>
+          </p>
+        </div>
+
+        {/* Primary logo — featured large */}
+        <div class="reveal mx-auto mb-6 max-w-3xl overflow-hidden rounded-2xl bg-charcoal p-12">
+          <img src="/images/brands/dlc/logo-01.png" alt="De La Creme logo — primary" class="h-full w-full object-contain" loading="lazy" />
+        </div>
+
+        {/* Logo variants — grid */}
+        <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-cream-dark p-10" data-reveal-item>
+            <img src="/images/brands/dlc/logo-03.png" alt="DLC logo — mono" class="h-full w-full object-contain" loading="lazy" />
+          </div>
+          <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+            <img src="/images/brands/dlc/logo-04.png" alt="DLC logo — horizontal color" class="h-full w-full object-contain" loading="lazy" />
+          </div>
+        </div>
+
+        {/* Icon mark + monogram */}
+        <div class="mt-4 grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-cream-dark p-10" data-reveal-item>
+            <img src="/images/brands/dlc/logo-05.png" alt="DLC icon mark — top hat" class="h-full w-full object-contain" loading="lazy" />
+          </div>
+          <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+            <img src="/images/brands/dlc/logo-02.png" alt="DLC monogram" class="h-full w-full object-contain" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Website Showcase ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Website Showcase</p>
+          <p class="mb-8 max-w-3xl text-base leading-relaxed text-warm-gray">
+            The live delacreme.la site — designed in Figma, built by the Skira Creative development team from my detailed design briefs.
+          </p>
+          <div class="mb-12">
+            <a
+              href="https://www.delacreme.la"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 rounded-full bg-terracotta px-6 py-2.5 text-sm font-semibold text-cream transition-all hover:bg-charcoal hover:shadow-lg"
+            >
+              Visit Live Site
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        {/* ── Site Overview ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <p class="mb-4 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Site Overview</p>
+          </div>
+          <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
+            <video class="w-full object-cover" autoplay loop muted playsinline>
+              <source src="/videos/web/dlc/site-thumbnail.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="mt-3 text-xs text-warm-gray-light">Homepage & navigation overview</p>
+        </div>
+
+        {/* ── Concentrates Catalog ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <p class="mb-2 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Concentrates Catalog</p>
+            <p class="mb-6 max-w-2xl text-sm text-warm-gray">
+              Product grid with live availability states — available products render in full color, unavailable products in grayscale with status labels.
+            </p>
+          </div>
+          <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
+            <img src="/images/web/dlc/site/DLC-web-section.png" alt="DLC concentrates product grid — active vs. unavailable state treatment" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <p class="mt-3 text-xs text-warm-gray-light">Concentrates product grid — active vs. unavailable state treatment</p>
+          <div class="reveal mt-4 overflow-hidden rounded-2xl bg-cream-dark">
+            <video class="w-full object-cover" autoplay loop muted playsinline>
+              <source src="/videos/web/dlc/concentrates-scroll.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="mt-3 text-xs text-warm-gray-light">Catalog scroll — product grid interaction</p>
+        </div>
+
+        {/* ── Product Detail ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <p class="mb-2 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Product Detail</p>
+            <p class="mb-6 max-w-2xl text-sm text-warm-gray">
+              Individual product pages with multi-image carousel, strain details, and cross-sell navigation.
+            </p>
+          </div>
+          <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
+            <img src="/images/web/dlc/site/DLC-web-section-02.png" alt="DLC product detail page — carousel, strain info, and navigation treatment" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <p class="mt-3 text-xs text-warm-gray-light">Product detail page — carousel, strain info, and navigation treatment</p>
+        </div>
+
+        {/* ── Edibles ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <p class="mb-2 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Edibles</p>
+            <p class="mb-6 max-w-2xl text-sm text-warm-gray">
+              Separate product section for the edibles line — distinct visual treatment within the same design system.
+            </p>
+          </div>
+          <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
+            <video class="w-full object-cover" autoplay loop muted playsinline>
+              <source src="/videos/web/dlc/edibles-scroll.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="mt-3 text-xs text-warm-gray-light">Edibles section scroll</p>
+        </div>
+
+        {/* ── Footer Design ── */}
+        <div>
+          <div class="reveal">
+            <p class="mb-2 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Footer Design</p>
+            <p class="mb-6 max-w-2xl text-sm text-warm-gray">
+              Custom footer design featuring SVG wave divider, palm tree silhouette illustration, email subscribe form, and compliance information.
+            </p>
+          </div>
+          <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
+            <img src="/images/web/dlc/site/DLC-footer.png" alt="DLC footer — wave divider, palm tree scene, subscribe form, license info" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <p class="mt-3 text-xs text-warm-gray-light">Footer — wave divider, palm tree scene, subscribe form, license info</p>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Design Process ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Design Process</p>
+          <p class="mb-10 max-w-3xl text-base leading-relaxed text-warm-gray">
+            All pages were designed in Figma before handoff. The workflow: full desktop and mobile mockups, annotated component specs, development brief with interaction notes, review and QA against the live build. I was responsible for every design decision and all client communication throughout the process.
+          </p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-3" data-reveal-group>
+          <div class="rounded-2xl border border-cream-dark p-8 text-center" data-reveal-item>
+            <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Tool</p>
+            <p class="font-heading text-2xl text-charcoal">Figma</p>
+            <p class="mt-2 text-sm text-warm-gray">Full desktop + mobile mockups</p>
+          </div>
+          <div class="rounded-2xl border border-cream-dark p-8 text-center" data-reveal-item>
+            <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Handoff</p>
+            <p class="font-heading text-2xl text-charcoal">Dev Brief</p>
+            <p class="mt-2 text-sm text-warm-gray">Annotated specs + interaction notes</p>
+          </div>
+          <div class="rounded-2xl border border-cream-dark p-8 text-center" data-reveal-item>
+            <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">QA</p>
+            <p class="font-heading text-2xl text-charcoal">Live Review</p>
+            <p class="mt-2 text-sm text-warm-gray">Design vs. build verification</p>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Cross-link Footer Bar ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal rounded-2xl border border-cream-dark bg-cream-dark/20 px-8 py-12 text-center md:px-16">
+          <p class="font-heading text-2xl text-charcoal md:text-3xl">See the full brand story</p>
+          <p class="mx-auto mt-3 max-w-xl text-base leading-relaxed text-warm-gray">
+            Packaging, illustration, apparel, photography, and social content for De La Creme — all in the brand development case study.
+          </p>
+          <a
+            href="/brands/dlc"
+            class="mt-8 inline-flex items-center gap-2 rounded-full bg-terracotta px-8 py-3 text-sm font-semibold text-cream transition-colors hover:bg-charcoal"
+          >
+            View Brand Development Project
+            <span>&rarr;</span>
+          </a>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ MDL-SPECIFIC: Logo Redesign Section ═══ */}
+    {isMDL && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal text-center">
+          <p class="mb-3 text-sm font-medium uppercase tracking-widest text-terracotta">— Logo Redesign —</p>
+          <p class="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-warm-gray">
+            Alongside the website redesign and content production, I implemented a complete logo refresh for Million Dollar Luxe — modernizing the brand mark to better reflect the ultra-luxury positioning and create stronger recognition across digital and print touchpoints.
+          </p>
+        </div>
+
+        {/* Before / After */}
+        <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="relative overflow-hidden rounded-2xl bg-cream-dark p-10" data-reveal-item>
+            <span class="absolute top-4 left-4 rounded-full bg-warm-gray/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-warm-gray">Before</span>
+            <img src="/images/web/mdl/logo-old.png" alt="MDL original logo" class="mx-auto h-full w-full object-contain" loading="lazy" />
+          </div>
+          <div class="relative overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+            <span class="absolute top-4 left-4 rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-cream">After</span>
+            <img src="/images/web/mdl/logo-new.png" alt="MDL redesigned logo" class="mx-auto h-full w-full object-contain" loading="lazy" />
+          </div>
+        </div>
+
+        {/* Logo variants */}
+        <div class="mt-4 grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="overflow-hidden rounded-2xl" data-reveal-item>
+            <img src="/images/web/mdl/logo-color-bg.jpeg" alt="MDL logo on color background" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-cream-dark p-10" data-reveal-item>
+            <img src="/images/web/mdl/logo-short.png" alt="MDL compact logo mark" class="h-full w-full object-contain" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ MDL-SPECIFIC: Website Showcase ═══ */}
+    {isMDL && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Website Showcase</p>
+          <p class="mb-8 max-w-3xl text-base leading-relaxed text-warm-gray">
+            The live milliondollarluxe.com site — designed in Figma with creative direction for photography, videography, and content production.
+          </p>
+          <div class="mb-0">
+            <a
+              href="https://www.milliondollarluxe.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 rounded-full bg-terracotta px-6 py-2.5 text-sm font-semibold text-cream transition-all hover:bg-charcoal hover:shadow-lg"
+            >
+              Visit Live Site
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ MDL-SPECIFIC: Video Showreel (laptop mockup) ═══ */}
+    {isMDL && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <div class="mx-auto max-w-4xl">
+            {/* Laptop frame */}
+            <div class="rounded-t-xl border-4 border-b-0 border-charcoal/80 bg-charcoal p-2 pt-2">
+              {/* Camera dot */}
+              <div class="mb-2 flex justify-center">
+                <div class="h-1.5 w-1.5 rounded-full bg-warm-gray/30"></div>
+              </div>
+              {/* Screen */}
+              <div class="overflow-hidden rounded-sm bg-black">
+                <video autoplay muted loop playsinline class="w-full">
+                  <source src="/videos/web/mdl/thumbnail.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+            {/* Laptop base */}
+            <div class="mx-auto h-3 w-[110%] -translate-x-[5%] rounded-b-xl bg-gradient-to-b from-charcoal/70 to-charcoal/50"></div>
+            <div class="mx-auto h-1 w-[30%] rounded-b bg-charcoal/30"></div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ MDL-SPECIFIC: Content Production Section ═══ */}
+    {isMDL && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal text-center">
+          <p class="mb-3 text-sm font-medium uppercase tracking-widest text-terracotta">— Content Production —</p>
+          <p class="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-warm-gray">
+            Directed the entire Instagram content shoot for Million Dollar Luxe — coordinating a team of camera operators and video editors, managing logistics across multiple luxury villa locations in Los Angeles. Produced a library of social content showcasing the brand's property portfolio.
+          </p>
+        </div>
+
+        {/* Banner video — no frame */}
+        <div class="reveal mb-10 overflow-hidden rounded-2xl">
+          <video autoplay muted loop playsinline class="w-full">
+            <source src="/videos/web/mdl/banner.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        {/* Social content videos — 5 col grid, no frames */}
+        <p class="reveal mb-6 text-center text-xs font-medium uppercase tracking-widest text-warm-gray-light">Social Content</p>
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5" data-reveal-group>
+          {[
+            { src: '/videos/web/mdl/phone-house2.mp4', alt: 'House tour content' },
+            { src: '/videos/web/mdl/phone-poolhouse.mp4', alt: 'Pool house tour' },
+            { src: '/videos/web/mdl/phone-mashup.mp4', alt: 'Property mashup reel' },
+            { src: '/videos/web/mdl/phone-villa.mp4', alt: 'Villa showcase' },
+            { src: '/videos/web/mdl/phone-roxford.mp4', alt: 'Roxford property' },
+          ].map((vid) => (
+            <div class="overflow-hidden rounded-2xl" data-reveal-item>
+              <video autoplay muted loop playsinline class="aspect-[9/16] w-full object-cover">
+                <source src={vid.src} type="video/mp4" />
+              </video>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Visit Live Site CTA -->
+    <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+      <div class="reveal flex justify-center">
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-full bg-terracotta px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-cream transition-all hover:bg-charcoal hover:shadow-lg"
+        >
+          Visit Live Site
+          <span class="text-lg">&#8599;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Next project -->
+    {project.next && (
+      <div class="mt-24 border-t border-cream-dark">
+        <a
+          href={`/web/${project.next.slug}`}
+          class="group block px-6 py-16 transition-colors hover:bg-cream-dark lg:px-12"
+        >
+          <div class="mx-auto flex max-w-7xl items-center justify-between">
+            <div>
+              <p class="text-sm font-medium uppercase tracking-wider text-warm-gray-light">Next Project</p>
+              <p class="mt-2 font-heading text-3xl text-charcoal transition-colors group-hover:text-terracotta md:text-4xl">
+                {project.next.name}
+              </p>
+            </div>
+            <span class="text-3xl text-charcoal transition-transform group-hover:translate-x-2">&rarr;</span>
+          </div>
+        </a>
+      </div>
+    )}
+  </article>
+
+  <!-- Lightbox overlay -->
+  <div id="lightbox" class="fixed inset-0 z-[100] hidden cursor-zoom-out items-center justify-center bg-charcoal/90 p-6 backdrop-blur-sm md:p-12">
+    <button id="lightbox-close" class="absolute top-5 right-6 text-3xl text-cream/70 transition-colors hover:text-cream" aria-label="Close">&times;</button>
+    <img id="lightbox-img" class="max-h-full max-w-full object-contain" src="" alt="" />
+    <video id="lightbox-video" class="hidden max-h-full max-w-full object-contain" controls autoplay loop muted playsinline></video>
+  </div>
+</BaseLayout>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lbVideo = document.getElementById('lightbox-video') as HTMLVideoElement;
+  const lbClose = document.getElementById('lightbox-close');
+
+  if (lightbox && lbImg && lbVideo && lbClose) {
+    // Click on any image in the article to open lightbox
+    document.querySelectorAll('article img').forEach((img) => {
+      if ((img as HTMLElement).dataset.noLightbox !== undefined) return;
+      if ((img as HTMLElement).closest('[data-no-lightbox]')) return;
+      (img as HTMLElement).style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        lbImg.src = (img as HTMLImageElement).src;
+        lbImg.alt = (img as HTMLImageElement).alt;
+        lbImg.classList.remove('hidden');
+        lbVideo.classList.add('hidden');
+        lbVideo.pause();
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    // Click on any video in the article to open lightbox
+    document.querySelectorAll('article video').forEach((vid) => {
+      if ((vid as HTMLElement).dataset.noLightbox !== undefined) return;
+      if ((vid as HTMLElement).closest('[data-no-lightbox]')) return;
+      (vid as HTMLElement).style.cursor = 'zoom-in';
+      vid.addEventListener('click', () => {
+        const source = (vid as HTMLVideoElement).querySelector('source');
+        if (source) {
+          lbVideo.src = source.src;
+        }
+        lbVideo.classList.remove('hidden');
+        lbImg.classList.add('hidden');
+        lbVideo.play();
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    // Close lightbox
+    function closeLightbox() {
+      lightbox!.classList.add('hidden');
+      lightbox!.classList.remove('flex');
+      lbVideo.pause();
+      lbVideo.src = '';
+      document.body.style.overflow = '';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) closeLightbox();
+    });
+  }
+</script>
+
+{/* CGN-specific font face declarations */}
+{isCGN && (
+  <style is:global>
+    @font-face {
+      font-family: 'ChooseElegant';
+      src: url('/fonts/cgn/ChooseElegantRegular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Elegant';
+      src: url('/fonts/cgn/ELEGANTPersonaluse.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Braven';
+      src: url('/fonts/cgn/BravenRegular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Tempting';
+      src: url('/fonts/cgn/Tempting - PERSONAL USE ONLY.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'LaGraziela';
+      src: url('/fonts/cgn/La Graziela Script Demo.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .cgn-choose-elegant { font-family: 'ChooseElegant', serif; }
+    .cgn-elegant { font-family: 'Elegant', serif; }
+    .cgn-braven { font-family: 'Braven', sans-serif; }
+    .cgn-tempting { font-family: 'Tempting', cursive; }
+    .cgn-lagraziela { font-family: 'LaGraziela', cursive; }
+  </style>
+)}
+
+{/* DLC-specific font face declarations */}
+{isDLC && (
+  <style is:global>
+    @font-face {
+      font-family: 'EdgeOfMadness';
+      src: url('/fonts/dlc/Edge Of Madness.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'HighTide';
+      src: url('/fonts/dlc/High Tide - Demo.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'BackToBlack';
+      src: url('/fonts/dlc/Back to Black Demo.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'DINCondensed';
+      src: url('/fonts/dlc/DIN Condensed Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .dlc-edge-of-madness { font-family: 'EdgeOfMadness', cursive; }
+    .dlc-high-tide { font-family: 'HighTide', sans-serif; }
+    .dlc-back-to-black { font-family: 'BackToBlack', serif; }
+    .dlc-din-condensed { font-family: 'DINCondensed', sans-serif; }
+  </style>
+)}

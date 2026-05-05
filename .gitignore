@@ -1,0 +1,41 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# Large source video files
+*.mov
+*.MOV
+*.mp4
+*.MP4
+social media content videos/
+brand development/
+
+# Video assets (too large for git — host separately via CDN)
+public/videos/
+
+# Backup files
+*.backup*
+
+# Editor settings
+.vscode/

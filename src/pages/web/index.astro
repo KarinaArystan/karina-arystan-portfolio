@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const projects = [
+  {
+    name: 'Custom Graphic Novels',
+    slug: 'custom-graphic-novels',
+    description: 'Full-Stack E-Commerce Platform',
+    tags: ['Astro 5', 'Supabase', 'UI/UX Design', 'AI-Assisted Dev', 'E-Commerce'],
+    year: '2024',
+    image: '/images/web/cgn/hero.png',
+  },
+  {
+    name: 'De La Creme',
+    slug: 'de-la-creme',
+    description: 'Web Design & Creative Direction',
+    tags: ['Figma', 'UI/UX Design', 'Web Design', 'Creative Direction'],
+    year: '2022–2023',
+    image: '/images/brands/dlc/hero.png',
+  },
+  {
+    name: 'Million Dollar Luxe',
+    slug: 'million-dollar-luxe',
+    description: 'Web Design & Content Production',
+    tags: ['Figma', 'UI/UX Design', 'Creative Direction', 'Video Direction'],
+    year: '2023–2025',
+    image: '/images/web/mdl/website-mockup.jpg',
+  },
+];
+---
+
+<BaseLayout title="Web Design — Karina Arystan">
+  <section class="px-6 pt-32 pb-24 lg:px-12 lg:pt-40 lg:pb-32">
+    <div class="mx-auto max-w-7xl">
+      <!-- Header -->
+      <div class="reveal mb-16">
+        <a href="/" class="mb-8 inline-flex items-center gap-2 text-sm text-warm-gray transition-colors hover:text-terracotta">
+          &larr; Back to home
+        </a>
+        <h1 class="font-heading text-4xl md:text-6xl">Web Design</h1>
+        <p class="mt-4 max-w-2xl text-lg text-warm-gray">
+          UI/UX design, Figma prototyping, and front-end development — from concept to launch.
+        </p>
+      </div>
+
+      <!-- Project grid -->
+      <div class="grid gap-8 md:grid-cols-2" data-reveal-group>
+        {projects.map((project) => (
+          <a
+            href={`/web/${project.slug}`}
+            class="group block overflow-hidden bg-cream-dark transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            data-reveal-item
+          >
+            <!-- Image area -->
+            <div class="relative aspect-[4/3] overflow-hidden bg-warm-gray-light/20">
+              <img
+                src={project.image}
+                alt={project.name}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-charcoal/40 to-transparent" />
+            </div>
+            <!-- Info -->
+            <div class="p-8">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h2 class="font-heading text-2xl text-charcoal">{project.name}</h2>
+                  <p class="mt-1 text-warm-gray">{project.description}</p>
+                </div>
+                <span class="text-sm text-warm-gray-light">{project.year}</span>
+              </div>
+              <!-- Tags -->
+              <div class="mt-5 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span class="rounded-full bg-cream px-3 py-1 text-xs font-medium text-warm-gray">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <!-- Arrow -->
+              <div class="mt-6 flex items-center gap-2 text-sm font-semibold text-charcoal transition-colors group-hover:text-terracotta">
+                View case study
+                <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

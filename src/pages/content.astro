@@ -1,0 +1,358 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const videos = [
+  // ── CGN ──
+  { slug: '32k-years', title: '32,000 Years of Graphic Novels', brand: 'CGN', description: 'Tracing the visual storytelling tradition from cave paintings to modern comics.', video: '/videos/previews/32k-years.mp4', webm: '/videos/previews/32k-years.webm' },
+  { slug: 'gr-novels-classy', title: 'Are Graphic Novels Classy?', brand: 'CGN', description: 'Challenging perceptions about the legitimacy of graphic novels as literature.', video: '/videos/previews/gr-novels-classy.mp4', webm: '/videos/previews/gr-novels-classy.webm' },
+  { slug: 'bayeux-tapestry', title: 'The Bayeux Tapestry', brand: 'CGN', description: 'Exploring one of the earliest examples of sequential visual narrative.', video: '/videos/previews/bayeux-tapestry.mp4', webm: '/videos/previews/bayeux-tapestry.webm' },
+  { slug: 'build-graphic-novel', title: 'Build a Graphic Novel With Me', brand: 'CGN', description: 'A behind-the-scenes look at the creative process of making a graphic novel.', video: '/videos/previews/build-graphic-novel.mp4', webm: '/videos/previews/build-graphic-novel.webm' },
+  { slug: 'dual-coding-theory', title: 'Dual Coding Theory', brand: 'CGN', description: 'How combining visual and verbal information enhances learning and memory.', video: '/videos/previews/dual-coding-theory.mp4', webm: '/videos/previews/dual-coding-theory.webm' },
+  { slug: 'manga-adaptation', title: 'Manga Adaptation in the US', brand: 'CGN', description: 'How manga has evolved and found its audience in American culture.', video: '/videos/previews/manga-adaptation.mp4', webm: '/videos/previews/manga-adaptation.webm' },
+  { slug: 'pov-husband', title: 'POV: My Husband Discovers Comics', brand: 'CGN', description: 'A lighthearted take on introducing a partner to the world of graphic novels.', video: '/videos/previews/pov-husband.mp4', webm: '/videos/previews/pov-husband.webm' },
+  { slug: 'pov-husband-2', title: 'POV: My Husband Part 2', brand: 'CGN', description: 'The sequel — diving deeper into the comic book rabbit hole.', video: '/videos/previews/pov-husband-2.mp4', webm: '/videos/previews/pov-husband-2.webm' },
+  { slug: 'bookbinding', title: 'The Art of Bookbinding', brand: 'CGN', description: 'Exploring the craft and tradition behind binding graphic novels by hand.', video: '/videos/previews/bookbinding.mp4', webm: '/videos/previews/bookbinding.webm' },
+  { slug: 'depression', title: 'The Graphic Novel & Mental Health', brand: 'CGN', description: 'How graphic novels serve as powerful tools for processing and expressing mental health experiences.', video: '/videos/previews/depression.mp4', webm: '/videos/previews/depression.webm' },
+  // ── DLC ──
+  { slug: 'spin-rosin-1', title: 'Rosin Spin — Variant 1', brand: 'DLC', description: 'Product spin video for De La Creme live rosin concentrate.', video: '/videos/brands/dlc/spin-rosin-1.mp4', aspect: '1/1' },
+  { slug: 'spin-rosin-2', title: 'Rosin Spin — Variant 2', brand: 'DLC', description: 'Product spin video for De La Creme live rosin concentrate.', video: '/videos/brands/dlc/spin-rosin-2.mp4', aspect: '1/1' },
+  { slug: 'spin-rosin-3', title: 'Rosin Spin — Variant 3', brand: 'DLC', description: 'Product spin video for De La Creme live rosin concentrate.', video: '/videos/brands/dlc/spin-rosin-3.mp4', aspect: '1/1' },
+  { slug: 'spin-rosin-4', title: 'Rosin Spin — Variant 4', brand: 'DLC', description: 'Product spin video for De La Creme live rosin concentrate.', video: '/videos/brands/dlc/spin-rosin-4.mp4', aspect: '1/1' },
+  { slug: 'spin-rosin-5', title: 'Rosin Spin — Variant 5', brand: 'DLC', description: 'Product spin video for De La Creme live rosin concentrate.', video: '/videos/brands/dlc/spin-rosin-5.mp4', aspect: '1/1' },
+  { slug: 'spin-rosin-6', title: 'Rosin Spin — Variant 6', brand: 'DLC', description: 'Product spin video for De La Creme live rosin concentrate.', video: '/videos/brands/dlc/spin-rosin-6.mp4', aspect: '1/1' },
+  { slug: 'spin-rosin-7', title: 'Rosin Spin — Variant 7', brand: 'DLC', description: 'Product spin video for De La Creme live rosin concentrate.', video: '/videos/brands/dlc/spin-rosin-7.mp4', aspect: '1/1' },
+  { slug: 'spin-rosin-8', title: 'Rosin Spin — Variant 8', brand: 'DLC', description: 'Product spin video for De La Creme live rosin concentrate.', video: '/videos/brands/dlc/spin-rosin-8.mp4', aspect: '1/1' },
+  { slug: 'spin-gummies-1', title: 'Gummies Spin — Variant 1', brand: 'DLC', description: 'Product spin video for De La Creme gummy edibles.', video: '/videos/brands/dlc/spin-gummies-1.mp4', aspect: '1/1' },
+  { slug: 'spin-gummies-2', title: 'Gummies Spin — Variant 2', brand: 'DLC', description: 'Product spin video for De La Creme gummy edibles.', video: '/videos/brands/dlc/spin-gummies-2.mp4', aspect: '1/1' },
+  { slug: 'spin-gummies-3', title: 'Gummies Spin — Variant 3', brand: 'DLC', description: 'Product spin video for De La Creme gummy edibles.', video: '/videos/brands/dlc/spin-gummies-3.mp4', aspect: '1/1' },
+  { slug: 'spin-gummies-4', title: 'Gummies Spin — Variant 4', brand: 'DLC', description: 'Product spin video for De La Creme gummy edibles.', video: '/videos/brands/dlc/spin-gummies-4.mp4', aspect: '1/1' },
+  { slug: 'spin-gummies-5', title: 'Gummies Spin — Variant 5', brand: 'DLC', description: 'Product spin video for De La Creme gummy edibles.', video: '/videos/brands/dlc/spin-gummies-5.mp4', aspect: '1/1' },
+  { slug: 'pop-oct', title: 'Pop October', brand: 'DLC', description: 'Seasonal promotional content for De La Creme.', video: '/videos/brands/dlc/pop-oct.mp4' },
+  { slug: 'probe-vertical', title: 'Probe — Vertical', brand: 'DLC', description: 'Editorial product video for De La Creme.', video: '/videos/brands/dlc/probe-vertical.mp4' },
+  { slug: 'emeraldcake-vertical', title: 'Emerald Cake', brand: 'DLC', description: 'Product showcase for De La Creme Emerald Cake strain.', video: '/videos/brands/dlc/emeraldcake-vertical.mp4' },
+  // ── MDL ──
+  { slug: 'phone-house2', title: 'Property Tour — House', brand: 'MDL', description: 'Vertical property showcase for Million Dollar Luxe.', video: '/videos/web/mdl/phone-house2.mp4' },
+  { slug: 'phone-mashup', title: 'Property Mashup', brand: 'MDL', description: 'Multi-property highlight reel for Million Dollar Luxe.', video: '/videos/web/mdl/phone-mashup.mp4' },
+  { slug: 'phone-poolhouse', title: 'Property Tour — Pool House', brand: 'MDL', description: 'Vertical property showcase for Million Dollar Luxe.', video: '/videos/web/mdl/phone-poolhouse.mp4' },
+  { slug: 'phone-roxford', title: 'Property Tour — Roxford', brand: 'MDL', description: 'Vertical property showcase for Million Dollar Luxe.', video: '/videos/web/mdl/phone-roxford.mp4' },
+  { slug: 'phone-villa', title: 'Property Tour — Villa', brand: 'MDL', description: 'Vertical property showcase for Million Dollar Luxe.', video: '/videos/web/mdl/phone-villa.mp4' },
+];
+---
+
+<BaseLayout title="Content Creation — Karina Arystan">
+  <article class="relative bg-charcoal pt-28 pb-24 lg:pt-36 overflow-hidden">
+    <!-- Floating circles (behind content) -->
+    <div class="absolute inset-0 z-0 pointer-events-none" id="content-floating-circles"></div>
+
+    <!-- Back link -->
+    <div class="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
+      <a href="/" class="inline-flex items-center gap-2 text-sm text-cream/60 transition-colors hover:text-terracotta">
+        &larr; Back to home
+      </a>
+    </div>
+
+    <!-- Header -->
+    <div class="relative z-10 mx-auto max-w-7xl px-6 pt-8 lg:px-12">
+      <div class="reveal text-center">
+        <h1 class="font-heading text-4xl text-cream md:text-5xl">Content Creation</h1>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-cream/60">
+          Short-form video content — scripted, directed, performed, and edited by me.
+          From educational series to brand storytelling across TikTok, Instagram Reels, and YouTube Shorts.
+        </p>
+      </div>
+    </div>
+
+    <!-- Featured video (centered) -->
+    <div class="relative z-10 mx-auto max-w-7xl px-6 pt-12 lg:px-12">
+      <div class="flex justify-center">
+        <div id="featured-wrapper" class="w-full max-w-[360px] transition-all duration-300">
+          <div id="featured-frame" class="relative aspect-[9/16] overflow-hidden rounded-2xl bg-black/30 shadow-xl">
+            <video
+              id="featured-video"
+              class="h-full w-full object-cover"
+              controls
+              autoplay
+              playsinline
+              preload="auto"
+            >
+              <source id="featured-source-mp4" src="" type="video/mp4" />
+              <source id="featured-source-webm" src="" type="video/webm" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video info (below video, centered) -->
+    <div class="relative z-10 mx-auto max-w-2xl px-6 pt-8 text-center">
+      <span id="featured-brand" class="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-cream/70"></span>
+      <h2 id="featured-title" class="mt-3 font-subheading text-2xl uppercase text-cream md:text-3xl"></h2>
+      <p id="featured-description" class="mt-3 text-base leading-relaxed text-cream/60"></p>
+      <div class="mt-5 flex flex-wrap justify-center gap-2">
+        {['Scriptwriter', 'On-Camera', 'Director', 'Editor'].map((role) => (
+          <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-cream/70">{role}</span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Thumbnail gallery row -->
+    <div class="relative z-10 mx-auto max-w-7xl px-6 pt-14 lg:px-12">
+      <p class="mb-4 text-xs font-medium uppercase tracking-wider text-cream/40">All Videos</p>
+      <div class="relative">
+        <!-- Left arrow -->
+        <button
+          id="thumb-arrow-left"
+          type="button"
+          class="absolute -left-1 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full bg-black/50 p-2 text-cream/80 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-cream lg:flex"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <!-- Right arrow -->
+        <button
+          id="thumb-arrow-right"
+          type="button"
+          class="absolute -right-1 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full bg-black/50 p-2 text-cream/80 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-cream lg:flex"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+
+        <div class="flex gap-3 overflow-x-auto pb-4" id="thumbnail-row">
+          {videos.map((vid) => (
+            <button
+              class="content-thumb group relative flex-shrink-0 overflow-hidden rounded-lg bg-black/30 transition-all"
+              data-slug={vid.slug}
+              data-title={vid.title}
+              data-brand={vid.brand}
+              data-description={vid.description}
+              data-video={vid.video}
+              data-webm={vid.webm || ''}
+              data-aspect={vid.aspect || '9/16'}
+              type="button"
+            >
+              <div class={`relative overflow-hidden ${vid.aspect === '1/1' ? 'h-[140px] w-[140px]' : 'h-[180px] w-[101px]'}`}>
+                <video
+                  class="h-full w-full object-cover"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                >
+                  {vid.webm && <source src={vid.webm} type="video/webm" />}
+                  <source src={vid.video} type="video/mp4" />
+                </video>
+                <div class="absolute inset-0 rounded-lg ring-2 ring-transparent transition-all group-[.active]:ring-terracotta"></div>
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-2 pt-6">
+                  <p class="text-[9px] font-medium leading-tight text-white/90">{vid.title}</p>
+                  <p class="mt-0.5 text-[8px] text-white/50">{vid.brand}</p>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  const featuredVideo = document.getElementById('featured-video') as HTMLVideoElement;
+  const sourceWebm = document.getElementById('featured-source-webm') as HTMLSourceElement;
+  const sourceMp4 = document.getElementById('featured-source-mp4') as HTMLSourceElement;
+  const featuredWrapper = document.getElementById('featured-wrapper')!;
+  const featuredFrame = document.getElementById('featured-frame')!;
+  const titleEl = document.getElementById('featured-title')!;
+  const descEl = document.getElementById('featured-description')!;
+  const brandEl = document.getElementById('featured-brand')!;
+  const thumbs = document.querySelectorAll<HTMLButtonElement>('.content-thumb');
+  const thumbRow = document.getElementById('thumbnail-row')!;
+
+  function setFeaturedVideo(slug: string) {
+    const thumb = document.querySelector<HTMLButtonElement>(`.content-thumb[data-slug="${slug}"]`);
+    if (!thumb) return;
+
+    const video = thumb.dataset.video || '';
+    const webm = thumb.dataset.webm || '';
+    const title = thumb.dataset.title || '';
+    const description = thumb.dataset.description || '';
+    const brand = thumb.dataset.brand || '';
+    const aspect = thumb.dataset.aspect || '9/16';
+
+    // Update aspect ratio for featured frame
+    const isSquare = aspect === '1/1';
+    featuredFrame.style.aspectRatio = isSquare ? '1/1' : '9/16';
+    featuredWrapper.style.maxWidth = isSquare ? '480px' : '360px';
+
+    // Update sources (MP4 first — has audio, WebM fallback is silent)
+    sourceMp4.src = video;
+    sourceWebm.src = webm;
+    featuredVideo.muted = false;
+    featuredVideo.volume = 1;
+    featuredVideo.load();
+    featuredVideo.play().catch(() => {
+      // Browser blocked unmuted autoplay — start muted, user can unmute via controls
+      featuredVideo.muted = true;
+      featuredVideo.play().catch(() => {});
+    });
+
+    // Update info
+    titleEl.textContent = title;
+    descEl.textContent = description;
+    brandEl.textContent = brand;
+
+    // Update active state
+    thumbs.forEach((t) => t.classList.remove('active'));
+    thumb.classList.add('active');
+
+    // Scroll thumbnail into view
+    thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+    // Update hash without scroll jump
+    history.replaceState(null, '', `#${slug}`);
+  }
+
+  // Thumbnail click handlers
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      const slug = thumb.dataset.slug || '';
+      setFeaturedVideo(slug);
+      // Scroll to top of featured video
+      document.querySelector('article')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Autoplay thumbnails on hover
+  thumbs.forEach((thumb) => {
+    const vid = thumb.querySelector('video');
+    if (!vid) return;
+    thumb.addEventListener('mouseenter', () => vid.play().catch(() => {}));
+    thumb.addEventListener('mouseleave', () => { vid.pause(); vid.currentTime = 0; });
+  });
+
+  // Arrow scroll buttons
+  const arrowLeft = document.getElementById('thumb-arrow-left')!;
+  const arrowRight = document.getElementById('thumb-arrow-right')!;
+  const scrollAmount = 320;
+
+  function updateArrows() {
+    const { scrollLeft, scrollWidth, clientWidth } = thumbRow;
+    arrowLeft.style.display = scrollLeft > 0 ? 'flex' : 'none';
+    arrowRight.style.display = scrollLeft + clientWidth < scrollWidth - 2 ? 'flex' : 'none';
+  }
+
+  arrowLeft.addEventListener('click', () => {
+    thumbRow.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  });
+  arrowRight.addEventListener('click', () => {
+    thumbRow.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  });
+
+  thumbRow.addEventListener('scroll', updateArrows);
+  window.addEventListener('resize', updateArrows);
+
+  // Initial load: use hash or default to first video
+  const initialSlug = window.location.hash.slice(1) || thumbs[0]?.dataset.slug || '';
+  setFeaturedVideo(initialSlug);
+
+  // Init arrows after layout settles
+  requestAnimationFrame(updateArrows);
+</script>
+
+<script>
+  // --- Floating circles for content page ---
+  const circlesContainer = document.getElementById('content-floating-circles');
+  if (circlesContainer) {
+    const colors = [
+      'rgba(174, 81, 70, 0.15)',    // terra
+      'rgba(231, 189, 170, 0.12)',  // terra-mid
+      'rgba(80, 84, 56, 0.15)',     // sage-deep
+      'rgba(177, 192, 161, 0.12)',  // sage-mid
+      'rgba(234, 216, 214, 0.12)',  // terra-light
+      'rgba(210, 211, 196, 0.1)',   // sage-light
+      'rgba(237, 218, 196, 0.1)',   // terra-sand
+      'rgba(123, 140, 110, 0.12)',  // olive
+    ];
+
+    interface Circle {
+      el: HTMLDivElement;
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      size: number;
+      wobbleSpeed: number;
+      wobbleAmp: number;
+      phase: number;
+    }
+
+    const circles: Circle[] = [];
+    const isMobile = window.innerWidth < 768;
+    const count = isMobile ? 10 : 18;
+    let time = 0;
+
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      const size = 20 + Math.random() * 200;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      el.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        border-radius: 50%;
+        background: ${color};
+        filter: blur(${1 + Math.random() * 4}px);
+        will-change: transform;
+      `;
+
+      circlesContainer.appendChild(el);
+
+      const speedFactor = 1.2 - (size / 250);
+      const baseSpeed = (0.03 + Math.random() * 0.07) * speedFactor;
+      const angle = Math.random() * Math.PI * 2;
+
+      circles.push({
+        el,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        vx: Math.cos(angle) * baseSpeed,
+        vy: Math.sin(angle) * baseSpeed,
+        size,
+        wobbleSpeed: 0.005 + Math.random() * 0.015,
+        wobbleAmp: 0.02 + Math.random() * 0.04,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+
+    function animateCircles() {
+      time++;
+      for (const c of circles) {
+        const wobbleX = Math.sin(time * c.wobbleSpeed + c.phase) * c.wobbleAmp;
+        const wobbleY = Math.cos(time * c.wobbleSpeed * 0.7 + c.phase + 1.5) * c.wobbleAmp;
+
+        c.x += c.vx + wobbleX;
+        c.y += c.vy + wobbleY;
+
+        if (c.x < -8) { c.vx = Math.abs(c.vx); }
+        else if (c.x > 108) { c.vx = -Math.abs(c.vx); }
+        if (c.y < -8) { c.vy = Math.abs(c.vy); }
+        else if (c.y > 108) { c.vy = -Math.abs(c.vy); }
+
+        c.el.style.transform = `translate(${c.x}vw, ${c.y}vh)`;
+      }
+      requestAnimationFrame(animateCircles);
+    }
+
+    animateCircles();
+  }
+</script>
+
+<style>
+  /* Hide scrollbar on thumbnail row */
+  #thumbnail-row {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #thumbnail-row::-webkit-scrollbar {
+    display: none;
+  }
+</style>

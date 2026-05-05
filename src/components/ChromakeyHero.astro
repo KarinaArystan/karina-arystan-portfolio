@@ -1,0 +1,302 @@
+---
+
+---
+
+<section class="relative flex min-h-screen items-center justify-center overflow-hidden" id="hero-section">
+  <!-- Layer 0.5: Floating circles (behind text, behind TV) -->
+  <div class="absolute inset-0 z-[5] pointer-events-none" id="floating-circles"></div>
+
+  <!-- Layer 1: Hero text content (BEHIND the canvas, centered on screen) -->
+  <div class="absolute inset-0 z-10 flex items-center justify-center">
+    <div class="flex flex-col items-center gap-2 md:gap-6 text-center px-4 md:px-6 translate-x-[5px] translate-y-[23px] md:translate-x-0 md:-translate-y-[25px]">
+      <!-- Logo with color-cycling mask -->
+      <div
+        class="hero-logo-mask"
+        id="hero-title"
+        role="heading"
+        aria-level="1"
+        aria-label="Karina Arystan"
+        style="width: clamp(200px, 55vw, 600px); aspect-ratio: 2.55 / 1; background-color: currentColor; -webkit-mask-image: url('/images/logo-01.png'); mask-image: url('/images/logo-01.png'); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center;"
+      ></div>
+
+      <p class="text-xs md:text-xl" id="hero-subtitle">Content Creator &amp; Brand Developer</p>
+      <p class="text-xs md:text-xl">Charlotte, NC</p>
+
+      <!-- Scroll indicator — hidden on mobile to fit within green screen area -->
+      <div class="hidden md:flex items-center gap-3 pt-8 opacity-40" id="hero-scroll">
+        <div class="h-12 w-px bg-current"></div>
+        <span class="text-[11px] font-medium uppercase tracking-[2px]">Scroll to explore</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layer 2: Chromakey canvas (ON TOP — green parts become transparent, showing text) -->
+  <canvas
+    class="absolute top-0 bottom-0 -left-[10px] z-20 h-full w-[calc(100%+10px)] pointer-events-none md:left-0 md:w-full"
+    id="hero-canvas"
+  ></canvas>
+
+  <!-- Hidden video source — desktop (landscape) -->
+  <video
+    id="hero-video-desktop"
+    muted
+    playsinline
+    class="absolute opacity-0 pointer-events-none"
+    style="width: 1px; height: 1px;"
+  >
+    <source src="/videos/hero-old-tv-resized.webm" type="video/webm" />
+    <source src="/videos/hero-old-tv-resized.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Hidden video source — mobile (portrait) -->
+  <video
+    id="hero-video-mobile"
+    muted
+    playsinline
+    class="absolute opacity-0 pointer-events-none"
+    style="width: 1px; height: 1px;"
+  >
+    <source src="/videos/old-tv-mobile.webm" type="video/webm" />
+    <source src="/videos/old-tv-mobile.mp4" type="video/mp4" />
+  </video>
+</section>
+
+<script>
+  // Pick desktop or mobile video based on viewport width
+  const isMobile = window.innerWidth < 768;
+  const video = document.getElementById(isMobile ? 'hero-video-mobile' : 'hero-video-desktop') as HTMLVideoElement | null;
+  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
+  const heroSection = document.getElementById('hero-section');
+
+  // Start loading + playing only the selected video
+  if (video) {
+    video.preload = 'auto';
+    video.autoplay = true;
+    video.load();
+    video.play().catch(() => {});
+  }
+
+  // Chromakey parameters
+  const THRESHOLD = 45;
+  const TOLERANCE = 35;
+
+  if (video && canvas && heroSection) {
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+    if (ctx) {
+      const MAX_PROCESS_WIDTH = 960;
+      let isRunning = false;
+
+      function resizeCanvas() {
+        // Match canvas internal resolution to the viewport aspect ratio
+        // (scaled down for performance) so the video cover-fits correctly
+        const rect = heroSection!.getBoundingClientRect();
+        const viewportAspect = rect.width / rect.height;
+        canvas!.width = MAX_PROCESS_WIDTH;
+        canvas!.height = Math.round(MAX_PROCESS_WIDTH / viewportAspect);
+      }
+
+      function processFrame() {
+        if (!isRunning) return;
+
+        const vw = video!.videoWidth;
+        const vh = video!.videoHeight;
+        if (!vw || !vh) {
+          requestAnimationFrame(processFrame);
+          return;
+        }
+
+        const cw = canvas!.width;
+        const ch = canvas!.height;
+        const videoAspect = vw / vh;
+        const canvasAspect = cw / ch;
+
+        // "object-fit: cover" — crop the video to fill the canvas
+        let sx: number, sy: number, sw: number, sh: number;
+        if (canvasAspect > videoAspect) {
+          // Canvas is wider: use full video width, crop top/bottom
+          sw = vw;
+          sh = vw / canvasAspect;
+          sx = 0;
+          sy = (vh - sh) / 2;
+        } else {
+          // Canvas is taller: use full video height, crop left/right
+          sh = vh;
+          sw = vh * canvasAspect;
+          sx = (vw - sw) / 2;
+          sy = 0;
+        }
+
+        ctx!.drawImage(video!, sx, sy, sw, sh, 0, 0, cw, ch);
+
+        const frame = ctx!.getImageData(0, 0, cw, ch);
+        const data = frame.data;
+        const len = data.length;
+
+        for (let i = 0; i < len; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          const greenness = g - Math.max(r, b);
+
+          if (greenness > THRESHOLD) {
+            data[i + 3] = 0;
+          } else if (greenness > THRESHOLD - TOLERANCE) {
+            const alpha = ((THRESHOLD - greenness) / TOLERANCE) * 255;
+            data[i + 3] = Math.round(alpha);
+            const spillReduce = 0.5;
+            data[i + 1] = Math.round(g - (greenness * spillReduce));
+          }
+        }
+
+        ctx!.putImageData(frame, 0, 0);
+
+        // If video ended, hold the final frame (stop the loop)
+        if (video!.ended) return;
+
+        requestAnimationFrame(processFrame);
+      }
+
+      // Init
+      video.addEventListener('loadedmetadata', resizeCanvas);
+      window.addEventListener('resize', resizeCanvas);
+
+      video.addEventListener('playing', () => {
+        if (!isRunning) {
+          isRunning = true;
+          resizeCanvas();
+          processFrame();
+        }
+      });
+
+      // If video already playing
+      if (!video.paused && video.readyState >= 2) {
+        isRunning = true;
+        resizeCanvas();
+        processFrame();
+      }
+
+      // Fallback: if autoplay fails, just show text without canvas
+      video.addEventListener('error', () => {
+        canvas!.style.display = 'none';
+      });
+    }
+  }
+
+  // --- Floating circles ---
+  const circlesContainer = document.getElementById('floating-circles');
+  if (circlesContainer) {
+    const colors = [
+      'rgba(174, 81, 70, 0.3)',    // terra
+      'rgba(231, 189, 170, 0.25)', // terra-mid
+      'rgba(80, 84, 56, 0.3)',     // sage-deep
+      'rgba(177, 192, 161, 0.25)', // sage-mid
+      'rgba(234, 216, 214, 0.25)', // terra-light
+      'rgba(210, 211, 196, 0.2)',  // sage-light
+      'rgba(237, 218, 196, 0.2)',  // terra-sand
+      'rgba(123, 140, 110, 0.25)', // olive
+    ];
+
+    interface Circle {
+      el: HTMLDivElement;
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      size: number;
+      wobbleSpeed: number;
+      wobbleAmp: number;
+      phase: number;
+      baseVx: number;
+      baseVy: number;
+    }
+
+    const circles: Circle[] = [];
+    const count = isMobile ? 12 : 20;
+    let time = 0;
+
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      const size = 20 + Math.random() * 200;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      el.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        border-radius: 50%;
+        background: ${color};
+        filter: blur(${1 + Math.random() * 4}px);
+        will-change: transform;
+      `;
+
+      circlesContainer.appendChild(el);
+
+      // Smaller circles move faster, larger ones drift slowly
+      const speedFactor = 1.2 - (size / 250);
+      const baseSpeed = (0.03 + Math.random() * 0.07) * speedFactor;
+      const angle = Math.random() * Math.PI * 2;
+
+      circles.push({
+        el,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        vx: Math.cos(angle) * baseSpeed,
+        vy: Math.sin(angle) * baseSpeed,
+        baseVx: Math.cos(angle) * baseSpeed,
+        baseVy: Math.sin(angle) * baseSpeed,
+        size,
+        wobbleSpeed: 0.005 + Math.random() * 0.015,
+        wobbleAmp: 0.02 + Math.random() * 0.04,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+
+    function animateCircles() {
+      time++;
+      for (const c of circles) {
+        // Sinusoidal wobble for organic movement
+        const wobbleX = Math.sin(time * c.wobbleSpeed + c.phase) * c.wobbleAmp;
+        const wobbleY = Math.cos(time * c.wobbleSpeed * 0.7 + c.phase + 1.5) * c.wobbleAmp;
+
+        c.x += c.vx + wobbleX;
+        c.y += c.vy + wobbleY;
+
+        // Soft bounce — gradually reverse instead of instant flip
+        if (c.x < -8) { c.vx = Math.abs(c.vx); }
+        else if (c.x > 108) { c.vx = -Math.abs(c.vx); }
+        if (c.y < -8) { c.vy = Math.abs(c.vy); }
+        else if (c.y > 108) { c.vy = -Math.abs(c.vy); }
+
+        c.el.style.transform = `translate(${c.x}vw, ${c.y}vh)`;
+      }
+      requestAnimationFrame(animateCircles);
+    }
+
+    animateCircles();
+  }
+
+  // --- Hero background color cycling ---
+  if (heroSection) {
+    const palette = [
+      { bg: '#AE5146', text: '#EAD8D6' },  // terra / terra-light
+      { bg: '#505438', text: '#B1C0A1' },  // sage-deep / sage-mid
+      { bg: '#2D1F1C', text: '#E7BDAA' },  // charcoal / terra-mid
+      { bg: '#E7BDAA', text: '#AE5146' },  // terra-mid / terra
+      { bg: '#B1C0A1', text: '#EBECDE' },  // sage-mid / sage-mist
+    ];
+
+    let index = 0;
+
+    // Apply first color immediately
+    heroSection.style.backgroundColor = palette[0].bg;
+    heroSection.style.color = palette[0].text;
+    heroSection.style.transition = 'background-color 0.15s ease, color 0.15s ease';
+
+    setInterval(() => {
+      index = (index + 1) % palette.length;
+      heroSection.style.backgroundColor = palette[index].bg;
+      heroSection.style.color = palette[index].text;
+    }, 1000);
+  }
+</script>

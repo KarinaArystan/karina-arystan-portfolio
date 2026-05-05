@@ -1,0 +1,92 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Karina Arystan — Content Creator & Brand Developer',
+  description = 'Portfolio of Karina Arystan — Content Creator and Brand Developer based in Charlotte, NC. Short-form video production, brand identity, and creative direction.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:image" content="/images/about-photo.jpg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+    <title>{title}</title>
+  </head>
+  <body class="grain-overlay overflow-x-hidden">
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <BackToTop />
+
+    <script>
+      import gsap from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+      import Lenis from 'lenis';
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+
+      // Reveal animations for .reveal elements
+      document.querySelectorAll('.reveal').forEach((el) => {
+        gsap.set(el, { opacity: 0, y: 40 });
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+          },
+        });
+      });
+
+      // Staggered reveal for data-reveal-group / data-reveal-item
+      document.querySelectorAll('[data-reveal-group]').forEach((group) => {
+        const items = group.querySelectorAll('[data-reveal-item]');
+        gsap.set(items, { opacity: 0, y: 30 });
+        ScrollTrigger.create({
+          trigger: group,
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            gsap.to(items, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out' });
+          },
+        });
+      });
+    </script>
+  </body>
+</html>

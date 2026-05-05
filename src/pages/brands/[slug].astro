@@ -1,0 +1,1934 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CatalogueViewer from '../../components/CatalogueViewer.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'otks' } },
+    { params: { slug: 'dlc' } },
+    { params: { slug: 'cgn' } },
+    { params: { slug: 'big-chief' } },
+  ];
+}
+
+// Brand project data (will migrate to Content Collections later)
+const projects: Record<string, any> = {
+  otks: {
+    name: 'The OTKs',
+    description: 'Brand Identity & Content Creation',
+    year: '2023',
+    roles: ['Brand Developer', 'Creative Director'],
+    context: 'Freelance · Remote',
+    deliverables: ['Brand Identity', 'Logo Design', 'Typography System', 'Color Palette', 'Social Media Templates', 'Photography Direction'],
+    hero: '/images/brands/the-otks/otk-photoshoot-01.jpg',
+    brief: '',
+    approach: '',
+    result: '',
+    images: [],
+    next: { slug: 'dlc', name: 'De La Creme' },
+  },
+  dlc: {
+    name: 'De La Creme',
+    description: 'Brand Development & Content Creation',
+    year: '2022 — 2023',
+    roles: ['Brand Developer', 'Content Creator'],
+    context: 'In-house · Los Angeles, CA',
+    deliverables: ['Brand Identity', 'Packaging Design', 'Custom Illustration', 'Apparel Design', 'Print Collateral', 'Photography Direction', 'Social Content'],
+    hero: '/images/brands/dlc/hero.png',
+    brief: '',
+    approach: '',
+    result: '',
+    images: [],
+    next: { slug: 'cgn', name: 'Custom Graphic Novels' },
+  },
+  cgn: {
+    name: 'Custom Graphic Novels',
+    description: 'Brand Identity & Web Design',
+    year: '2024 — Present',
+    roles: ['Creative Director', 'Brand Founder'],
+    context: 'Solo · Remote',
+    deliverables: ['Brand Voice', 'Visual Identity', 'Content Strategy', 'E-Commerce Platform'],
+    hero: '/images/brands/cgn/page-cover-photo.jpg',
+    brief: '',
+    approach: '',
+    result: '',
+    images: [],
+    next: { slug: 'big-chief', name: 'Big Chief' },
+  },
+  'big-chief': {
+    name: 'Big Chief',
+    description: 'Brand Identity & Packaging Design',
+    year: '2023',
+    roles: ['Brand Developer', 'Packaging Designer'],
+    context: 'Contract · Los Angeles, CA',
+    deliverables: ['Brand Identity', 'Logo Design', 'Packaging Design', 'Print Production', 'Catalogue Design'],
+    hero: '/images/brands/big-chief/bag-hero.png',
+    brief: '',
+    approach: '',
+    result: '',
+    images: [],
+    next: { slug: 'otks', name: 'The OTKs' },
+  },
+};
+
+const { slug } = Astro.params;
+const project = projects[slug as string];
+const isCGN = slug === 'cgn';
+const isDLC = slug === 'dlc';
+const isBigChief = slug === 'big-chief';
+const isOTKs = slug === 'otks';
+
+if (!project) {
+  return Astro.redirect('/brands');
+}
+---
+
+<BaseLayout title={`${project.name} — Karina Arystan`}>
+  <article class="pt-28 lg:pt-36">
+    <!-- Back link -->
+    <div class="mx-auto max-w-7xl px-6 lg:px-12">
+      <a href="/brands" class="inline-flex items-center gap-2 text-sm text-warm-gray transition-colors hover:text-terracotta">
+        &larr; All projects
+      </a>
+    </div>
+
+    <!-- Hero image -->
+    {project.hero ? (
+      <div class="mt-8 px-6 lg:px-12">
+        <div class="mx-auto max-w-7xl overflow-hidden">
+          <img
+            src={project.hero}
+            alt={`${project.name} hero`}
+            class="max-h-[600px] w-full object-cover object-center"
+            loading="eager"
+          />
+        </div>
+      </div>
+    ) : project.images.length > 0 ? (
+      <div class="mt-8 px-6 lg:px-12">
+        <div class="mx-auto max-w-7xl overflow-hidden">
+          <img
+            src={project.images[0].src}
+            alt={project.images[0].alt}
+            class="w-full object-cover"
+            loading="eager"
+          />
+        </div>
+      </div>
+    ) : (
+      <div class="mt-8 px-6 lg:px-12">
+        <div class="mx-auto max-w-7xl overflow-hidden bg-cream-dark">
+          <div class="flex aspect-[21/9] items-center justify-center">
+            <span class="font-heading text-4xl text-warm-gray-light/30">{project.name}</span>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- Project meta -->
+    <div class="mx-auto max-w-7xl px-6 pt-12 lg:px-12">
+      <div class="reveal flex flex-wrap items-start justify-between gap-8 border-b border-cream-dark pb-8">
+        <div>
+          <h1 class="font-heading text-4xl md:text-5xl">{project.name}</h1>
+          <p class="mt-2 text-lg text-warm-gray">{project.description}</p>
+        </div>
+        <div class="flex flex-wrap gap-6 text-sm">
+          <div>
+            <p class="font-medium uppercase tracking-wider text-warm-gray-light">Year</p>
+            <p class="mt-1 text-charcoal">{project.year}</p>
+          </div>
+          <div>
+            <p class="font-medium uppercase tracking-wider text-warm-gray-light">Role</p>
+            <p class="mt-1 text-charcoal">{project.roles.join(' · ')}</p>
+          </div>
+          {project.context && (
+            <div>
+              <p class="font-medium uppercase tracking-wider text-warm-gray-light">Context</p>
+              <p class="mt-1 text-charcoal">{project.context}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <!-- Deliverables tags -->
+    <div class="mx-auto max-w-7xl px-6 pt-6 lg:px-12">
+      <div class="reveal flex flex-wrap gap-2">
+        {project.deliverables.map((d: string) => (
+          <span class="rounded-full bg-cream-dark px-4 py-1.5 text-sm font-medium text-warm-gray">
+            {d}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    {/* ═══ GENERIC SECTIONS ═══ */}
+    {!isCGN && !isDLC && !isBigChief && !isOTKs && (
+      <>
+        <!-- The Brief -->
+        <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+          <div class="reveal mx-auto max-w-3xl">
+            <p class="mb-3 text-sm font-medium uppercase tracking-widest text-terracotta">The Brief</p>
+            <p class="font-heading text-xl leading-relaxed md:text-2xl">{project.brief}</p>
+          </div>
+        </div>
+
+        <!-- Visual showcase (if images exist) -->
+        {project.images.length > 1 && (
+          <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+            <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+              {project.images.slice(1, 3).map((img: any) => (
+                <div class="overflow-hidden" data-reveal-item>
+                  <img src={img.src} alt={img.alt} class="w-full object-cover" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- The Approach -->
+        <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+          <div class="reveal mx-auto max-w-3xl">
+            <p class="mb-3 text-sm font-medium uppercase tracking-widest text-terracotta">The Approach</p>
+            <p class="text-lg leading-relaxed text-warm-gray">{project.approach}</p>
+          </div>
+        </div>
+
+        <!-- Additional images -->
+        {project.images.length > 3 && (
+          <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+            <div class="reveal overflow-hidden">
+              <img
+                src={project.images[3].src}
+                alt={project.images[3].alt}
+                class="w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        )}
+
+        <!-- The Result -->
+        <div class="mx-auto max-w-7xl px-6 pt-16 pb-24 lg:px-12">
+          <div class="reveal mx-auto max-w-3xl">
+            <p class="mb-3 text-sm font-medium uppercase tracking-widest text-terracotta">The Result</p>
+            <p class="text-lg leading-relaxed text-warm-gray">{project.result}</p>
+          </div>
+        </div>
+      </>
+    )}
+
+    {/* ═══ OTKS-SPECIFIC: About This Project ═══ */}
+    {isOTKs && (
+      <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+        <div class="reveal text-center">
+          <p class="mb-8 text-sm font-medium uppercase tracking-widest text-terracotta">— About This Project —</p>
+        </div>
+        <div class="reveal mx-auto max-w-3xl rounded-2xl border border-cream-dark bg-cream-dark/30 p-8 md:p-12">
+          <p class="text-lg leading-relaxed text-warm-gray">
+            The OTKs is a premium over-the-knee sock brand targeting style-conscious millennials who value quality craftsmanship and refined aesthetics. I developed the complete brand identity from concept — building a visual system rooted in chic sophistication with vintage-inspired sensibility.
+          </p>
+          <p class="mt-6 text-lg leading-relaxed text-warm-gray">
+            The identity centers on an interwoven monogram mark that feels both contemporary and timeless, paired with a muted color palette of dusty rose, taupe, charcoal, burgundy, and forest green. The type system pairs Bauer Bodoni Condensed for editorial display with TT Chocolates for modern body text and Eleganto Sans for the logo wordmark — balancing elegance with approachability across every touchpoint from social media to product tags.
+          </p>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ OTKS-SPECIFIC: Brand Identity System ═══ */}
+    {isOTKs && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-12 text-sm font-medium uppercase tracking-widest text-terracotta">Brand Identity System</p>
+        </div>
+
+        <div class="mb-16 grid gap-12 md:grid-cols-2">
+          {/* ── Color Palette ── */}
+          <div>
+            <div class="reveal">
+              <h3 class="mb-6 font-heading text-2xl text-charcoal">Color Palette</h3>
+            </div>
+            <div class="reveal flex flex-wrap gap-6">
+              {[
+                { name: 'Dusty Pink', hex: '#dfbdbd' },
+                { name: 'Taupe', hex: '#cfbab1' },
+                { name: 'Silver', hex: '#e6e6e6', border: true },
+                { name: 'Burgundy', hex: '#a52b31' },
+                { name: 'Blush', hex: '#e7dfda', border: true },
+                { name: 'Charcoal', hex: '#544f50' },
+                { name: 'Cream', hex: '#f4eee0', border: true },
+                { name: 'Forest', hex: '#335741' },
+              ].map((c) => (
+                <div class="flex flex-col items-center gap-2">
+                  <div class="h-16 w-16 rounded-lg shadow-sm" style={`background-color: ${c.hex};${c.border ? ' border: 1px solid #e5d89d;' : ''}`}></div>
+                  <span class="text-xs font-medium text-warm-gray">{c.name}</span>
+                  <span class="text-[10px] text-warm-gray-light">{c.hex}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Typography ── */}
+          <div>
+            <div class="reveal">
+              <h3 class="mb-6 font-heading text-2xl text-charcoal">Typography</h3>
+            </div>
+            <div class="reveal flex flex-col gap-5">
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Primary Display</p>
+                <p class="otks-bodoni text-3xl text-charcoal md:text-4xl">Bauer Bodoni Condensed</p>
+              </div>
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Body</p>
+                <p class="otks-chocolates text-2xl text-charcoal md:text-3xl">TT Chocolates</p>
+              </div>
+              <div>
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Logo Font</p>
+                <p class="otks-eleganto text-2xl tracking-wider text-charcoal md:text-3xl">Eleganto Sans</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Mood Board ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <h3 class="mb-8 font-heading text-2xl text-charcoal">Mood Board</h3>
+          </div>
+          <div class="reveal overflow-hidden rounded-2xl">
+            <img src="/images/brands/the-otks/otks-mood-board.png" alt="The OTKs — Mood board: vintage-inspired fashion photography, chic sophistication" class="w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+
+        {/* ── Logo System ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <h3 class="mb-8 font-heading text-2xl text-charcoal">Logo System</h3>
+          </div>
+
+          {/* 2-col: monogram on taupe + monogram on white */}
+          <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl p-10" style="background-color: #b8a69e;" data-reveal-item>
+              <img src="/images/brands/the-otks/logo-01.png" alt="The OTKs — Monogram on taupe" class="max-h-[280px] object-contain" loading="lazy" />
+            </div>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-white p-10" style="border: 1px solid #e6e6e6;" data-reveal-item>
+              <img src="/images/brands/the-otks/logo-02.png" alt="The OTKs — Monogram on white" class="max-h-[280px] object-contain" loading="lazy" />
+            </div>
+          </div>
+
+          {/* O lettermark on sage */}
+          <div class="reveal mt-4 flex items-center justify-center overflow-hidden rounded-2xl p-10" style="background-color: #b5c4b1;">
+            <img src="/images/brands/the-otks/logo-03.png" alt="The OTKs — O Lettermark on sage" class="max-h-[240px] object-contain" loading="lazy" />
+          </div>
+
+          {/* 2-col: full logo dark + full logo light */}
+          <div class="mt-4 grid gap-4 md:grid-cols-2" data-reveal-group>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+              <img src="/images/brands/the-otks/logo-04.png" alt="The OTKs — Full logo on dark" class="max-h-[180px] object-contain" loading="lazy" />
+            </div>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-white p-10" style="border: 1px solid #e6e6e6;" data-reveal-item>
+              <img src="/images/brands/the-otks/logo-05.png" alt="The OTKs — Full logo on white" class="max-h-[180px] object-contain" loading="lazy" />
+            </div>
+          </div>
+
+          {/* Logo mark explanation */}
+          <div class="reveal mt-4 overflow-hidden rounded-2xl">
+            <img src="/images/brands/the-otks/otks-logo-mark.jpg" alt="The OTKs — Logo mark: interwoven monogram explanation" class="w-full object-cover" loading="lazy" />
+          </div>
+
+          {/* Primary logo usage */}
+          <div class="reveal mt-4 overflow-hidden rounded-2xl">
+            <img src="/images/brands/the-otks/otks-logo-use.png" alt="The OTKs — Primary logo: four colorway applications" class="w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ OTKS-SPECIFIC: Social Media & Content ═══ */}
+    {isOTKs && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Social Media & Content</p>
+          <p class="mb-3 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Designed a complete social media template system for Instagram — including story templates, post layouts, and a cohesive grid strategy that balances product photography with branded graphic content.
+          </p>
+          <div class="mb-8 flex flex-wrap gap-2">
+            {['Social Templates', 'Instagram Grid', 'Content Strategy', 'Photography Direction'].map((s) => (
+              <span class="rounded-full bg-cream-dark px-3 py-1 text-xs font-medium text-warm-gray">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="reveal overflow-hidden rounded-2xl">
+          <img src="/images/brands/the-otks/otk-social-use.jpg" alt="The OTKs — Social media templates: story, post, and grid layouts" class="w-full object-cover" loading="lazy" />
+        </div>
+
+        {/* IG grid video */}
+        <div class="reveal mt-4 overflow-hidden rounded-2xl">
+          <video class="w-full object-cover" autoplay loop muted playsinline>
+            <source src="/images/brands/the-otks/ig-grid-layout-design.mp4" type="video/mp4" />
+          </video>
+          <p class="mt-3 text-xs text-warm-gray-light">Instagram grid layout — animated walkthrough</p>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ OTKS-SPECIFIC: Photography ═══ */}
+    {isOTKs && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 pb-24 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Photography Direction</p>
+          <p class="mb-8 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Art directed product photography emphasizing texture, natural light, and refined styling — showcasing the socks in aspirational, editorial-quality compositions.
+          </p>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="overflow-hidden rounded-2xl" data-reveal-item>
+            <img src="/images/brands/the-otks/otk-photoshoot-01.jpg" alt="The OTKs — Product photography: window light, styled composition" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl" data-reveal-item>
+            <img src="/images/brands/the-otks/otk-photoshoot-02.jpg" alt="The OTKs — Product photography: detail shot, natural light" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ CGN-SPECIFIC: About This Project ═══ */}
+    {isCGN && (
+      <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+        <div class="reveal text-center">
+          <p class="mb-8 text-sm font-medium uppercase tracking-widest text-terracotta">— About This Project —</p>
+        </div>
+        <div class="reveal mx-auto max-w-3xl rounded-2xl border border-cream-dark bg-cream-dark/30 p-8 md:p-12">
+          <p class="text-lg leading-relaxed text-warm-gray">
+            Custom Graphic Novels transforms real love stories into museum-quality, hand-bound illustrated graphic novels. Before this project, this product category did not exist. I founded the brand, developed its identity, wrote its voice, and built the platform to deliver it — starting from a single idea and zero assets.
+          </p>
+          <p class="mt-6 text-lg leading-relaxed text-warm-gray">
+            The brand needed to communicate two things simultaneously: the emotional weight of the product (this is a heirloom, not a novelty) and the clarity of the process (ordering a fully custom illustrated book needed to feel accessible, not overwhelming). Every brand decision — the typography, the color palette, the tagline — was made to hold both of those truths at once.
+          </p>
+          <p class="mt-6 text-lg leading-relaxed text-warm-gray">
+            The result is a brand that positions itself as the only company in the world doing what it does — because it is. "Love Stories Worth Telling" is not just a tagline. It's the entire brand strategy compressed into four words.
+          </p>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ CGN-SPECIFIC: Brand Identity ═══ */}
+    {isCGN && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Brand Identity</p>
+          <p class="mb-12 max-w-3xl text-base leading-relaxed text-warm-gray">
+            The visual and verbal foundation built from scratch.
+            Full platform build &rarr; <a href="/web/custom-graphic-novels" class="text-terracotta underline decoration-terracotta/30 underline-offset-2 transition-colors hover:text-terra-mid">View Web Project</a>
+          </p>
+        </div>
+
+        <div class="grid gap-12 lg:grid-cols-2">
+          {/* ── Color Palette ── */}
+          <div class="reveal">
+            <h3 class="mb-6 font-heading text-2xl text-charcoal">Color Palette</h3>
+            <div class="flex flex-col gap-6">
+              <div>
+                <p class="mb-2 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Gold variants</p>
+                <div class="flex flex-wrap gap-3">
+                  {[
+                    { hex: '#6a5f2c' },
+                    { hex: '#938432' },
+                    { hex: '#231f20' },
+                    { hex: '#b9ae7f' },
+                    { hex: '#c1b06b' },
+                  ].map((c) => (
+                    <div class="flex flex-col items-center gap-1.5">
+                      <div class="h-14 w-14 rounded-lg shadow-sm" style={`background-color: ${c.hex};`}></div>
+                      <span class="text-[10px] font-medium text-warm-gray">{c.hex}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p class="mb-2 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Dust Rose variants</p>
+                <div class="flex flex-wrap gap-3">
+                  {[
+                    { hex: '#754037' },
+                    { hex: '#975749' },
+                  ].map((c) => (
+                    <div class="flex flex-col items-center gap-1.5">
+                      <div class="h-14 w-14 rounded-lg shadow-sm" style={`background-color: ${c.hex};`}></div>
+                      <span class="text-[10px] font-medium text-warm-gray">{c.hex}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p class="mb-2 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Creme variants</p>
+                <div class="flex flex-wrap gap-3">
+                  {[
+                    { hex: '#e8deb3' },
+                    { hex: '#faf4dc' },
+                    { hex: '#ede9cf' },
+                    { hex: '#e5d89d' },
+                  ].map((c) => (
+                    <div class="flex flex-col items-center gap-1.5">
+                      <div class="h-14 w-14 rounded-lg border border-cream-dark shadow-sm" style={`background-color: ${c.hex};`}></div>
+                      <span class="text-[10px] font-medium text-warm-gray">{c.hex}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p class="mb-2 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Sage Blue</p>
+                <div class="flex flex-wrap gap-3">
+                  <div class="flex flex-col items-center gap-1.5">
+                    <div class="h-14 w-14 rounded-lg shadow-sm" style="background-color: #4f6967;"></div>
+                    <span class="text-[10px] font-medium text-warm-gray">#4f6967</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── Typography ── */}
+          <div class="reveal">
+            <h3 class="mb-6 font-heading text-2xl text-charcoal">Typography</h3>
+            <div class="flex flex-col gap-5">
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Display</p>
+                <p class="cgn-choose-elegant text-3xl text-charcoal md:text-4xl">Love Stories Worth Telling</p>
+              </div>
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Display Alternate</p>
+                <p class="cgn-elegant text-2xl text-charcoal md:text-3xl">A Story Only You Can Tell</p>
+              </div>
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Serif Body</p>
+                <p class="cgn-braven text-2xl text-charcoal md:text-3xl">Every story deserves to be told.</p>
+              </div>
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Script Accent</p>
+                <p class="cgn-tempting text-3xl text-charcoal md:text-4xl">Yours, forever.</p>
+              </div>
+              <div>
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Decorative</p>
+                <p class="cgn-lagraziela text-3xl text-charcoal md:text-4xl">Custom Graphic Novels</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Logo ── */}
+        <div class="mt-16">
+          <div class="reveal text-center">
+            <p class="mb-3 text-sm font-medium uppercase tracking-widest text-terracotta">— Logo —</p>
+            <p class="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-warm-gray">
+              The CGN wordmark pairs an ornate display typeface with a refined geometric crown mark — designed to read as heirloom and handcrafted simultaneously. The logo system includes light and dark variants for flexible application across cream, charcoal, and full-color backgrounds.
+            </p>
+          </div>
+
+          {/* Primary logo — featured large */}
+          <div class="reveal mx-auto mb-6 max-w-3xl overflow-hidden rounded-2xl bg-cream-dark p-12">
+            <img src="/images/brands/cgn/logo.jpeg" alt="CGN logo — primary" class="h-full w-full object-contain" loading="lazy" />
+          </div>
+
+          {/* Logo variants — side by side */}
+          <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+              <img src="/images/brands/cgn/logo-color.png" alt="CGN logo — color on dark" class="h-full w-full object-contain" loading="lazy" />
+            </div>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-cream-dark p-10" data-reveal-item>
+              <img src="/images/brands/cgn/logo-blk.png" alt="CGN logo — black variant" class="h-full w-full object-contain" loading="lazy" />
+            </div>
+          </div>
+
+          {/* Brand Collateral */}
+          <div class="reveal mt-10 text-center">
+            <p class="mb-4 text-xs font-medium uppercase tracking-widest text-warm-gray-light">Brand Collateral</p>
+          </div>
+          <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
+            <img src="/images/brands/cgn/business-cards.png" alt="Business card design — cream and charcoal colorways" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <p class="mt-2 text-xs text-warm-gray-light">Business card design — cream and charcoal colorways</p>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ CGN-SPECIFIC: Brand Visual System ═══ */}
+    {isCGN && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-12 text-sm font-medium uppercase tracking-widest text-terracotta">Brand Visual System</p>
+        </div>
+
+        {/* ── Sub-group A: Animated Scene Illustrations ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <h3 class="mb-2 font-heading text-2xl text-charcoal">Animated Scene Illustrations</h3>
+            <p class="mb-8 max-w-3xl text-base leading-relaxed text-warm-gray">
+              Full-scene illustrations created for the site's parallax hero and footer animations — each asset designed to work in motion as the user scrolls.
+            </p>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+            <div data-reveal-item>
+              <div class="flex items-center justify-center overflow-hidden rounded-2xl p-6" style="background-color: #faf4dc; height: 420px;">
+                <img src="/images/brands/cgn/graphic-assets/side-anim-asset-2.webp" alt="Homepage Hero — Mermaid Parallax Layer" class="max-h-full max-w-full object-contain" loading="lazy" />
+              </div>
+              <p class="mt-2 text-xs text-warm-gray-light">Homepage Hero — Mermaid Parallax Layer</p>
+            </div>
+            <div data-reveal-item>
+              <div class="flex items-center justify-center overflow-hidden rounded-2xl p-6" style="background-color: #faf4dc; height: 420px;">
+                <img src="/images/brands/cgn/graphic-assets/side-anim-asset-1.webp" alt="Homepage — Botanical Garden Scroll Scene" class="max-h-full max-w-full object-contain" loading="lazy" />
+              </div>
+              <p class="mt-2 text-xs text-warm-gray-light">Homepage — Botanical Garden Scroll Scene</p>
+            </div>
+            <div data-reveal-item>
+              <div class="overflow-hidden rounded-2xl p-6" style="background-color: #faf4dc;">
+                <img src="/images/brands/cgn/graphic-assets/footer-anim-asset-1.webp" alt="Footer Animation — Botanical Books (Layer 1)" class="w-full object-contain" loading="lazy" />
+              </div>
+              <p class="mt-2 text-xs text-warm-gray-light">Footer Animation — Botanical Books (Layer 1)</p>
+            </div>
+            <div data-reveal-item>
+              <div class="overflow-hidden rounded-2xl p-6" style="background-color: #faf4dc;">
+                <img src="/images/brands/cgn/graphic-assets/footer-anim-asset-2.webp" alt="Footer Animation — Botanical Books (Layer 2)" class="w-full object-contain" loading="lazy" />
+              </div>
+              <p class="mt-2 text-xs text-warm-gray-light">Footer Animation — Botanical Books (Layer 2)</p>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Sub-group B: Floating Illustration Elements ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <h3 class="mb-2 font-heading text-2xl text-charcoal">Floating Illustration Elements</h3>
+            <p class="mb-8 max-w-3xl text-base leading-relaxed text-warm-gray">
+              Transparent illustration assets used as decorative elements across the site and in social video productions — designed to float freely over backgrounds without a containing shape.
+            </p>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+            <div data-reveal-item>
+              <div class="flex items-center justify-center overflow-hidden rounded-2xl p-8" style="background-image: url('/images/brands/cgn/graphic-assets/success-confirmation-background.webp'); background-size: cover; min-height: 320px;">
+                <img src="/images/brands/cgn/graphic-assets/graphic-asset-01.webp" alt="Flower & Butterfly — Dusty Rose / Gold" class="max-h-[280px] object-contain" loading="lazy" />
+              </div>
+              <p class="mt-2 text-xs text-warm-gray-light">Flower & Butterfly — Dusty Rose / Gold</p>
+            </div>
+            <div data-reveal-item>
+              <div class="flex items-center justify-center overflow-hidden rounded-2xl p-8" style="background-image: url('/images/brands/cgn/graphic-assets/success-confirmation-background.webp'); background-size: cover; min-height: 320px;">
+                <img src="/images/brands/cgn/graphic-assets/graphic-asset-02.webp" alt="Gold Botanical — Tulip & Stems" class="max-h-[280px] object-contain" loading="lazy" />
+              </div>
+              <p class="mt-2 text-xs text-warm-gray-light">Gold Botanical — Tulip & Stems</p>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Sub-group C: UI Component Design ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <h3 class="mb-2 font-heading text-2xl text-charcoal">UI Component Design</h3>
+            <p class="mb-8 max-w-3xl text-base leading-relaxed text-warm-gray">
+              Custom-designed interactive components built for the CGN platform — buttons, link styles, scroll indicators, and social icons, all using the brand's gold, cream, and sage palette.
+            </p>
+          </div>
+
+          <div class="reveal cgn-btn-showcase rounded-2xl border border-cream-dark bg-cream-dark/30 p-8 md:p-12">
+            {/* Row 1: Primary Buttons */}
+            <p class="mb-4 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Button Variants</p>
+            <div class="mb-8 flex flex-wrap items-center gap-4">
+              <span class="cgn-btn cgn-btn-primary cgn-btn-medium">Order Now</span>
+              <span class="cgn-btn cgn-btn-secondary cgn-btn-medium">Learn More</span>
+              <span class="cgn-btn cgn-btn-outline cgn-btn-medium">View Gallery</span>
+              <span class="cgn-btn cgn-btn-ghost cgn-btn-medium">Cancel</span>
+            </div>
+
+            {/* Row 2: Size Variations */}
+            <p class="mb-4 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Size Variations</p>
+            <div class="mb-8 flex flex-wrap items-center gap-4">
+              <span class="cgn-btn cgn-btn-primary cgn-btn-small">Small</span>
+              <span class="cgn-btn cgn-btn-primary cgn-btn-medium">Medium</span>
+              <span class="cgn-btn cgn-btn-primary cgn-btn-large">Large</span>
+            </div>
+
+            {/* Row 3: Link Styles */}
+            <p class="mb-4 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Link Styles</p>
+            <div class="mb-8 flex flex-wrap items-center gap-6">
+              <span class="cgn-link cgn-link-underline">Underline Link</span>
+              <span class="cgn-link cgn-link-arrow">Arrow Link <svg class="inline-block ml-1" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="cgn-link cgn-link-bracket"><span class="cgn-bracket">[</span> Bracket Link <span class="cgn-bracket">]</span></span>
+            </div>
+
+            {/* Row 4: Scroll Indicators */}
+            <p class="mb-4 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Scroll Indicators</p>
+            <div class="mb-8 flex flex-wrap items-end gap-10">
+              {/* Arrow */}
+              <div class="flex flex-col items-center gap-2">
+                <span class="cgn-scroll-text">Scroll</span>
+                <div class="cgn-scroll-arrow">
+                  <span class="cgn-arrow-line"></span>
+                  <span class="cgn-arrow-point"></span>
+                </div>
+              </div>
+              {/* Mouse */}
+              <div class="flex flex-col items-center gap-2">
+                <span class="cgn-scroll-text">Scroll</span>
+                <div class="cgn-mouse-body">
+                  <div class="cgn-mouse-wheel"></div>
+                </div>
+              </div>
+              {/* Chevrons */}
+              <div class="flex flex-col items-center gap-2">
+                <span class="cgn-scroll-text">Scroll</span>
+                <div class="flex flex-col items-center gap-1">
+                  <span class="cgn-chevron"></span>
+                  <span class="cgn-chevron"></span>
+                  <span class="cgn-chevron"></span>
+                </div>
+              </div>
+              {/* Dots */}
+              <div class="flex flex-col items-center gap-2">
+                <span class="cgn-scroll-text">Scroll</span>
+                <div class="flex flex-col items-center gap-2">
+                  <span class="cgn-dot"></span>
+                  <span class="cgn-dot"></span>
+                  <span class="cgn-dot"></span>
+                </div>
+              </div>
+            </div>
+
+            {/* Row 5: Social Icons + Back to Top */}
+            <p class="mb-4 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Social & Navigation</p>
+            <div class="flex flex-wrap items-center gap-4">
+              {/* Social circle icons */}
+              {['instagram', 'tiktok', 'youtube', 'facebook', 'pinterest'].map((platform) => (
+                <span class="cgn-social-circle">
+                  {platform === 'instagram' && (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                  )}
+                  {platform === 'tiktok' && (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+                  )}
+                  {platform === 'youtube' && (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+                  )}
+                  {platform === 'facebook' && (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                  )}
+                  {platform === 'pinterest' && (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 11.5a3.5 3.5 0 0 1 7 0c0 2.5-1.5 4-3 4-.5 0-1-.2-1.4-.5"/><path d="M10.5 15.5L9 21"/></svg>
+                  )}
+                </span>
+              ))}
+              {/* Ghost variant */}
+              <span class="cgn-social-ghost">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+              {/* Back to top */}
+              <span class="cgn-back-to-top">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 17L10 3"/><path d="M4 9L10 3L16 9" stroke-linejoin="round"/></svg>
+                <span class="text-[9px] uppercase tracking-wide" style="color: #faf4dc;">Top</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Sub-group D: Brand System Elements ── */}
+        <div>
+          <div class="reveal">
+            <h3 class="mb-2 font-heading text-2xl text-charcoal">Brand System Elements</h3>
+            <p class="mb-8 max-w-3xl text-base leading-relaxed text-warm-gray">
+              Supporting brand assets: the geometric crown mark used as a recurring decorative motif, and the vertical stripe texture applied to page sections and confirmation screens.
+            </p>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+            {/* Left col — Crown Mark (two cards stacked) */}
+            <div class="flex flex-col gap-4" data-reveal-item>
+              <div class="flex flex-1 items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10">
+                <img src="/images/brands/cgn/graphic-assets/Hero-page_crown_assets.webp" alt="Crown Icon on dark background" class="w-[120px] object-contain" loading="lazy" />
+              </div>
+              <div class="flex flex-1 items-center justify-center overflow-hidden rounded-2xl p-10" style="background-color: #faf4dc;">
+                <img src="/images/brands/cgn/graphic-assets/Hero-page_crown_assets.webp" alt="Crown Icon on cream background" class="w-[120px] object-contain" loading="lazy" />
+              </div>
+              <p class="mt-2 text-xs text-warm-gray-light">Crown Icon — Site Motif & Decorative Brand Mark</p>
+            </div>
+
+            {/* Right col — Stripe Texture */}
+            <div data-reveal-item>
+              <div class="overflow-hidden rounded-2xl" style="height: calc(100% - 28px);">
+                <img src="/images/brands/cgn/graphic-assets/success-confirmation-background.webp" alt="Vertical Stripe — Page Background Texture" class="h-full w-full object-cover" data-no-lightbox loading="lazy" />
+              </div>
+              <p class="mt-2 text-xs text-warm-gray-light">Vertical Stripe — Page Background Texture</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ CGN-SPECIFIC: Content & Social ═══ */}
+    {isCGN && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-8 text-sm font-medium uppercase tracking-widest text-terracotta">Content & Social</p>
+          <p class="mx-auto max-w-3xl text-lg leading-relaxed text-warm-gray">
+            Alongside the brand identity and platform build, I own the full content pipeline for Custom Graphic Novels — scripting, directing, shooting, editing, and performing in all short-form video content published across Instagram, TikTok, and YouTube Shorts.
+          </p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5" data-reveal-group>
+          {[
+            { title: '32,000 Years of Graphic Novels', slug: '32k-years' },
+            { title: 'Are Graphic Novels Classy?', slug: 'gr-novels-classy' },
+            { title: 'The Bayeux Tapestry', slug: 'bayeux-tapestry' },
+            { title: 'Build a Graphic Novel With Me', slug: 'build-graphic-novel' },
+            { title: 'Dual Coding Theory', slug: 'dual-coding-theory' },
+            { title: 'Manga Adaptation in US', slug: 'manga-adaptation' },
+            { title: 'POV: Husband', slug: 'pov-husband' },
+            { title: 'POV: Husband Pt. 2', slug: 'pov-husband-2' },
+            { title: 'Bookbinding', slug: 'bookbinding' },
+            { title: 'Depression', slug: 'depression' },
+          ].map((vid) => (
+            <div class="group relative overflow-hidden rounded-2xl bg-charcoal" data-reveal-item>
+              <video
+                class="w-full object-cover"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+              >
+                <source src={`/videos/previews/${vid.slug}.webm`} type="video/webm" />
+                <source src={`/videos/previews/${vid.slug}.mp4`} type="video/mp4" />
+              </video>
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-10">
+                <p class="text-sm font-medium text-cream">{vid.title}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* ═══ CGN-SPECIFIC: Cross-link Footer Bar ═══ */}
+    {isCGN && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 pb-12 lg:px-12">
+        <div class="reveal rounded-2xl border border-cream-dark bg-cream-dark/20 px-8 py-12 text-center md:px-16">
+          <p class="font-heading text-2xl text-charcoal md:text-3xl">Want to see how this brand was built?</p>
+          <p class="mx-auto mt-3 max-w-xl text-base leading-relaxed text-warm-gray">
+            Explore the full technical and UX breakdown of the Custom Graphic Novels platform.
+          </p>
+          <a
+            href="/web/custom-graphic-novels"
+            class="mt-8 inline-flex items-center gap-2 rounded-full bg-terracotta px-8 py-3 text-sm font-semibold text-cream transition-colors hover:bg-terra-mid"
+          >
+            View Web Design Project
+            <span>&rarr;</span>
+          </a>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: About This Project ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+        <div class="reveal text-center">
+          <p class="mb-8 text-sm font-medium uppercase tracking-widest text-terracotta">— About This Project —</p>
+        </div>
+        <div class="reveal mx-auto max-w-3xl rounded-2xl border border-cream-dark bg-cream-dark/30 p-8 md:p-12">
+          <p class="text-lg leading-relaxed text-warm-gray">
+            De La Creme is a Los Angeles-based cannabis company specializing in gourmet concentrate products. I joined as the sole creative — responsible for building the brand's visual identity from the ground up and maintaining every customer-facing touchpoint across two years. Packaging, apparel, photography, campaigns, web, and social content: all owned in-house, all produced by me.
+          </p>
+          <p class="mt-6 text-lg leading-relaxed text-warm-gray">
+            The brief was to create striking, memorable illustrations for each product SKU while establishing a consistent visual identity that consumers would recognize instantly on dispensary shelves. The challenge was making each product feel individual and bold while keeping the brand family cohesive across 10+ SKUs, three apparel pieces, two sticker lines, environmental branding, and a sister brand.
+          </p>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Brand Identity System ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Brand Identity System</p>
+          <p class="mb-12 max-w-3xl text-base leading-relaxed text-warm-gray">
+            The complete visual and verbal foundation built from scratch.
+          </p>
+        </div>
+
+        <div class="mb-16 grid gap-12 md:grid-cols-2">
+          {/* ── Color Palette ── */}
+          <div>
+            <div class="reveal">
+              <h3 class="mb-6 font-heading text-2xl text-charcoal">Color Palette</h3>
+            </div>
+            <div class="reveal flex flex-wrap gap-6">
+              {[
+                { name: 'Hot Magenta', hex: '#d93762' },
+                { name: 'Electric Yellow', hex: '#fff04a' },
+                { name: 'Warm Orange', hex: '#e78c3c' },
+                { name: 'Black', hex: '#000000' },
+              ].map((c) => (
+                <div class="flex flex-col items-center gap-2">
+                  <div class="h-16 w-16 rounded-lg shadow-sm" style={`background-color: ${c.hex};${c.hex === '#fff04a' ? ' border: 1px solid #e5d89d;' : ''}`}></div>
+                  <span class="text-xs font-medium text-warm-gray">{c.name}</span>
+                  <span class="text-[10px] text-warm-gray-light">{c.hex}</span>
+                </div>
+              ))}
+            </div>
+            <div class="reveal mt-6 flex flex-col gap-3">
+              <div class="h-6 w-3/4 rounded-lg" style="background: linear-gradient(to right, #fff04a, #e78c3c, #d93762);"></div>
+              <div class="h-6 w-3/4 rounded-lg" style="background: linear-gradient(to right, #d93762, #e78c3c, #fff04a);"></div>
+            </div>
+          </div>
+
+          {/* ── Typography ── */}
+          <div>
+            <div class="reveal">
+              <h3 class="mb-6 font-heading text-2xl text-charcoal">Typography</h3>
+            </div>
+            <div class="reveal flex flex-col gap-5">
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Display</p>
+                <p class="dlc-edge-of-madness text-3xl text-charcoal md:text-4xl">De La Creme</p>
+              </div>
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Headline</p>
+                <p class="dlc-high-tide text-2xl text-charcoal md:text-3xl">Cream of the Crop</p>
+              </div>
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Accent</p>
+                <p class="dlc-back-to-black text-2xl text-charcoal md:text-3xl">Est. Los Angeles</p>
+              </div>
+              <div>
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Body</p>
+                <p class="dlc-din-condensed text-2xl text-charcoal md:text-3xl">Premium Live Rosin · Cold Cured</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Logo ── */}
+        <div class="mb-16">
+          <div class="reveal text-center">
+            <p class="mb-3 text-sm font-medium uppercase tracking-widest text-terracotta">— Logo —</p>
+          </div>
+          <div class="reveal mx-auto mb-6 max-w-3xl overflow-hidden rounded-2xl bg-charcoal p-12">
+            <img src="/images/brands/dlc/logo-01.png" alt="DLC logo — primary" class="h-full w-full object-contain" loading="lazy" />
+          </div>
+          <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+              <img src="/images/brands/dlc/logo-02.png" alt="DLC logo variant 2" class="h-full w-full object-contain" loading="lazy" />
+            </div>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-cream-dark p-10" data-reveal-item>
+              <img src="/images/brands/dlc/logo-03.png" alt="DLC logo variant 3" class="h-full w-full object-contain" loading="lazy" />
+            </div>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-cream-dark p-10" data-reveal-item>
+              <img src="/images/brands/dlc/logo-04.png" alt="DLC logo variant 4" class="h-full w-full object-contain" loading="lazy" />
+            </div>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+              <img src="/images/brands/dlc/logo-05.png" alt="DLC logo variant 5" class="h-full w-full object-contain" loading="lazy" />
+            </div>
+          </div>
+        </div>
+
+        {/* ── Brand Vector Assets ── */}
+        <div>
+          <div class="reveal text-center">
+            <p class="mb-8 text-sm font-medium uppercase tracking-widest text-terracotta">— Brand Vector Assets —</p>
+          </div>
+          <div class="grid grid-cols-2 gap-4 md:grid-cols-4" data-reveal-group>
+            {[
+              '/images/brands/dlc/vector-01.png',
+              '/images/brands/dlc/vector-02.png',
+              '/images/brands/dlc/vector-03.png',
+              '/images/brands/dlc/vector-04.png',
+              '/images/brands/dlc/vector-05.png',
+              '/images/brands/dlc/vector-06.png',
+              '/images/brands/dlc/vector-07.png',
+              '/images/brands/dlc/vector-08.png',
+            ].map((src) => (
+              <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-cream-dark p-6" data-reveal-item>
+                <img src={src} alt="DLC vector asset" class="h-full w-full object-contain" loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Product Packaging ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Product Packaging</p>
+          <p class="mb-3 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Designed the complete packaging system for De La Creme's premium live rosin concentrate line — original illustration art for each SKU, each built around its own visual concept and color world while maintaining brand cohesion across the full product family. Every label produced print-ready for cylindrical jar application.
+          </p>
+          <div class="mb-8 flex flex-wrap gap-2">
+            {['Jar Design', 'Label System', 'SKU Management', 'Print Production'].map((s) => (
+              <span class="rounded-full bg-cream-dark px-3 py-1 text-xs font-medium text-warm-gray">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
+          <img src="/images/brands/dlc/all-jar-labels.png" alt="DLC all jar labels — full product line" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+
+        <div class="reveal mt-4 overflow-hidden rounded-2xl bg-cream-dark">
+          <img src="/images/brands/dlc/palm-tree-banner.png" alt="DLC palm tree banner — full product spread" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+
+        <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3" data-reveal-group>
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+              <img src={`/images/brands/dlc/jar-label-0${n}.png`} alt={`DLC jar label ${n}`} class="h-full w-full object-cover" loading="lazy" />
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3" data-reveal-group>
+          {[7, 8, 9].map((n) => (
+            <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+              <img src={`/images/brands/dlc/jar-label-0${n}.png`} alt={`DLC jar label ${n}`} class="h-full w-full object-cover" loading="lazy" />
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Illustration Work ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Illustration Work</p>
+          <p class="mb-3 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Created a series of original character illustrations for each product strain — each one a standalone artwork developed as promotional and campaign art. Concepts range from a neon digital portrait with glitch light effects, to a full samurai action scene, to a character portrait with chemistry props. Every concept developed from scratch to match the product's name and personality.
+          </p>
+          <div class="mb-8 flex flex-wrap gap-2">
+            {['Character Design', 'Digital Illustration', 'Concept Development', 'Campaign Art'].map((s) => (
+              <span class="rounded-full bg-cream-dark px-3 py-1 text-xs font-medium text-warm-gray">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-3" data-reveal-group>
+          <div class="overflow-hidden rounded-2xl bg-charcoal" data-reveal-item>
+            <img src="/images/brands/dlc/poster-01.png" alt="De La Chem — bulldog character illustration" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-charcoal" data-reveal-item>
+            <img src="/images/brands/dlc/poster-02.png" alt="Kushiro Banana — samurai action illustration" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-charcoal" data-reveal-item>
+            <img src="/images/brands/dlc/poster-03.png" alt="Molly — neon portrait illustration" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Promotional Stickers ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Promotional Stickers</p>
+          <p class="mb-3 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Designed two sticker lines distributed as giveaways at shows and expos — a set of illustrated character stickers for each product strain, and a series of die-cut jar-lid shaped stickers. Both produced as premium print-ready die-cut designs.
+          </p>
+          <div class="mb-8 flex flex-wrap gap-2">
+            {['Promotional Design', 'Die-Cut Design', 'Print Production'].map((s) => (
+              <span class="rounded-full bg-cream-dark px-3 py-1 text-xs font-medium text-warm-gray">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+            <img src="/images/brands/dlc/promo-stickers-01.png" alt="DLC character sticker set" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+            <img src="/images/brands/dlc/promo-stickers-02.png" alt="DLC die-cut jar-lid stickers" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Apparel Design ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Apparel Design</p>
+          <p class="mb-3 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Designed branded apparel used as VIP gifts and event merchandise — three pieces, three different graphic treatments and production techniques. The t-shirt uses screen-print flame typography on the front and script logo on the back. The hoodie is a full all-over-print galaxy design produced for sublimation printing.
+          </p>
+          <div class="mb-8 flex flex-wrap gap-2">
+            {['Apparel Design', 'Sublimation Printing', 'Screen Print', 'Typography'].map((s) => (
+              <span class="rounded-full bg-cream-dark px-3 py-1 text-xs font-medium text-warm-gray">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
+          <img src="/images/brands/dlc/tshirt.png" alt="DLC t-shirt design — front and back" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+            <img src="/images/brands/dlc/hoodie-front.png" alt="DLC hoodie design — front" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+            <img src="/images/brands/dlc/hoodie-back.png" alt="DLC hoodie design — back" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Brand Collateral ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-8 text-sm font-medium uppercase tracking-widest text-terracotta">Brand Collateral</p>
+          <p class="mb-12 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Produced the full suite of brand collateral — from business cards and seasonal campaigns to environmental branding at scale.
+          </p>
+        </div>
+
+        {/* Business Cards — full width */}
+        <div class="reveal">
+          <div class="overflow-hidden rounded-2xl bg-cream-dark">
+            <img src="/images/brands/dlc/business-cards.png" alt="DLC business cards" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <p class="mt-3 text-sm font-medium text-charcoal">Business Cards</p>
+          <p class="text-xs text-warm-gray-light">Electric yellow + black, QR code integration</p>
+        </div>
+
+        {/* Holiday Postcards — 2-col */}
+        <div class="mt-8 grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+            <img src="/images/brands/dlc/postcard-front.png" alt="DLC holiday postcard — front" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+            <img src="/images/brands/dlc/postcard-back.png" alt="DLC holiday postcard — back" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+        <div class="reveal mt-3">
+          <p class="text-sm font-medium text-charcoal">Holiday Postcard Campaign</p>
+          <p class="text-xs text-warm-gray-light">Direct mail to dispensary partners + VIP accounts</p>
+        </div>
+
+        {/* Office Wall — full width */}
+        <div class="reveal mt-8">
+          <div class="overflow-hidden rounded-2xl bg-cream-dark">
+            <img src="/images/brands/dlc/office-wall.png" alt="DLC office interior feature wall" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <p class="mt-3 text-sm font-medium text-charcoal">Office Interior Feature Wall</p>
+          <p class="text-xs text-warm-gray-light">Large-format 3D geometric mural, production facility lobby</p>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Photography Direction ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Photography Direction</p>
+          <p class="mb-3 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Directed and produced the brand's product photography — responsible for surface styling, prop selection, color direction, and final editing. Shot on branded surfaces using the brand's color palette as the visual foundation.
+          </p>
+          <div class="mb-8 flex flex-wrap gap-2">
+            {['Art Direction', 'Product Styling', 'Photo Editing', 'Photography Direction'].map((s) => (
+              <span class="rounded-full bg-cream-dark px-3 py-1 text-xs font-medium text-warm-gray">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" style="height: 380px;" data-reveal-item>
+            <img src="/images/brands/dlc/hero.png" alt="DLC product photography — editorial flat lay" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" style="height: 380px;" data-reveal-item>
+            <img src="/images/brands/dlc/photoshoot-02.png" alt="DLC product photography — styled arrangement" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" style="height: 380px;" data-reveal-item>
+            <img src="/images/brands/dlc/garlic-mimosa.png" alt="DLC product photography — Garlic Mimosa" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" style="height: 380px;" data-reveal-item>
+            <img src="/images/brands/dlc/product-photo-02.jpg" alt="DLC product photography — detail" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Content & Social ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-8 text-sm font-medium uppercase tracking-widest text-terracotta">Content & Social</p>
+          <p class="mb-12 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Managed the brand's full social content operation — filming, editing, and publishing across Instagram and TikTok. Content covered product education, brand storytelling, and event coverage from shows and expos.
+          </p>
+        </div>
+
+        {/* Square format videos */}
+        <div class="reveal mb-4">
+          <p class="mb-4 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Instagram · Square</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-4" data-reveal-group>
+          {[
+            { src: '/videos/brands/dlc/spin-rosin-1.mp4', title: 'Live Rosin Spin' },
+            { src: '/videos/brands/dlc/spin-rosin-2.mp4', title: 'Live Rosin Spin' },
+            { src: '/videos/brands/dlc/spin-rosin-3.mp4', title: 'Live Rosin Spin' },
+            { src: '/videos/brands/dlc/spin-rosin-4.mp4', title: 'Live Rosin Spin' },
+            { src: '/videos/brands/dlc/spin-rosin-5.mp4', title: 'Live Rosin Spin' },
+            { src: '/videos/brands/dlc/spin-rosin-7.mp4', title: 'Live Rosin Spin' },
+            { src: '/videos/brands/dlc/spin-rosin-8.mp4', title: 'Live Rosin Spin' },
+            { src: '/videos/brands/dlc/spin-gummies-1.mp4', title: 'Gummies Spin' },
+            { src: '/videos/brands/dlc/spin-gummies-2.mp4', title: 'Gummies Spin' },
+            { src: '/videos/brands/dlc/spin-gummies-3.mp4', title: 'Gummies Spin' },
+            { src: '/videos/brands/dlc/spin-gummies-4.mp4', title: 'Gummies Spin' },
+            { src: '/videos/brands/dlc/spin-gummies-5.mp4', title: 'Gummies Spin' },
+          ].map((vid) => (
+            <div class="group relative aspect-square overflow-hidden rounded-2xl bg-charcoal" data-reveal-item>
+              <video class="h-full w-full object-cover" autoplay loop muted playsinline preload="metadata">
+                <source src={vid.src} type="video/mp4" />
+              </video>
+            </div>
+          ))}
+        </div>
+
+        {/* 16:9 format videos */}
+        <div class="reveal mt-8 mb-4">
+          <p class="mb-4 text-xs font-medium uppercase tracking-wider text-warm-gray-light">16:9 · Landscape</p>
+        </div>
+        <div class="grid gap-4 md:grid-cols-3" data-reveal-group>
+          {[
+            { src: '/videos/brands/dlc/probe-vertical.mp4', title: 'Product Probe' },
+            { src: '/videos/brands/dlc/emeraldcake-vertical.mp4', title: 'Emerald Cake Melt' },
+            { src: '/videos/brands/dlc/pop-oct.mp4', title: 'Product Pop' },
+          ].map((vid) => (
+            <div class="group relative overflow-hidden rounded-2xl bg-charcoal" data-reveal-item>
+              <video class="w-full object-cover" autoplay loop muted playsinline preload="metadata">
+                <source src={vid.src} type="video/mp4" />
+              </video>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Sister Brand — Zero Solvent ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Sister Brand — Zero Solvent</p>
+          <p class="mb-3 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Alongside De La Creme, I developed the complete brand identity for Zero Solvent — a sister cannabis brand positioned at the opposite aesthetic extreme. Where De La Creme is bold and illustrative, Zero Solvent is clinical and minimal: a periwinkle-and-white palette, geometric logo mark, clean sans-serif typography, and product presentation that reads closer to a tech or pharmaceutical brand than a cannabis concentrate. Building both brands simultaneously required switching registers completely — same designer, entirely different design philosophy.
+          </p>
+          <div class="mb-8 flex flex-wrap gap-2">
+            {['Brand Identity', 'Minimalist Design', 'Packaging Design', 'Brand Strategy'].map((s) => (
+              <span class="rounded-full bg-cream-dark px-3 py-1 text-xs font-medium text-warm-gray">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-cream-dark p-8" data-reveal-item>
+            <img src="/images/brands/dlc/zero-solvent/logo.png" alt="Zero Solvent logo" class="max-h-[200px] object-contain" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+            <img src="/images/brands/dlc/zero-solvent/slogan.png" alt="Zero Solvent slogan" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+        <div class="reveal mt-4 overflow-hidden rounded-2xl bg-cream-dark">
+          <img src="/images/brands/dlc/zero-solvent/color-palette.png" alt="Zero Solvent color palette" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-2" data-reveal-group>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+            <img src="/images/brands/dlc/zero-solvent/jar-label.png" alt="Zero Solvent jar label" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+          <div class="overflow-hidden rounded-2xl bg-cream-dark" data-reveal-item>
+            <img src="/images/brands/dlc/zero-solvent/packaging-mockup.png" alt="Zero Solvent packaging mockup" class="h-full w-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ DLC-SPECIFIC: Cross-link Footer Bar ═══ */}
+    {isDLC && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 pb-12 lg:px-12">
+        <div class="reveal rounded-2xl border border-cream-dark bg-cream-dark/20 px-8 py-12 text-center md:px-16">
+          <p class="font-heading text-2xl text-charcoal md:text-3xl">Web Design & Digital</p>
+          <p class="mx-auto mt-3 max-w-xl text-base leading-relaxed text-warm-gray">
+            See how the De La Creme website and digital presence were built — Figma process, UI/UX decisions, and site build.
+          </p>
+          <a
+            href="/web/de-la-creme"
+            class="mt-8 inline-flex items-center gap-2 rounded-full bg-terracotta px-8 py-3 text-sm font-semibold text-cream transition-colors hover:bg-terra-mid"
+          >
+            View Web Design Project
+            <span>&rarr;</span>
+          </a>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ BIG CHIEF-SPECIFIC: About This Project ═══ */}
+    {isBigChief && (
+      <div class="mx-auto max-w-7xl px-6 pt-16 lg:px-12">
+        <div class="reveal text-center">
+          <p class="mb-8 text-sm font-medium uppercase tracking-widest text-terracotta">— About This Project —</p>
+        </div>
+        <div class="reveal mx-auto max-w-3xl rounded-2xl border border-cream-dark bg-cream-dark/30 p-8 md:p-12">
+          <p class="text-lg leading-relaxed text-warm-gray">
+            Big Chief is one of California's most recognized cannabis brands — distributed through Red Light Distribution across licensed dispensaries statewide. I was brought on to develop the brand's visual identity system and design the packaging for their new premium cannabis flower line, as well as art direct and design the Red Light Distribution trade catalogue distributed to retail partners across the state.
+          </p>
+          <p class="mt-6 text-lg leading-relaxed text-warm-gray">
+            The brand identity draws on Western heritage and California roots: a headdress icon rendered in multiple colorways and line weights, a rich palette of crimson, cream, navy, gold, and forest green, and a type system that mixes bold display lettering with arched script. The packaging challenge was designing six mylar bags — each its own complete visual world — that still read as a unified product family on dispensary shelves.
+          </p>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ BIG CHIEF-SPECIFIC: Brand Identity System ═══ */}
+    {isBigChief && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-12 text-sm font-medium uppercase tracking-widest text-terracotta">Brand Identity System</p>
+        </div>
+
+        <div class="mb-16 grid gap-12 md:grid-cols-2">
+          {/* ── Color Palette ── */}
+          <div>
+            <div class="reveal">
+              <h3 class="mb-6 font-heading text-2xl text-charcoal">Color Palette</h3>
+            </div>
+            <div class="reveal flex flex-wrap gap-6">
+              {[
+                { name: 'Crimson', hex: '#76071e' },
+                { name: 'Cream', hex: '#fbf4d4', border: true },
+                { name: 'Navy', hex: '#07122f' },
+                { name: 'Gold', hex: '#f9d46b' },
+                { name: 'Teal', hex: '#245f51' },
+                { name: 'Forest', hex: '#173a28' },
+              ].map((c) => (
+                <div class="flex flex-col items-center gap-2">
+                  <div class="h-16 w-16 rounded-lg shadow-sm" style={`background-color: ${c.hex};${c.border ? ' border: 1px solid #e5d89d;' : ''}`}></div>
+                  <span class="text-xs font-medium text-warm-gray">{c.name}</span>
+                  <span class="text-[10px] text-warm-gray-light">{c.hex}</span>
+                </div>
+              ))}
+            </div>
+            <div class="reveal mt-6">
+              <div class="h-6 w-3/4 rounded-lg" style="background: linear-gradient(135deg, #c8a84b, #f9d46b, #f5e07a, #f9d46b, #c8a84b);"></div>
+              <p class="mt-2 text-xs text-warm-gray-light">Gold — Metallic</p>
+            </div>
+          </div>
+
+          {/* ── Typography ── */}
+          <div>
+            <div class="reveal">
+              <h3 class="mb-6 font-heading text-2xl text-charcoal">Typography</h3>
+            </div>
+            <div class="reveal flex flex-col gap-5">
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Display</p>
+                <p class="bc-boucherie text-3xl text-charcoal md:text-4xl">BIG CHIEF EXTRACTS</p>
+              </div>
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Sans-Serif</p>
+                <p class="bc-hammersmith text-2xl text-charcoal md:text-3xl">Premium California Cannabis</p>
+              </div>
+              <div class="border-b border-cream-dark pb-4">
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Script</p>
+                <p class="bc-sacred-bridge text-3xl text-charcoal md:text-4xl">Big Chief</p>
+              </div>
+              <div>
+                <p class="mb-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">Body</p>
+                <p class="bc-montserrat text-2xl text-charcoal md:text-3xl">Crafted with care since 2013.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Logo System ── */}
+        <div class="mb-16">
+          <div class="reveal">
+            <h3 class="mb-8 font-heading text-2xl text-charcoal">Logo System</h3>
+          </div>
+
+          {/* 2-col: both logo colorways on charcoal */}
+          <div class="grid gap-4 md:grid-cols-2" data-reveal-group>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+              <img src="/images/brands/big-chief/logo-color-01.png" alt="Big Chief — Primary Logo (Full Color Headdress)" class="max-h-[280px] object-contain" loading="lazy" />
+            </div>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl bg-charcoal p-10" data-reveal-item>
+              <img src="/images/brands/big-chief/logo-color-02.png" alt="Big Chief — Navy/Gold Colorway" class="max-h-[280px] object-contain" loading="lazy" />
+            </div>
+          </div>
+
+          {/* Horizontal wordmark */}
+          <div class="reveal mt-4 flex items-center justify-center overflow-hidden rounded-2xl p-10" style="background-color: #fbf4d4;">
+            <img src="/images/brands/big-chief/logo-wordmark-horizontal.png" alt="Big Chief — Horizontal Wordmark" class="max-h-[240px] object-contain" loading="lazy" />
+          </div>
+
+          {/* 3-col: stacked, script, outline — all on cream */}
+          <div class="mt-4 grid gap-4 md:grid-cols-3" data-reveal-group>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl p-8" style="background-color: #fbf4d4;" data-reveal-item>
+              <img src="/images/brands/big-chief/logo-wordmark-stacked.png" alt="Big Chief — Stacked Wordmark" class="max-h-[180px] object-contain" loading="lazy" />
+            </div>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl p-8" style="background-color: #fbf4d4;" data-reveal-item>
+              <img src="/images/brands/big-chief/logo-wordmark-script.png" alt="Big Chief — Script Wordmark" class="max-h-[180px] object-contain" loading="lazy" />
+            </div>
+            <div class="flex items-center justify-center overflow-hidden rounded-2xl p-8" style="background-color: #fbf4d4;" data-reveal-item>
+              <img src="/images/brands/big-chief/logo-outline.png" alt="Big Chief — Outline Variant" class="max-h-[180px] object-contain" loading="lazy" />
+            </div>
+          </div>
+        </div>
+
+        {/* ── Brand Visual Assets ── */}
+        <div>
+          <div class="reveal">
+            <h3 class="mb-2 font-heading text-2xl text-charcoal">Brand Visual Assets</h3>
+            <p class="mb-8 max-w-3xl text-base leading-relaxed text-warm-gray">
+              Supporting marks, sub-marks, and decorative elements used across packaging, print, and brand applications.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 md:grid-cols-4" data-reveal-group>
+            {[
+              { src: '/images/brands/big-chief/asset-california-bear.png', caption: 'California Bear — Est. 2013' },
+              { src: '/images/brands/big-chief/asset-bc-medallion.png', caption: 'BC Medallion' },
+              { src: '/images/brands/big-chief/asset-flourish.png', caption: 'Decorative Flourish' },
+              { src: '/images/brands/big-chief/asset-star.png', caption: '4-Point Star Mark' },
+            ].map((asset) => (
+              <div data-reveal-item>
+                <div class="flex items-center justify-center overflow-hidden rounded-2xl p-6" style="background-color: #fbf4d4; min-height: 180px;">
+                  <img src={asset.src} alt={asset.caption} class="max-h-[160px] object-contain" loading="lazy" />
+                </div>
+                <p class="mt-2 text-xs text-warm-gray-light">{asset.caption}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* ═══ BIG CHIEF-SPECIFIC: Packaging Design ═══ */}
+    {isBigChief && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Packaging Design</p>
+          <p class="mb-3 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Designed the complete mylar bag packaging line for Big Chief's premium cannabis flower strains — six bags, each built around its own complete visual concept while maintaining brand recognition across the product family. Every design produced print-ready for foil mylar production.
+          </p>
+          <div class="mb-8 flex flex-wrap gap-2">
+            {['Packaging Design', 'Art Direction', 'Typography', 'Print Production', 'Foil Mylar'].map((s) => (
+              <span class="rounded-full bg-cream-dark px-3 py-1 text-xs font-medium text-warm-gray">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* All bags — uniform 3×2 grid */}
+        <div class="grid gap-4 md:grid-cols-3" data-reveal-group>
+          {[
+            { src: '/images/brands/big-chief/bag-triple-scoops.png', caption: 'Triple Scoops — Holographic, street-luxury' },
+            { src: '/images/brands/big-chief/bag-ron-burgundy.png', caption: 'Ron Burgundy — Pop culture, bold editorial' },
+            { src: '/images/brands/big-chief/bag-jojo.png', caption: 'Jojo — Crimson velvet, theatrical gold' },
+            { src: '/images/brands/big-chief/bag-uzumaki.png', caption: 'Uzumaki — Anime illustration, manga nostalgia' },
+            { src: '/images/brands/big-chief/bag-mac-and-chief-front.png', caption: 'Mac & Chief — Front view' },
+            { src: '/images/brands/big-chief/bag-wagyu-truffle.png', caption: 'Wagyu Truffle — Black luxury, gold foil' },
+          ].map((bag) => (
+            <div data-reveal-item>
+              <div class="aspect-square overflow-hidden rounded-2xl bg-charcoal">
+                <img src={bag.src} alt={bag.caption} class="h-full w-full object-cover" loading="lazy" />
+              </div>
+              <p class="mt-2 text-xs text-warm-gray-light">{bag.caption}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* ═══ BIG CHIEF-SPECIFIC: Catalogue & Print Production ═══ */}
+    {isBigChief && (
+      <div class="mx-auto max-w-7xl px-6 pt-20 lg:px-12">
+        <div class="reveal">
+          <p class="mb-2 text-sm font-medium uppercase tracking-widest text-terracotta">Red Light Distribution — Trade Catalogue</p>
+          <p class="mb-3 max-w-3xl text-base leading-relaxed text-warm-gray">
+            Art directed and designed the Red Light Distribution product catalogue — a print-ready sales document distributed to dispensaries and retail partners across California. The catalogue featured five distinct cannabis brands under one cover: Big Chief, Neutron Genetics, Dark Hawk, Space Tops, and KIC. I handled all photography direction, image retouching, composite work, and final InDesign layout across 22+ pages.
+          </p>
+          <div class="mb-8 flex flex-wrap gap-2">
+            {['InDesign', 'Art Direction', 'Photography Direction', 'Photo Retouching', 'Composite Design', 'Print Production', 'Multi-Brand Design'].map((s) => (
+              <span class="rounded-full bg-cream-dark px-3 py-1 text-xs font-medium text-warm-gray">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* 3D Mockup */}
+        <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
+          <img src="/images/brands/big-chief/catalogue-mockup.png" alt="Red Light Distribution Catalogue — print-ready, distributed to CA dispensaries" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+        <p class="mt-3 text-xs text-warm-gray-light">Red Light Distribution Catalogue — print-ready, distributed to CA dispensaries</p>
+
+        {/* Interactive Catalogue Viewer */}
+        <div class="reveal mt-8">
+          <CatalogueViewer slides={[
+            { src: '/images/brands/big-chief/catalogue-page-front-cover.png', alt: 'Red Light Distribution — Front Cover' },
+            { src: '/images/brands/big-chief/catalogue-page-01.png', alt: 'Big Chief — Brand Introduction' },
+            { src: '/images/brands/big-chief/catalogue-page-02.png', alt: 'Table of Contents' },
+            { src: '/images/brands/big-chief/catalogue-page-03.png', alt: 'Big Chief — Product Spread (Left)' },
+            { src: '/images/brands/big-chief/catalogue-page-04.png', alt: 'Big Chief — Product Spread (Right)' },
+            { src: '/images/brands/big-chief/catalogue-page-05.png', alt: 'Neutron Genetics — Sci-Fi Editorial (Left)' },
+            { src: '/images/brands/big-chief/catalogue-page-06.png', alt: 'Neutron Genetics — Sci-Fi Editorial (Right)' },
+            { src: '/images/brands/big-chief/catalogue-page-07.png', alt: 'Dark Hawk — Product Lineup (Left)' },
+            { src: '/images/brands/big-chief/catalogue-page-08.png', alt: 'Dark Hawk — Product Lineup (Right)' },
+            { src: '/images/brands/big-chief/catalogue-page-09.png', alt: 'Neutron Genetics — Campaign Photography (Left)' },
+            { src: '/images/brands/big-chief/catalogue-page-10.png', alt: 'Neutron Genetics — Campaign Photography (Right)' },
+            { src: '/images/brands/big-chief/catalogue-page-back-cover.png', alt: 'Red Light Distribution — Back Cover' },
+          ]} />
+        </div>
+
+        {/* Full catalogue overview */}
+        <div class="reveal mt-8 overflow-hidden rounded-2xl bg-cream-dark">
+          <img src="/images/brands/big-chief/catalogue-pages-overview.png" alt="Full catalogue — 5 brands, 22+ pages" class="h-full w-full object-cover" loading="lazy" />
+        </div>
+        <p class="mt-3 text-xs text-warm-gray-light">Full catalogue — 5 brands, 22+ pages</p>
+      </div>
+    )}
+
+    <!-- Next project -->
+    {project.next && (
+      <div class="border-t border-cream-dark">
+        <a
+          href={`/brands/${project.next.slug}`}
+          class="group block px-6 py-16 transition-colors hover:bg-cream-dark lg:px-12"
+        >
+          <div class="mx-auto flex max-w-7xl items-center justify-between">
+            <div>
+              <p class="text-sm font-medium uppercase tracking-wider text-warm-gray-light">Next Project</p>
+              <p class="mt-2 font-heading text-3xl text-charcoal transition-colors group-hover:text-terracotta md:text-4xl">
+                {project.next.name}
+              </p>
+            </div>
+            <span class="text-3xl text-charcoal transition-transform group-hover:translate-x-2">&rarr;</span>
+          </div>
+        </a>
+      </div>
+    )}
+  </article>
+
+  <!-- Lightbox overlay -->
+  <div id="lightbox" class="fixed inset-0 z-[100] hidden cursor-zoom-out items-center justify-center bg-charcoal/90 p-6 backdrop-blur-sm md:p-12">
+    <button id="lightbox-close" class="absolute top-5 right-6 text-3xl text-cream/70 transition-colors hover:text-cream" aria-label="Close">&times;</button>
+    <img id="lightbox-img" class="max-h-full max-w-full object-contain" src="" alt="" />
+  </div>
+</BaseLayout>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lbClose = document.getElementById('lightbox-close');
+
+  if (lightbox && lbImg && lbClose) {
+    document.querySelectorAll('article img').forEach((img) => {
+      if ((img as HTMLElement).dataset.noLightbox !== undefined) return;
+      if ((img as HTMLElement).closest('[data-no-lightbox]')) return;
+      (img as HTMLElement).style.cursor = 'zoom-in';
+      img.addEventListener('click', () => {
+        lbImg.src = (img as HTMLImageElement).src;
+        lbImg.alt = (img as HTMLImageElement).alt;
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLightbox() {
+      lightbox!.classList.add('hidden');
+      lightbox!.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) closeLightbox();
+    });
+  }
+</script>
+
+{/* CGN-specific font face declarations */}
+{isCGN && (
+  <style is:global>
+    @font-face {
+      font-family: 'ChooseElegant';
+      src: url('/fonts/cgn/ChooseElegantRegular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Braven';
+      src: url('/fonts/cgn/BravenRegular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Elegant';
+      src: url('/fonts/cgn/ELEGANTPersonaluse.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Tempting';
+      src: url('/fonts/cgn/Tempting - PERSONAL USE ONLY.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'LaGraziela';
+      src: url('/fonts/cgn/La Graziela Script Demo.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .cgn-choose-elegant { font-family: 'ChooseElegant', serif; }
+    .cgn-elegant { font-family: 'Elegant', serif; }
+    .cgn-braven { font-family: 'Braven', sans-serif; }
+    .cgn-tempting { font-family: 'Tempting', cursive; }
+    .cgn-lagraziela { font-family: 'LaGraziela', cursive; }
+
+    /* ── CGN Button Showcase Styles ── */
+    .cgn-btn-showcase {
+      --cgn-gold: #938432;
+      --cgn-warm-gold: #c1b06b;
+      --cgn-cream: #faf4dc;
+      --cgn-sage: #4f6967;
+    }
+
+    .cgn-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Elegant', serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      -webkit-text-stroke: 0.5px currentColor;
+      border: 1px solid transparent;
+      cursor: default;
+      transition: all 0.3s ease;
+    }
+    .cgn-btn-small { padding: 10px 24px; font-size: 11px; }
+    .cgn-btn-medium { padding: 14px 36px; font-size: 13px; }
+    .cgn-btn-large { padding: 18px 48px; font-size: 15px; }
+
+    .cgn-btn-primary {
+      background: var(--cgn-gold);
+      color: var(--cgn-cream);
+      border-color: var(--cgn-gold);
+    }
+    .cgn-btn-primary:hover {
+      background: var(--cgn-warm-gold);
+      border-color: var(--cgn-warm-gold);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(147, 132, 50, 0.3);
+    }
+    .cgn-btn-secondary {
+      background: var(--cgn-sage);
+      color: var(--cgn-cream);
+      border-color: var(--cgn-sage);
+    }
+    .cgn-btn-secondary:hover {
+      background: #4a5a59;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(79, 105, 103, 0.3);
+    }
+    .cgn-btn-outline {
+      background: transparent;
+      color: var(--cgn-gold);
+      border-color: var(--cgn-gold);
+    }
+    .cgn-btn-outline:hover {
+      background: var(--cgn-gold);
+      color: var(--cgn-cream);
+      transform: translateY(-2px);
+    }
+    .cgn-btn-ghost {
+      background: transparent;
+      color: var(--cgn-gold);
+      border-color: transparent;
+    }
+    .cgn-btn-ghost:hover {
+      background: rgba(147, 132, 50, 0.1);
+    }
+
+    /* Link styles */
+    .cgn-link {
+      display: inline-flex;
+      align-items: center;
+      font-family: 'Elegant', serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 13px;
+      color: var(--cgn-gold);
+      -webkit-text-stroke: 0.5px currentColor;
+      cursor: default;
+      transition: color 0.3s ease;
+    }
+    .cgn-link:hover { color: var(--cgn-warm-gold); }
+    .cgn-link-underline {
+      border-bottom: 1px solid transparent;
+    }
+    .cgn-link-underline:hover {
+      border-bottom-color: var(--cgn-warm-gold);
+    }
+    .cgn-bracket { opacity: 0.5; }
+    .cgn-link-bracket:hover .cgn-bracket { opacity: 1; }
+
+    /* Scroll indicators */
+    .cgn-scroll-text {
+      font-family: 'Elegant', serif;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--cgn-gold);
+      -webkit-text-stroke: 0.5px currentColor;
+      opacity: 0.8;
+    }
+    .cgn-scroll-arrow {
+      position: relative;
+      width: 24px;
+      height: 36px;
+      animation: cgn-bounce 2s infinite;
+    }
+    .cgn-arrow-line {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 1px;
+      height: 26px;
+      background: var(--cgn-gold);
+      transform: translateX(-50%);
+    }
+    .cgn-arrow-point {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      border-right: 1px solid var(--cgn-gold);
+      border-bottom: 1px solid var(--cgn-gold);
+      transform: translateX(-50%) rotate(45deg);
+    }
+    @keyframes cgn-bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(8px); }
+      60% { transform: translateY(4px); }
+    }
+    .cgn-mouse-body {
+      width: 22px;
+      height: 36px;
+      border: 2px solid var(--cgn-gold);
+      border-radius: 11px;
+      position: relative;
+      animation: cgn-bounce 2s infinite;
+    }
+    .cgn-mouse-wheel {
+      position: absolute;
+      top: 7px;
+      left: 50%;
+      width: 3px;
+      height: 7px;
+      background: var(--cgn-gold);
+      border-radius: 2px;
+      transform: translateX(-50%);
+      animation: cgn-wheel 1.5s ease-in-out infinite;
+    }
+    @keyframes cgn-wheel {
+      0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      100% { transform: translateX(-50%) translateY(10px); opacity: 0; }
+    }
+    .cgn-chevron {
+      display: block;
+      width: 14px;
+      height: 14px;
+      border-right: 1.5px solid var(--cgn-gold);
+      border-bottom: 1.5px solid var(--cgn-gold);
+      transform: rotate(45deg);
+      opacity: 0.6;
+    }
+    .cgn-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--cgn-gold);
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+
+    /* Social icons */
+    .cgn-social-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: var(--cgn-gold);
+      color: var(--cgn-cream);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    .cgn-social-circle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(147, 132, 50, 0.2);
+    }
+    .cgn-social-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      color: var(--cgn-gold);
+      border: 1px solid var(--cgn-gold);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    .cgn-social-ghost:hover {
+      background: var(--cgn-gold);
+      color: var(--cgn-cream);
+    }
+    .cgn-back-to-top {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      width: 52px;
+      height: 52px;
+      background: var(--cgn-gold);
+      border: 1px solid var(--cgn-gold);
+      border-radius: 50%;
+      color: var(--cgn-cream);
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    .cgn-back-to-top:hover {
+      background: transparent;
+      color: var(--cgn-gold);
+    }
+  </style>
+)}
+
+{/* OTKs-specific font face declarations */}
+{isOTKs && (
+  <style is:global>
+    @font-face {
+      font-family: 'BauerBodoniCondensed';
+      src: url('/fonts/the-otks/Bauer Bodoni Condensed Bold.otf') format('opentype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'TTChocolates';
+      src: url('/fonts/the-otks/TT Chocolates Trial Regular.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'ElegantoSans';
+      src: url('/fonts/the-otks/ElegantoSans-Thin.ttf') format('truetype');
+      font-weight: 100;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .otks-bodoni { font-family: 'BauerBodoniCondensed', serif; }
+    .otks-chocolates { font-family: 'TTChocolates', sans-serif; }
+    .otks-eleganto { font-family: 'ElegantoSans', sans-serif; }
+  </style>
+)}
+
+{/* Big Chief-specific font face declarations */}
+{isBigChief && (
+  <style is:global>
+    @font-face {
+      font-family: 'BoucherieBlock';
+      src: url('/fonts/big-chief/BoucherieBlock.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'HammersmithOne';
+      src: url('/fonts/big-chief/HammersmithOne-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SacredBridge';
+      src: url('/fonts/big-chief/SacredBridge.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'MontserratMedium';
+      src: url('/fonts/big-chief/Montserrat-Medium.ttf') format('truetype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .bc-boucherie { font-family: 'BoucherieBlock', sans-serif; }
+    .bc-hammersmith { font-family: 'HammersmithOne', sans-serif; }
+    .bc-sacred-bridge { font-family: 'SacredBridge', cursive; }
+    .bc-montserrat { font-family: 'MontserratMedium', sans-serif; }
+  </style>
+)}
+
+{/* DLC-specific font face declarations */}
+{isDLC && (
+  <style is:global>
+    @font-face {
+      font-family: 'EdgeOfMadness';
+      src: url('/fonts/dlc/Edge Of Madness.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'HighTide';
+      src: url('/fonts/dlc/High Tide - Demo.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'BackToBlack';
+      src: url('/fonts/dlc/Back to Black Demo.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'DINCondensed';
+      src: url('/fonts/dlc/DIN Condensed Bold.ttf') format('truetype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .dlc-edge-of-madness { font-family: 'EdgeOfMadness', fantasy; }
+    .dlc-high-tide { font-family: 'HighTide', serif; }
+    .dlc-back-to-black { font-family: 'BackToBlack', cursive; }
+    .dlc-din-condensed { font-family: 'DINCondensed', sans-serif; }
+  </style>
+)}

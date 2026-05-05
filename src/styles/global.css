@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+/* ========================================
+   CUSTOM FONT — Mosca Laroke (heading)
+   ======================================== */
+
+@font-face {
+  font-family: 'Mosca Laroke';
+  src: url('/fonts/Mosca Laroke.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Strong';
+  src: url('/fonts/Strong.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ========================================
+   CUSTOM THEME — Earthy + Warm + Playful
+   ======================================== */
+
+@theme {
+  /* Core */
+  --color-cream: #FBF7F2;
+  --color-cream-dark: #F0EAE2;
+  --color-charcoal: #2D1F1C;
+  --color-warm-gray: #8A7E76;
+  --color-warm-gray-light: #B8AFA8;
+  --color-gold: #D4A853;
+
+  /* Terracotta family — warm tints */
+  --color-terra: #AE5146;
+  --color-terracotta: #AE5146;
+  --color-terra-mid: #E7BDAA;
+  --color-terra-light: #EAD8D6;
+  --color-terra-sand: #EDDAC4;
+  --color-terra-cream: #F4EFEA;
+
+  /* Sage family — cool tints */
+  --color-sage-deep: #505438;
+  --color-olive: #7B8C6E;
+  --color-sage-mid: #B1C0A1;
+  --color-sage-light: #D2D3C4;
+  --color-sage-mist: #EBECDE;
+  --color-sage-cream: #F6F5EB;
+
+  /* Fonts */
+  --font-heading: 'Mosca Laroke', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-subheading: 'Strong', Georgia, serif;
+  --font-script: cursive;
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-charcoal);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-terracotta);
+  color: white;
+}
+
+/* ========================================
+   VERTICAL DECORATIVE LINES (per-section)
+   ======================================== */
+
+.section-lines {
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .section-lines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+      /* Left side — 16 lines */
+      repeating-linear-gradient(
+        90deg,
+        var(--line-color, rgba(255, 255, 255, 0.4)) 0,
+        var(--line-color, rgba(255, 255, 255, 0.4)) 2px,
+        transparent 2px,
+        transparent 22px
+      ) 76px top / 352px 100% no-repeat,
+      /* Right side — 16 lines */
+      repeating-linear-gradient(
+        90deg,
+        var(--line-color, rgba(255, 255, 255, 0.4)) 0,
+        var(--line-color, rgba(255, 255, 255, 0.4)) 2px,
+        transparent 2px,
+        transparent 22px
+      ) calc(100% - 76px) top / 352px 100% no-repeat;
+  }
+}
+
+
+/* ========================================
+   GRAIN TEXTURE OVERLAY
+   ======================================== */
+
+.grain-overlay::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ========================================
+   MARQUEE ANIMATION
+   ======================================== */
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee-slow {
+  animation: marquee 60s linear infinite;
+}
+
+/* ========================================
+   SCROLL SNAP (TikTok Feed)
+   ======================================== */
+
+.snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.snap-slide {
+  scroll-snap-align: start;
+  height: 100vh;
+}
+
+/* ========================================
+   DIAGONAL ACCENT SHAPES
+   ======================================== */
+
+.accent-diagonal {
+  position: absolute;
+  width: 34%;
+  height: 42%;
+  background-color: var(--accent-color, var(--color-terra));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.accent-diagonal--br {
+  right: 0;
+  bottom: 0;
+  clip-path: polygon(100% 0%, 0% 100%, 100% 100%);
+}
+
+.accent-diagonal--tr {
+  right: 0;
+  top: 0;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+}
+
+/* ========================================
+   BOWL ANIMATION
+   ======================================== */
+
+.bowl-ball {
+  will-change: transform;
+}
+
+@media (scripting: none) {
+  .bowl-ball {
+    opacity: 1 !important;
+    position: static !important;
+  }
+}

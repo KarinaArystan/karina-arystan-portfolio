@@ -1,0 +1,864 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Marquee from '../components/Marquee.astro';
+import ChromakeyHero from '../components/ChromakeyHero.astro';
+---
+
+<BaseLayout>
+  <!-- ==========================================
+       SECTION 1: HERO (Chromakey TV + Color Cycling)
+       ========================================== -->
+  <ChromakeyHero />
+
+  <!-- ==========================================
+       SECTION 2: INTRO / ABOUT TEASER
+       ========================================== -->
+  <section class="relative overflow-hidden bg-cream-dark px-6 py-24 lg:px-12 lg:py-32">
+    <!-- Diagonal accent — bottom-right (terra-mid) -->
+    <div class="accent-diagonal accent-diagonal--br" style="--accent-color: #E7BDAA;"></div>
+
+    <div class="relative z-10 mx-auto max-w-7xl">
+      <div class="grid gap-12 md:grid-cols-2 md:items-center md:gap-16">
+        <!-- Column 1: About photo -->
+        <div>
+          <div class="overflow-hidden">
+            <video
+              id="about-video"
+              class="h-[500px] w-full object-cover will-change-transform md:h-auto md:aspect-[3/4]"
+              autoplay
+              loop
+              muted
+              playsinline
+            >
+              <source src="/videos/about-me.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
+        <!-- Column 2: Text image + paragraph -->
+        <div class="flex flex-col gap-8">
+          <img
+            src="/images/nice-to-meet-you-text.png"
+            alt="Nice to meet you — I create content that connects and brands that last"
+            class="w-3/4"
+          />
+          <p class="text-lg leading-[30px] text-warm-gray">
+            With 10+ years in creative production, I bring brands to life through
+            short-form video content, visual identity design, and strategic storytelling.
+            From scripting and performing on camera to designing packaging and building websites
+            — I handle the full creative spectrum.
+          </p>
+          <a
+            href="/about"
+            class="inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[1.5px] text-terra transition-colors hover:text-terracotta"
+          >
+            More about me
+            <span>&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 3: PORTFOLIO — CONTENT CREATION
+       ========================================== -->
+  <section id="portfolio" class="relative overflow-hidden bg-terra-sand px-6 py-24 lg:px-12 lg:py-32">
+    <!-- Diagonal accent — top-right (terra) -->
+    <div class="accent-diagonal accent-diagonal--tr" style="--accent-color: #AE5146;"></div>
+
+    <div class="relative z-10 mx-auto max-w-7xl">
+      <!-- Section header -->
+      <div class="mb-16 max-w-[760px]">
+        <h2 class="font-heading text-4xl text-terra md:text-[56px]">Content Creation</h2>
+        <p class="mt-4 max-w-[720px] text-lg leading-[30px] text-warm-gray">
+          Short-form video content — scripted, directed, performed, and edited by me.
+          From educational series to brand storytelling across TikTok, Instagram Reels, and YouTube Shorts.
+        </p>
+      </div>
+
+      <!-- Phone frame cards -->
+      <div class="flex gap-6 overflow-x-auto pb-4">
+        {[
+          // CGN
+          { title: '32,000 Years of Graphic Novels', slug: '32k-years', brand: 'CGN', src: '/videos/previews/32k-years', webm: true },
+          { title: 'Are Graphic Novels Classy?', slug: 'gr-novels-classy', brand: 'CGN', src: '/videos/previews/gr-novels-classy', webm: true },
+          { title: 'The Bayeux Tapestry', slug: 'bayeux-tapestry', brand: 'CGN', src: '/videos/previews/bayeux-tapestry', webm: true },
+          { title: 'Build a Graphic Novel With Me', slug: 'build-graphic-novel', brand: 'CGN', src: '/videos/previews/build-graphic-novel', webm: true },
+          { title: 'Dual Coding Theory', slug: 'dual-coding-theory', brand: 'CGN', src: '/videos/previews/dual-coding-theory', webm: true },
+          { title: 'Manga Adaptation in US', slug: 'manga-adaptation', brand: 'CGN', src: '/videos/previews/manga-adaptation', webm: true },
+          { title: 'POV: Husband', slug: 'pov-husband', brand: 'CGN', src: '/videos/previews/pov-husband', webm: true },
+          { title: 'POV: Husband Pt. 2', slug: 'pov-husband-2', brand: 'CGN', src: '/videos/previews/pov-husband-2', webm: true },
+          { title: 'Bookbinding', slug: 'bookbinding', brand: 'CGN', src: '/videos/previews/bookbinding', webm: true },
+          { title: 'Depression', slug: 'depression', brand: 'CGN', src: '/videos/previews/depression', webm: true },
+          // DLC
+          { title: 'Rosin Spin 1', slug: 'spin-rosin-1', brand: 'DLC', src: '/videos/brands/dlc/spin-rosin-1' },
+          { title: 'Rosin Spin 2', slug: 'spin-rosin-2', brand: 'DLC', src: '/videos/brands/dlc/spin-rosin-2' },
+          { title: 'Rosin Spin 3', slug: 'spin-rosin-3', brand: 'DLC', src: '/videos/brands/dlc/spin-rosin-3' },
+          { title: 'Gummies Spin 1', slug: 'spin-gummies-1', brand: 'DLC', src: '/videos/brands/dlc/spin-gummies-1' },
+          { title: 'Pop October', slug: 'pop-oct', brand: 'DLC', src: '/videos/brands/dlc/pop-oct' },
+          { title: 'Emerald Cake', slug: 'emeraldcake-vertical', brand: 'DLC', src: '/videos/brands/dlc/emeraldcake-vertical' },
+          // MDL
+          { title: 'House Tour', slug: 'phone-house2', brand: 'MDL', src: '/videos/web/mdl/phone-house2' },
+          { title: 'Property Mashup', slug: 'phone-mashup', brand: 'MDL', src: '/videos/web/mdl/phone-mashup' },
+          { title: 'Pool House', slug: 'phone-poolhouse', brand: 'MDL', src: '/videos/web/mdl/phone-poolhouse' },
+          { title: 'Roxford', slug: 'phone-roxford', brand: 'MDL', src: '/videos/web/mdl/phone-roxford' },
+          { title: 'Villa Tour', slug: 'phone-villa', brand: 'MDL', src: '/videos/web/mdl/phone-villa' },
+        ].map((vid) => (
+          <a href={`/content#${vid.slug}`} class="group flex-shrink-0">
+            <div class="relative h-[391px] w-[220px] overflow-hidden bg-charcoal">
+              <video
+                class="h-full w-full object-cover"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+              >
+                {vid.webm && <source src={`${vid.src}.webm`} type="video/webm" />}
+                <source src={`${vid.src}.mp4`} type="video/mp4" />
+              </video>
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-8">
+                <p class="text-center text-xs font-medium leading-4 text-white/90">{vid.title}</p>
+                <p class="mt-1 text-center text-[10px] text-white/50">{vid.brand}</p>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- CTA -->
+      <div class="mt-12">
+        <a
+          href="/content"
+          class="inline-flex items-center gap-3 rounded-full bg-terra px-7 py-3.5 text-[13px] font-semibold uppercase tracking-[1.5px] text-cream transition-all hover:bg-terracotta"
+        >
+          View full reel
+          <span>&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 4: BRAND DEVELOPMENT & HOW I WORK
+       ========================================== -->
+  <section class="section-lines relative overflow-hidden bg-terra px-6 pt-24 pb-24 lg:px-12 lg:pt-32 lg:pb-32" style="--line-color: #E7BDAA;">
+    <!-- Combined background shape: flat top + rounded-bottom bowl -->
+    <div id="bowl-shape" class="pointer-events-none absolute left-1/2 top-[40px] bottom-[15%] w-[92.5%] -translate-x-1/2 rounded-b-full bg-terra-mid"></div>
+
+    <!-- Brand Development content -->
+    <div class="relative z-20 mx-auto max-w-7xl pb-16 lg:pb-24">
+      <!-- Section header -->
+      <div class="mb-16 max-w-[760px]">
+        <h2 class="font-heading text-4xl text-terra md:text-[56px]">Brand Development</h2>
+        <p class="mt-4 max-w-[720px] text-lg leading-[30px] text-cream/70">
+          Visual identity, packaging, apparel, and web design.
+          I build brands from concept through every touchpoint.
+        </p>
+      </div>
+
+      <!-- Project cards grid -->
+      <div class="grid gap-6 sm:grid-cols-2">
+        {[
+          { name: 'The OTKs', description: 'Brand Identity & Content Creation', slug: 'otks', tags: ['Logo', 'Apparel', 'Social'], image: '/images/brands/the-otks/the-otks-card-thumbnail.png' },
+          { name: 'De La Creme', description: 'Brand Development & Content', slug: 'dlc', tags: ['Identity', 'Packaging', 'Web'], image: '/images/brands/dlc/dlc-card-thumbnail.jpg' },
+          { name: 'Custom Graphic Novels', description: 'Brand Identity & Content Creation', slug: 'cgn', tags: ['Identity', 'Website', 'Strategy'], image: '/images/brands/cgn/cgn-card-thumbnail.png' },
+          { name: 'Big Chief', description: 'Brand Identity & Packaging', slug: 'big-chief', tags: ['Logo', 'Packaging', 'Catalogue'], image: '/images/brands/big-chief/big-chief-card-thumbnail.png' },
+        ].map((project) => (
+          <a
+            href={`/brands/${project.slug}`}
+            class="group block overflow-hidden bg-cream-dark transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+          >
+            <div class="h-[330px] overflow-hidden">
+              <img src={project.image} alt={project.name} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            </div>
+            <div class="p-6">
+              <h3 class="font-subheading text-[22px] uppercase text-charcoal">{project.name}</h3>
+              <p class="mt-2 text-sm text-warm-gray">{project.description}</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span class="rounded-full bg-cream px-3 py-1 text-xs font-medium text-warm-gray">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Web Design sub-section -->
+      <div class="mt-16 lg:mt-24">
+        <!-- Header -->
+        <div class="mb-16 max-w-[760px]">
+          <h2 class="font-heading text-4xl text-terra md:text-[56px]">Web Design</h2>
+          <p class="mt-4 max-w-[720px] text-lg leading-[30px] text-cream/70">
+            UI/UX, Figma, and front-end development.
+          </p>
+        </div>
+
+        <!-- Web project cards -->
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              name: 'Custom Graphic Novels',
+              slug: 'custom-graphic-novels',
+              role: 'Brand Founder · Full-Stack Developer',
+              description: 'Full e-commerce platform built from scratch with AI',
+              url: 'https://www.customgraphicnovels.com/',
+              tags: ['Astro', 'Supabase', 'UI/UX', 'AI-Assisted Dev'],
+              preview: '/videos/web/cgn/thumbnail.mp4',
+            },
+            {
+              name: 'De La Creme',
+              slug: 'de-la-creme',
+              role: 'Brand Developer & Content Creator',
+              description: 'UI/UX design and custom illustration for edibles brand',
+              url: 'https://www.delacreme.la',
+              tags: ['Figma', 'UI/UX', 'Illustration', 'Web Design'],
+              preview: '/videos/web/dlc/thumbnail.mp4',
+            },
+            {
+              name: 'Million Dollar Luxe',
+              slug: 'million-dollar-luxe',
+              role: 'Director of Production · Web Design Lead',
+              description: 'End-to-end web design for luxury villa rental brand',
+              url: 'https://www.milliondollarluxe.com',
+              tags: ['Figma', 'UI/UX', 'Creative Direction', 'Web Design'],
+              preview: '/videos/web/mdl/thumbnail.mp4',
+            },
+          ].map((project) => (
+            <a
+              href={`/web/${project.slug}`}
+              class="group relative block overflow-hidden bg-cream-dark transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            >
+              {/* Category badge */}
+              <div class="absolute top-3 left-3 z-10">
+                <span class="rounded-full bg-charcoal/80 px-3 py-1 text-[10px] font-medium uppercase tracking-wider text-cream backdrop-blur-sm">
+                  Web Design
+                </span>
+              </div>
+
+              {/* Video preview — 16:9 with hover zoom + gradient overlay */}
+              <div class="relative aspect-video overflow-hidden bg-warm-gray-light/20">
+                <video
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                >
+                  <source src={project.preview} type="video/mp4" />
+                </video>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+              </div>
+
+              {/* Content */}
+              <div class="p-6">
+                <h3 class="font-subheading text-[22px] uppercase text-charcoal">{project.name}</h3>
+                <p class="mt-1 text-xs font-medium uppercase tracking-wider text-warm-gray-light">{project.role}</p>
+                <p class="mt-2 text-sm text-warm-gray">{project.description}</p>
+
+                {/* Tags */}
+                <div class="mt-4 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <span class="rounded-full bg-cream px-3 py-1 text-xs font-medium text-warm-gray">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Action links */}
+                <div class="mt-5 flex items-center gap-4 text-sm">
+                  <span
+                    class="font-semibold text-charcoal transition-colors group-hover:text-terracotta"
+                    onclick={`event.preventDefault(); event.stopPropagation(); window.open('${project.url}', '_blank');`}
+                  >
+                    View Live &#8599;
+                  </span>
+                  <span class="text-warm-gray-light">|</span>
+                  <span class="font-semibold text-charcoal transition-colors group-hover:text-terracotta">
+                    View Project <span class="inline-block transition-transform group-hover:translate-x-1">&rarr;</span>
+                  </span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- How I Work content -->
+    <div class="relative z-10 mx-auto flex max-w-7xl flex-col items-center gap-2 pt-4 lg:pt-6">
+      <div class="flex flex-col items-center gap-2 text-center">
+        <p class="text-[13px] font-medium uppercase tracking-[2px] text-terra">My Approach</p>
+        <h2 class="font-heading text-4xl text-terra md:text-[56px]">How I work.</h2>
+      </div>
+
+      <!-- Bowl container for physics animation (desktop) -->
+      <div id="bowl-container" class="relative mt-12 hidden w-full md:block lg:mt-16" style="min-height: 620px;">
+        {[
+          {
+            num: '01',
+            title: 'Story First',
+            desc: 'Every brand has a story. I find it, shape it, and make it resonate — whether through a 30-second video or a full identity system.',
+          },
+          {
+            num: '02',
+            title: 'Every Detail Matters',
+            desc: 'From color grading a Reel to kerning a logotype — I obsess over the details that separate good from unforgettable.',
+          },
+          {
+            num: '03',
+            title: 'Brand is a Feeling',
+            desc: 'A logo is just the beginning. I build cohesive experiences across every touchpoint so the brand is felt, not just seen.',
+          },
+          {
+            num: '04',
+            title: 'Create with Purpose',
+            desc: 'Every piece of content has a job to do. I start with strategy, then let creativity lead the execution.',
+          },
+        ].map((value, i) => (
+          <div
+            class="bowl-ball absolute"
+            data-ball-index={i}
+            style="opacity: 0; top: 0; left: 0;"
+          >
+            <div class="flex h-[280px] w-[280px] cursor-pointer flex-col items-center justify-center gap-2 rounded-full bg-terra-cream p-5 text-center transition-all duration-300 ease-out hover:scale-[1.06] hover:shadow-[0_0_30px_rgba(174,81,70,0.2)]">
+              <span class="font-heading text-2xl font-light text-warm-gray transition-transform duration-300 ease-out">{value.num}</span>
+              <h3 class="font-subheading text-lg uppercase text-terra">{value.title}</h3>
+              <p class="text-xs leading-[18px] text-warm-gray">{value.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Mobile fallback: simple staggered layout -->
+      <div class="flex flex-wrap items-center justify-center gap-6 md:hidden">
+        {[
+          {
+            num: '01',
+            title: 'Story First',
+            desc: 'Every brand has a story. I find it, shape it, and make it resonate — whether through a 30-second video or a full identity system.',
+          },
+          {
+            num: '02',
+            title: 'Every Detail Matters',
+            desc: 'From color grading a Reel to kerning a logotype — I obsess over the details that separate good from unforgettable.',
+          },
+          {
+            num: '03',
+            title: 'Brand is a Feeling',
+            desc: 'A logo is just the beginning. I build cohesive experiences across every touchpoint so the brand is felt, not just seen.',
+          },
+          {
+            num: '04',
+            title: 'Create with Purpose',
+            desc: 'Every piece of content has a job to do. I start with strategy, then let creativity lead the execution.',
+          },
+        ].map((value) => (
+          <div class="flex h-[280px] w-[280px] cursor-pointer flex-col items-center justify-center gap-2 rounded-full bg-terra-cream p-5 text-center transition-all duration-300 ease-out hover:scale-[1.06] hover:shadow-[0_0_30px_rgba(174,81,70,0.2)]">
+            <span class="font-heading text-2xl font-light text-warm-gray">{value.num}</span>
+            <h3 class="font-subheading text-lg uppercase text-terra">{value.title}</h3>
+            <p class="text-xs leading-[18px] text-warm-gray">{value.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 5: CREDENTIALS & EXPERIENCE
+       ========================================== -->
+  <section class="section-lines relative overflow-hidden bg-sage-mist" style="--line-color: #B1C0A1;">
+    <!-- Scroll wrapper — height = scroll distance for the pinned animation (desktop only) -->
+    <div id="exp-scroll-wrapper" class="relative md:h-[250vh]">
+      <div id="exp-pinned" class="flex w-full items-center justify-center px-6 py-16 md:h-screen md:py-0 lg:px-12">
+
+        <!-- Seed shape: small square that rotates + morphs into circle (desktop only) -->
+        <div id="exp-seed" class="absolute hidden h-20 w-20 bg-sage-mid md:block" style="opacity: 0; border-radius: 0;"></div>
+
+        <!-- Content frame (appears after seed expands on desktop; always visible on mobile) -->
+        <div id="exp-frame" class="relative mx-auto flex w-full max-w-[892px] flex-col items-center gap-8 bg-sage-mid px-6 py-10 md:gap-14 md:px-12 md:py-16" style="opacity: 0;">
+          <!-- Header -->
+          <div id="exp-header" class="flex flex-col items-center gap-3 text-center" style="opacity: 0; transform: translateY(20px);">
+            <p class="text-[13px] font-medium uppercase tracking-[2px] text-terra">Experience</p>
+            <h2 class="font-heading text-3xl text-sage-mist md:text-[56px]">Where I've been.</h2>
+          </div>
+
+          <!-- Roles -->
+          <div id="exp-roles" class="flex gap-4 md:gap-8" style="opacity: 0; transform: translateY(20px);">
+            <div class="w-0.5 flex-shrink-0 bg-cream-dark"></div>
+            <div class="flex flex-col gap-6 md:gap-8">
+              {[
+                {
+                  title: 'Content Creator & Creative Director',
+                  company: 'Custom Graphic Novels',
+                  period: '2024 — Present · Remote',
+                },
+                {
+                  title: 'Director of Production',
+                  company: 'Skira Creative LLC',
+                  period: '2023 — 2025 · Los Angeles, CA',
+                },
+                {
+                  title: 'Brand Developer & Content Creator',
+                  company: 'De La Creme',
+                  period: '2022 — 2023 · Los Angeles, CA',
+                },
+              ].map((role) => (
+                <div class="flex flex-col gap-1">
+                  <h3 class="font-subheading text-lg uppercase text-sage-deep md:text-2xl">{role.title}</h3>
+                  <p class="text-sm font-medium text-sage-cream md:text-base">{role.company}</p>
+                  <p class="text-xs text-warm-gray md:text-sm">{role.period}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Languages -->
+          <div id="exp-langs" class="flex w-full flex-col items-center gap-4 bg-sage-mist p-6 md:p-8" style="opacity: 0; transform: translateY(20px);">
+            <p class="text-xs font-medium uppercase tracking-[2px] text-olive">Languages</p>
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4">
+              {['English', 'Russian', 'Mandarin Chinese'].map((lang) => (
+                <span class="bg-cream px-4 py-1.5 font-subheading text-base uppercase text-sage-deep md:px-5 md:py-2 md:text-lg">
+                  {lang}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================
+       WAVY MARQUEE SEPARATOR
+       ========================================== -->
+  <div class="relative z-10 bg-terra py-10">
+    <!-- Top wave — sage-mist flowing into terra -->
+    <svg class="absolute top-0 left-0 w-full -translate-y-[calc(100%-1px)]" viewBox="0 0 1440 80" preserveAspectRatio="none" style="height: 60px;">
+      <path d="M0,80 C180,20 360,20 540,50 C720,80 900,80 1080,50 C1200,30 1320,20 1440,40 L1440,80 L0,80 Z" fill="#AE5146" />
+    </svg>
+    <!-- Bottom wave — terra flowing into sage-light -->
+    <svg class="absolute bottom-0 left-0 w-full translate-y-[calc(100%-1px)]" viewBox="0 0 1440 80" preserveAspectRatio="none" style="height: 60px;">
+      <path d="M0,0 C180,60 360,60 540,30 C720,0 900,0 1080,30 C1200,50 1320,60 1440,40 L1440,0 L0,0 Z" fill="#AE5146" />
+    </svg>
+
+    <Marquee
+      text="Adobe Premiere Pro · After Effects · Photoshop · Illustrator · Figma · Runway AI · Midjourney · CapCut Pro · Final Cut Pro · Lightroom · InDesign · Canva"
+      speed="slow"
+      class="text-xs font-medium uppercase tracking-[2px] text-terra-cream"
+    />
+  </div>
+
+  <!-- ==========================================
+       SECTION 6: SERVICES / WHAT I DO
+       ========================================== -->
+  <section class="bg-sage-light px-6 py-24 lg:px-12 lg:py-32">
+    <div class="mx-auto max-w-7xl">
+      <div class="reveal mb-16">
+        <p class="mb-3 text-[13px] font-medium uppercase tracking-[2px] text-terra">Services</p>
+        <h2 class="font-heading text-4xl text-terra md:text-[56px]">What I do.</h2>
+      </div>
+
+      <!-- Service cards -->
+      <div class="grid gap-6 md:grid-cols-3" data-reveal-group>
+        {[
+          {
+            title: 'Content Creation',
+            items: ['Script Writing', 'On-Camera Talent', 'Video Editing & Post-Production', 'Social Media Strategy', 'SEO Content Writing'],
+            bg: 'bg-sage-mist',
+            titleColor: 'text-olive',
+            textColor: 'text-warm-gray',
+            dotColor: 'bg-warm-gray',
+          },
+          {
+            title: 'Brand Development',
+            items: ['Visual Identity Design', 'Packaging & Apparel', 'Web Design & Build', 'Brand Storytelling', 'Content Guidelines'],
+            bg: 'bg-olive',
+            titleColor: 'text-sage-mist',
+            textColor: 'text-cream',
+            dotColor: 'bg-cream',
+          },
+          {
+            title: 'Production',
+            items: ['Creative Direction', 'Video & Photo Production', 'Team & Crew Management', 'Client Relations', 'Project Management'],
+            bg: 'bg-sage-mid',
+            titleColor: 'text-sage-deep',
+            textColor: 'text-cream',
+            dotColor: 'bg-cream',
+          },
+        ].map((service) => (
+          <div
+            data-reveal-item
+            class:list={['p-8 cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]', service.bg]}
+          >
+            <h3 class:list={['font-subheading text-[26px] uppercase', service.titleColor]}>{service.title}</h3>
+            <ul class="mt-6 space-y-3">
+              {service.items.map((item) => (
+                <li class:list={['flex items-start gap-3', service.textColor]}>
+                  <span class:list={['mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full', service.dotColor]}></span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ── About Video: Parallax + Tilt ──
+  const aboutVideo = document.getElementById('about-video');
+  if (aboutVideo) {
+    gsap.fromTo(aboutVideo, {
+      yPercent: 20,
+      rotation: 3,
+    }, {
+      yPercent: -20,
+      rotation: -6,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: aboutVideo.closest('section'),
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
+  }
+
+  function initBowlAnimation() {
+    const container = document.getElementById('bowl-container');
+    const shape = document.getElementById('bowl-shape');
+    if (!container || !shape) return;
+
+    const ballEls = container.querySelectorAll<HTMLElement>('.bowl-ball');
+    if (ballEls.length !== 4) return;
+
+    const ballSize = 280;
+    const ballRadius = ballSize / 2;
+
+    // Ensure layout is ready before measuring
+    const shapeRect = shape.getBoundingClientRect();
+    const containerCheck = container.getBoundingClientRect();
+    if (shapeRect.width === 0 || containerCheck.width === 0 || containerCheck.height === 0) {
+      requestAnimationFrame(initBowlAnimation);
+      return;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+
+    // Visual semicircle radius from rounded-b-full
+    // Browser clamps border-radius: effective R = min(W/2, H)
+    const shapeW = shapeRect.width;
+    const shapeH = shapeRect.height;
+    const R = Math.min(shapeW / 2, shapeH);
+
+    // All physics coordinates are relative to the container's top-left
+    const shapeCenterX = shapeRect.left + shapeW / 2 - containerRect.left;
+    const shapeBottom = shapeRect.bottom - containerRect.top;
+    const shapeCenterY = shapeBottom - R;
+
+    // Wall inner face sits wallOffset px inside the visual curve
+    const wallOffset = 5;
+    // Ball center distance from bowl center when resting against the wall
+    const restR = R - wallOffset - ballRadius;
+
+    // Container height must fit the visual bowl bottom
+    container.style.minHeight = `${shapeBottom + 40}px`;
+
+    // Position ball elements absolutely; transform = full position
+    ballEls.forEach((ball) => {
+      ball.style.position = 'absolute';
+      ball.style.left = '0px';
+      ball.style.top = '0px';
+    });
+
+    // Place balls at static rest positions along the bowl curve (angular parameterization)
+    // A ball of radius r inside a circular bowl of radius R has its center at distance R-r
+    // from the bowl center, along the radial direction — NOT vertically offset from the curve.
+    function placeStatic() {
+      const desiredGap = 16; // px gap between adjacent ball edges
+      const sinHalfSep = Math.min((ballRadius + desiredGap / 2) / restR, 0.95);
+      const dTheta = 2 * Math.asin(sinHalfSep);
+      // 4 balls centered at θ = π/2 (bottom of bowl)
+      const totalSpan = dTheta * 3;
+      const startAngle = Math.PI / 2 - totalSpan / 2;
+
+      for (let i = 0; i < 4; i++) {
+        const theta = startAngle + (3 - i) * dTheta; // Ball 0 ("01") → leftmost, ball 3 ("04") → rightmost
+        const cx = shapeCenterX + restR * Math.cos(theta);
+        const cy = shapeCenterY + restR * Math.sin(theta);
+        ballEls[i].style.transform = `translate(${cx - ballRadius}px, ${cy - ballRadius}px)`;
+        ballEls[i].style.opacity = '1';
+      }
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      placeStatic();
+      return;
+    }
+
+    // Show balls at rest positions immediately (always visible)
+    placeStatic();
+
+    // ── 1D ARC PHYSICS ENGINE (Pendulum Model) ──
+    // A ball inside a circular bowl IS a pendulum.
+    // We simulate angular motion along the arc: θ, ω (angular velocity), α (acceleration).
+
+    // Physics constants (tunable)
+    const GRAVITY = 0.0015;        // gravitational strength
+    const DAMPING = 0.006;         // per-frame velocity damping (air friction)
+    const BOUNCE_DAMPING = 0.4;    // energy lost on ball-ball collision (0 = perfect elastic, 1 = full stop)
+    const REST_ATTRACT = 0.01;     // spring force toward rest position (creates natural bounce on arrival)
+    const BALL_ANGULAR_SIZE = (ballRadius * 2) / restR; // angular width of one ball on the arc
+
+    // Compute rest and start angles for each ball
+    const desiredGap2 = 16;
+    const sinHalfSep2 = Math.min((ballRadius + desiredGap2 / 2) / restR, 0.95);
+    const dTheta2 = 2 * Math.asin(sinHalfSep2);
+    const startAngle2 = Math.PI / 2 - (dTheta2 * 3) / 2;
+
+    // Ball state: each ball has angular position, velocity, and release flag
+    // Start at REST positions (visible) — will be moved to start on scroll trigger
+    const balls = Array.from({ length: 4 }, (_, i) => {
+      const restTheta = startAngle2 + (3 - i) * dTheta2;
+      const deviation = restTheta - Math.PI / 2;
+      const startTheta = Math.max(0.08, Math.min(Math.PI - 0.08,
+        Math.PI / 2 + deviation * 2.5
+      ));
+      return {
+        theta: restTheta,      // START at rest position (visible)
+        omega: 0,
+        released: false,
+        restTheta,
+        startTheta,            // saved for drop animation
+      };
+    });
+
+    // Render a ball at its current angular position
+    function renderBall(i: number) {
+      const x = shapeCenterX + restR * Math.cos(balls[i].theta);
+      const y = shapeCenterY + restR * Math.sin(balls[i].theta);
+      ballEls[i].style.transform = `translate(${x - ballRadius}px, ${y - ballRadius}px)`;
+    }
+
+    // ── Cursor tracking ──
+    let cursorTheta = -1;
+    let cursorInside = false;
+    const PUSH_STRENGTH = 0.003; // how hard the cursor pushes balls
+    const PUSH_RANGE = BALL_ANGULAR_SIZE * 1.5; // angular range of the push effect
+
+    container.addEventListener('mousemove', (e) => {
+      const rect = container.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      // Convert cursor position to angle on the bowl arc
+      cursorTheta = Math.atan2(my - shapeCenterY, mx - shapeCenterX);
+      // Only interact when cursor is near the arc (within ball-width band)
+      const dist = Math.hypot(mx - shapeCenterX, my - shapeCenterY);
+      cursorInside = cursorTheta > 0 && cursorTheta < Math.PI
+        && dist < restR + ballRadius * 2 && dist > restR - ballRadius * 2;
+    });
+
+    container.addEventListener('mouseleave', () => { cursorInside = false; });
+
+    // ── Physics loop ──
+    let lastTime = 0;
+    let running = true;
+
+    function physicsTick(now: number) {
+      if (!running) { requestAnimationFrame(physicsTick); return; }
+
+      const dt = lastTime ? Math.min((now - lastTime) / 16.667, 3) : 1; // normalized to 60fps, capped at 3x
+      lastTime = now;
+
+      // Update each released ball
+      for (let i = 0; i < 4; i++) {
+        if (!balls[i].released) continue;
+
+        const b = balls[i];
+
+        // Pendulum equation: angular acceleration = (g/R) * cos(θ)
+        // At θ < π/2 (right side): cos > 0, pushes toward bottom (+θ direction)
+        // At θ > π/2 (left side): cos < 0, pushes toward bottom (-θ direction)
+        const alpha = (GRAVITY * dt) * Math.cos(b.theta);
+        b.omega += alpha;
+
+        // Spring force toward rest position (damped harmonic oscillator)
+        // Always active — gravity dominates during fast fall, spring dominates near rest
+        // Naturally creates overshoot + bounce + settle
+        const restDiff = b.restTheta - b.theta;
+        b.omega += restDiff * REST_ATTRACT * dt;
+
+        b.omega *= (1 - DAMPING * dt); // air friction
+        b.theta += b.omega * dt;
+
+        // Clamp to bowl bounds (don't fly past the rim)
+        if (b.theta < 0.02) { b.theta = 0.02; b.omega = Math.abs(b.omega) * (1 - BOUNCE_DAMPING); }
+        if (b.theta > Math.PI - 0.02) { b.theta = Math.PI - 0.02; b.omega = -Math.abs(b.omega) * (1 - BOUNCE_DAMPING); }
+      }
+
+      // Cursor push force: repel balls away from the cursor
+      if (cursorInside) {
+        for (let i = 0; i < 4; i++) {
+          if (!balls[i].released) continue;
+          const angleDiff = balls[i].theta - cursorTheta;
+          const absDiff = Math.abs(angleDiff);
+          if (absDiff < PUSH_RANGE) {
+            // Stronger push when closer, fades to zero at PUSH_RANGE
+            const force = PUSH_STRENGTH * (1 - absDiff / PUSH_RANGE);
+            balls[i].omega += Math.sign(angleDiff || 1) * force * dt;
+          }
+        }
+      }
+
+      // Ball-ball collisions: enforce fixed ordering (ball 0 = leftmost/largest θ, ball 3 = rightmost/smallest θ)
+      // Check adjacent pairs in order — never allow balls to swap positions
+      for (let k = 0; k < 3; k++) {
+        if (!balls[k].released || !balls[k + 1].released) continue;
+
+        // ball[k] must always be to the LEFT of ball[k+1] (larger theta)
+        const separation = balls[k].theta - balls[k + 1].theta;
+        if (separation < dTheta2) {
+          const overlap = dTheta2 - separation;
+          balls[k].theta += overlap / 2;
+          balls[k + 1].theta -= overlap / 2;
+
+          // Elastic collision with energy loss
+          const vi = balls[k].omega;
+          const vj = balls[k + 1].omega;
+          balls[k].omega = vj * (1 - BOUNCE_DAMPING);
+          balls[k + 1].omega = vi * (1 - BOUNCE_DAMPING);
+        }
+      }
+
+      // Render all balls
+      for (let i = 0; i < 4; i++) renderBall(i);
+
+      requestAnimationFrame(physicsTick);
+    }
+
+    requestAnimationFrame(physicsTick);
+
+    // ── ScrollTrigger: release balls when section enters viewport ──
+    let hasDropped = false;
+
+    ScrollTrigger.create({
+      trigger: container,
+      start: 'top 80%',
+      end: 'bottom top',
+      onEnter: () => {
+        if (!hasDropped) {
+          hasDropped = true;
+          // Move balls to start positions (near rim) then release with stagger
+          balls.forEach((b, i) => {
+            b.theta = b.startTheta;
+            renderBall(i);
+            setTimeout(() => {
+              b.released = true;
+            }, i * 300);
+          });
+        }
+        running = true;
+      },
+      onLeave: () => { running = false; },
+      onEnterBack: () => { running = true; },
+      onLeaveBack: () => { running = false; },
+    });
+  }
+
+  // ── Experience Section: Scroll Animation ──
+  function initExperienceAnimation() {
+    const scrollWrapper = document.getElementById('exp-scroll-wrapper');
+    const pinnedContent = document.getElementById('exp-pinned');
+    if (!scrollWrapper || !pinnedContent) return;
+
+    const seed = document.getElementById('exp-seed');
+    const frame = document.getElementById('exp-frame');
+    const header = document.getElementById('exp-header');
+    const roles = document.getElementById('exp-roles');
+    const langs = document.getElementById('exp-langs');
+    if (!seed || !frame || !header || !roles || !langs) return;
+
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+      // On mobile: skip pinned animation, show content directly with simple fade-in
+      gsap.set(frame, { opacity: 1 });
+      gsap.set([header, roles, langs], { opacity: 1, y: 0 });
+
+      // Simple scroll-triggered reveal instead of pinned scrub
+      ScrollTrigger.create({
+        trigger: scrollWrapper,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+          gsap.from(header, { opacity: 0, y: 20, duration: 0.6, ease: 'power2.out' });
+          gsap.from(roles, { opacity: 0, y: 20, duration: 0.6, ease: 'power2.out', delay: 0.15 });
+          gsap.from(langs, { opacity: 0, y: 20, duration: 0.6, ease: 'power2.out', delay: 0.3 });
+        },
+      });
+      return;
+    }
+
+    // Desktop: full pinned scroll animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: scrollWrapper,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1,
+        pin: pinnedContent,
+      },
+    });
+
+    // Phase 1: Seed square fades in
+    tl.to(seed, { opacity: 1, duration: 0.1 });
+
+    // Phase 2: Seed rotates 180° + morphs to circle (matches scroll-lab step 3)
+    tl.to(seed, { borderRadius: '50%', rotation: 180, duration: 0.2, ease: 'power2.inOut' });
+
+    // Phase 3: Seed circle scales up and fades, frame appears simultaneously
+    tl.to(seed, { scale: 10, opacity: 0, duration: 0.15, ease: 'power2.in' });
+    tl.to(frame, { opacity: 1, duration: 0.15, ease: 'power2.out' }, '<0.05');
+
+    // Phase 4: Content reveals with stagger
+    tl.to(header, { opacity: 1, y: 0, duration: 0.12, ease: 'power2.out' });
+    tl.to(roles, { opacity: 1, y: 0, duration: 0.12, ease: 'power2.out' }, '-=0.06');
+    tl.to(langs, { opacity: 1, y: 0, duration: 0.12, ease: 'power2.out' }, '-=0.06');
+  }
+
+  // Wait for fonts + layout to be fully ready before measuring geometry
+  function startAnimations() {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(initBowlAnimation);
+      requestAnimationFrame(initExperienceAnimation);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.fonts.ready.then(startAnimations);
+    });
+  } else {
+    document.fonts.ready.then(startAnimations);
+  }
+
+  // Recalculate bowl on resize (layout may change)
+  let resizeTimer: ReturnType<typeof setTimeout>;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(initBowlAnimation, 200);
+  });
+</script>

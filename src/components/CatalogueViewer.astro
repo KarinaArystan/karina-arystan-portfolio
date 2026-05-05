@@ -1,0 +1,318 @@
+---
+interface Props {
+  slides: { src: string; alt: string }[];
+}
+
+const { slides } = Astro.props;
+---
+
+<div
+  class="catalogue-viewer"
+  data-catalogue-viewer
+  data-no-lightbox
+  data-state="front-cover"
+  style="position: relative; user-select: none;"
+>
+  <!-- Book area -->
+  <div class="catalogue-viewer__book" style="position: relative; width: 100%; display: flex; align-items: center; justify-content: center; padding: 16px 0 8px;">
+    <div data-flip-container style="position: relative;">
+      {slides.map((slide, i) => (
+        <div
+          class="catalogue-page"
+          data-density={i === 0 || i === slides.length - 1 ? 'hard' : 'soft'}
+        >
+          <img
+            src={slide.src}
+            alt={slide.alt}
+            loading={i <= 2 ? 'eager' : 'lazy'}
+            draggable="false"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Navigation arrows — outside book div so they aren't clipped */}
+  <button
+    class="catalogue-viewer__arrow catalogue-viewer__arrow--left"
+    data-viewer-prev
+    aria-label="Previous page"
+  >
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button
+    class="catalogue-viewer__arrow catalogue-viewer__arrow--right"
+    data-viewer-next
+    aria-label="Next page"
+  >
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+
+  {/* "Start flipping pages" prompt — clickable */}
+  <button
+    class="catalogue-viewer__prompt"
+    data-flip-prompt
+    type="button"
+  >
+    <span>Start Flipping Pages</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </button>
+
+  {/* Page counter */}
+  <div class="catalogue-viewer__counter" data-viewer-counter style="text-align: center; padding: 4px 0 8px; font-size: 13px; letter-spacing: 0.05em; color: rgba(0,0,0,0.35); transition: opacity 300ms ease;">
+    1 / {slides.length}
+  </div>
+</div>
+
+<style>
+  /* ── Transparent page-flip internals ── */
+  .catalogue-viewer :global(.stf__parent),
+  .catalogue-viewer :global(.stf__wrapper),
+  .catalogue-viewer :global(.stf__block) {
+    background: transparent !important;
+  }
+
+  /* Smooth centering transition on the wrapper */
+  .catalogue-viewer :global(.stf__wrapper) {
+    transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* ── Book drop shadow for depth ── */
+  .catalogue-viewer :global(.stf__parent) {
+    filter: drop-shadow(0 6px 24px rgba(0,0,0,0.18)) drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+  }
+
+  /* ── Spine / gutter shadow between pages (landscape only) ── */
+  .catalogue-viewer :global(.stf__wrapper.--landscape .stf__block)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 100%;
+    background: linear-gradient(to right,
+      transparent,
+      rgba(0,0,0,0.06) 20%,
+      rgba(0,0,0,0.14) 45%,
+      rgba(0,0,0,0.18) 50%,
+      rgba(0,0,0,0.14) 55%,
+      rgba(0,0,0,0.06) 80%,
+      transparent
+    );
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* ── Page element styling ── */
+  .catalogue-page {
+    background: white;
+    overflow: hidden;
+  }
+  .catalogue-page img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── Arrow base ── */
+  .catalogue-viewer__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #AE5146;
+    border: none;
+    color: #FBF7F2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 150ms ease, opacity 300ms ease, transform 150ms ease;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .catalogue-viewer__arrow--left {
+    left: -64px;
+  }
+  .catalogue-viewer__arrow--right {
+    right: -64px;
+  }
+
+  /* ── Arrow hover ── */
+  .catalogue-viewer__arrow:hover {
+    background: #963f36 !important;
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  /* On narrower screens, pull arrows closer */
+  @media (max-width: 1100px) {
+    .catalogue-viewer__arrow--left { left: -12px; }
+    .catalogue-viewer__arrow--right { right: -12px; }
+  }
+
+  /* ── "Start flipping" prompt — matches site CTA style ── */
+  .catalogue-viewer__prompt {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 16px auto 4px;
+    padding: 14px 28px;
+    background: #AE5146;
+    border: none;
+    border-radius: 9999px;
+    color: #FBF7F2;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: background 200ms ease, transform 200ms ease, opacity 400ms ease;
+  }
+  .catalogue-viewer__prompt:hover {
+    background: #963f36;
+    transform: scale(1.03);
+  }
+  .catalogue-viewer__prompt svg {
+    animation: prompt-nudge 1.8s ease-in-out infinite;
+  }
+  @keyframes prompt-nudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+  }
+</style>
+
+<script>
+  import { PageFlip } from 'page-flip';
+
+  document.querySelectorAll<HTMLElement>('[data-catalogue-viewer]').forEach((viewer) => {
+    const container = viewer.querySelector<HTMLElement>('[data-flip-container]');
+    const pages = viewer.querySelectorAll<HTMLElement>('.catalogue-page');
+    const prevBtn = viewer.querySelector<HTMLButtonElement>('[data-viewer-prev]');
+    const nextBtn = viewer.querySelector<HTMLButtonElement>('[data-viewer-next]');
+    const counter = viewer.querySelector<HTMLElement>('[data-viewer-counter]');
+    const prompt = viewer.querySelector<HTMLElement>('[data-flip-prompt]');
+
+    if (!container || pages.length === 0) return;
+
+    const pageFlip = new PageFlip(container, {
+      width: 340,
+      height: 440,
+      size: 'stretch',
+      minWidth: 140,
+      minHeight: 181,
+      maxWidth: 540,
+      maxHeight: 700,
+      showCover: true,
+      maxShadowOpacity: 0.5,
+      mobileScrollSupport: false,
+      drawShadow: true,
+      flippingTime: 800,
+      usePortrait: true,
+      autoSize: true,
+      useMouseEvents: true,
+      showPageCorners: true,
+    });
+
+    pageFlip.loadFromHTML(pages);
+
+    // Navigation
+    prevBtn?.addEventListener('click', () => pageFlip.flipPrev());
+    nextBtn?.addEventListener('click', () => pageFlip.flipNext());
+
+    // Prompt triggers first flip
+    prompt?.addEventListener('click', () => pageFlip.flipNext());
+
+    let hasFlipped = false;
+
+    function updateUI() {
+      const page = pageFlip.getCurrentPageIndex();
+      const total = pageFlip.getPageCount();
+      if (!container || total <= 0) return;
+
+      // ── Center covers in landscape mode ──
+      const wrapper = container.querySelector<HTMLElement>(':scope > .stf__wrapper') ??
+                       container.closest('.stf__parent')?.querySelector<HTMLElement>('.stf__wrapper');
+      if (wrapper) {
+        const isLandscape = wrapper.classList.contains('--landscape');
+        if (isLandscape) {
+          if (page === 0) {
+            wrapper.style.transform = 'translateX(-25%)';
+          } else if (page >= total - 1) {
+            wrapper.style.transform = 'translateX(25%)';
+          } else {
+            wrapper.style.transform = 'translateX(0)';
+          }
+        } else {
+          wrapper.style.transform = '';
+        }
+      }
+
+      // ── State attribute for external styling ──
+      if (page === 0) {
+        viewer.dataset.state = 'front-cover';
+      } else if (page >= total - 1) {
+        viewer.dataset.state = 'back-cover';
+      } else {
+        viewer.dataset.state = 'inner';
+      }
+
+      // ── Counter ──
+      if (counter) {
+        if (page === 0 || page === total - 1) {
+          counter.textContent = `${page + 1} / ${total}`;
+        } else {
+          counter.textContent = `${page + 1}\u2013${Math.min(page + 2, total)} / ${total}`;
+        }
+      }
+
+      // ── Arrow visibility ──
+      const atStart = page <= 0;
+      const atEnd = page >= total - 1;
+
+      if (prevBtn) {
+        prevBtn.style.opacity = atStart ? '0' : '1';
+        prevBtn.style.cursor = atStart ? 'default' : 'pointer';
+        prevBtn.style.pointerEvents = atStart ? 'none' : 'auto';
+      }
+      if (nextBtn) {
+        nextBtn.style.opacity = atEnd ? '0' : '1';
+        nextBtn.style.cursor = atEnd ? 'default' : 'pointer';
+        nextBtn.style.pointerEvents = atEnd ? 'none' : 'auto';
+      }
+
+      // ── Hide prompt after first flip ──
+      if (!hasFlipped && page > 0) {
+        hasFlipped = true;
+        if (prompt) {
+          prompt.style.opacity = '0';
+          prompt.style.pointerEvents = 'none';
+        }
+      }
+    }
+
+    pageFlip.on('flip', () => updateUI());
+    pageFlip.on('init', () => updateUI());
+    pageFlip.on('changeOrientation', () => updateUI());
+
+    // Keyboard (only when viewer is in viewport)
+    let isInView = false;
+    const observer = new IntersectionObserver(
+      ([entry]) => { isInView = entry.isIntersecting; },
+      { threshold: 0.2 }
+    );
+    observer.observe(viewer);
+
+    document.addEventListener('keydown', (e) => {
+      if (!isInView) return;
+      if (e.key === 'ArrowLeft') { e.preventDefault(); pageFlip.flipPrev(); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); pageFlip.flipNext(); }
+    });
+  });
+</script>
