@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CatalogueViewer from '../../components/CatalogueViewer.astro';
 
+const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
+
 export function getStaticPaths() {
   return [
     { params: { slug: 'otks' } },
@@ -1171,18 +1173,18 @@ if (!project) {
         </div>
         <div class="grid grid-cols-2 gap-4 md:grid-cols-4" data-reveal-group>
           {[
-            { src: '/videos/brands/dlc/spin-rosin-1.mp4', title: 'Live Rosin Spin' },
-            { src: '/videos/brands/dlc/spin-rosin-2.mp4', title: 'Live Rosin Spin' },
-            { src: '/videos/brands/dlc/spin-rosin-3.mp4', title: 'Live Rosin Spin' },
-            { src: '/videos/brands/dlc/spin-rosin-4.mp4', title: 'Live Rosin Spin' },
-            { src: '/videos/brands/dlc/spin-rosin-5.mp4', title: 'Live Rosin Spin' },
-            { src: '/videos/brands/dlc/spin-rosin-7.mp4', title: 'Live Rosin Spin' },
-            { src: '/videos/brands/dlc/spin-rosin-8.mp4', title: 'Live Rosin Spin' },
-            { src: '/videos/brands/dlc/spin-gummies-1.mp4', title: 'Gummies Spin' },
-            { src: '/videos/brands/dlc/spin-gummies-2.mp4', title: 'Gummies Spin' },
-            { src: '/videos/brands/dlc/spin-gummies-3.mp4', title: 'Gummies Spin' },
-            { src: '/videos/brands/dlc/spin-gummies-4.mp4', title: 'Gummies Spin' },
-            { src: '/videos/brands/dlc/spin-gummies-5.mp4', title: 'Gummies Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-rosin-1.mp4`, title: 'Live Rosin Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-rosin-2.mp4`, title: 'Live Rosin Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-rosin-3.mp4`, title: 'Live Rosin Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-rosin-4.mp4`, title: 'Live Rosin Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-rosin-5.mp4`, title: 'Live Rosin Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-rosin-7.mp4`, title: 'Live Rosin Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-rosin-8.mp4`, title: 'Live Rosin Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-gummies-1.mp4`, title: 'Gummies Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-gummies-2.mp4`, title: 'Gummies Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-gummies-3.mp4`, title: 'Gummies Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-gummies-4.mp4`, title: 'Gummies Spin' },
+            { src: `${cdn}/videos/brands/dlc/spin-gummies-5.mp4`, title: 'Gummies Spin' },
           ].map((vid) => (
             <div class="group relative aspect-square overflow-hidden rounded-2xl bg-charcoal" data-reveal-item>
               <video class="h-full w-full object-cover" autoplay loop muted playsinline preload="metadata">
@@ -1198,9 +1200,9 @@ if (!project) {
         </div>
         <div class="grid gap-4 md:grid-cols-3" data-reveal-group>
           {[
-            { src: '/videos/brands/dlc/probe-vertical.mp4', title: 'Product Probe' },
-            { src: '/videos/brands/dlc/emeraldcake-vertical.mp4', title: 'Emerald Cake Melt' },
-            { src: '/videos/brands/dlc/pop-oct.mp4', title: 'Product Pop' },
+            { src: `${cdn}/videos/brands/dlc/probe-vertical.mp4`, title: 'Product Probe' },
+            { src: `${cdn}/videos/brands/dlc/emeraldcake-vertical.mp4`, title: 'Emerald Cake Melt' },
+            { src: `${cdn}/videos/brands/dlc/pop-oct.mp4`, title: 'Product Pop' },
           ].map((vid) => (
             <div class="group relative overflow-hidden rounded-2xl bg-charcoal" data-reveal-item>
               <video class="w-full object-cover" autoplay loop muted playsinline preload="metadata">

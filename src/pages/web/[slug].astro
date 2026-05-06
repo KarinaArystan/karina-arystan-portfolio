@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
+
 export function getStaticPaths() {
   return [
     { params: { slug: 'custom-graphic-novels' } },
@@ -228,8 +230,8 @@ const isMDL = slug === 'million-dollar-luxe';
             muted
             playsinline
           >
-            <source src="/videos/web/cgn/swatch-showcase.webm" type="video/webm" />
-            <source src="/videos/web/cgn/swatch-showcase.mp4" type="video/mp4" />
+            <source src={`${cdn}/videos/web/cgn/swatch-showcase.webm`} type="video/webm" />
+            <source src={`${cdn}/videos/web/cgn/swatch-showcase.mp4`} type="video/mp4" />
           </video>
         </div>
 
@@ -372,7 +374,7 @@ const isMDL = slug === 'million-dollar-luxe';
           </div>
           <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
             <video class="w-full object-cover" autoplay loop muted playsinline>
-              <source src="/videos/web/dlc/site-thumbnail.mp4" type="video/mp4" />
+              <source src={`${cdn}/videos/web/dlc/site-thumbnail.mp4`} type="video/mp4" />
             </video>
           </div>
           <p class="mt-3 text-xs text-warm-gray-light">Homepage & navigation overview</p>
@@ -392,7 +394,7 @@ const isMDL = slug === 'million-dollar-luxe';
           <p class="mt-3 text-xs text-warm-gray-light">Concentrates product grid — active vs. unavailable state treatment</p>
           <div class="reveal mt-4 overflow-hidden rounded-2xl bg-cream-dark">
             <video class="w-full object-cover" autoplay loop muted playsinline>
-              <source src="/videos/web/dlc/concentrates-scroll.mp4" type="video/mp4" />
+              <source src={`${cdn}/videos/web/dlc/concentrates-scroll.mp4`} type="video/mp4" />
             </video>
           </div>
           <p class="mt-3 text-xs text-warm-gray-light">Catalog scroll — product grid interaction</p>
@@ -422,7 +424,7 @@ const isMDL = slug === 'million-dollar-luxe';
           </div>
           <div class="reveal overflow-hidden rounded-2xl bg-cream-dark">
             <video class="w-full object-cover" autoplay loop muted playsinline>
-              <source src="/videos/web/dlc/edibles-scroll.mp4" type="video/mp4" />
+              <source src={`${cdn}/videos/web/dlc/edibles-scroll.mp4`} type="video/mp4" />
             </video>
           </div>
           <p class="mt-3 text-xs text-warm-gray-light">Edibles section scroll</p>
@@ -564,7 +566,7 @@ const isMDL = slug === 'million-dollar-luxe';
               {/* Screen */}
               <div class="overflow-hidden rounded-sm bg-black">
                 <video autoplay muted loop playsinline class="w-full">
-                  <source src="/videos/web/mdl/thumbnail.mp4" type="video/mp4" />
+                  <source src={`${cdn}/videos/web/mdl/thumbnail.mp4`} type="video/mp4" />
                 </video>
               </div>
             </div>
@@ -589,7 +591,7 @@ const isMDL = slug === 'million-dollar-luxe';
         {/* Banner video — no frame */}
         <div class="reveal mb-10 overflow-hidden rounded-2xl">
           <video autoplay muted loop playsinline class="w-full">
-            <source src="/videos/web/mdl/banner.mp4" type="video/mp4" />
+            <source src={`${cdn}/videos/web/mdl/banner.mp4`} type="video/mp4" />
           </video>
         </div>
 
@@ -597,11 +599,11 @@ const isMDL = slug === 'million-dollar-luxe';
         <p class="reveal mb-6 text-center text-xs font-medium uppercase tracking-widest text-warm-gray-light">Social Content</p>
         <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5" data-reveal-group>
           {[
-            { src: '/videos/web/mdl/phone-house2.mp4', alt: 'House tour content' },
-            { src: '/videos/web/mdl/phone-poolhouse.mp4', alt: 'Pool house tour' },
-            { src: '/videos/web/mdl/phone-mashup.mp4', alt: 'Property mashup reel' },
-            { src: '/videos/web/mdl/phone-villa.mp4', alt: 'Villa showcase' },
-            { src: '/videos/web/mdl/phone-roxford.mp4', alt: 'Roxford property' },
+            { src: `${cdn}/videos/web/mdl/phone-house2.mp4`, alt: 'House tour content' },
+            { src: `${cdn}/videos/web/mdl/phone-poolhouse.mp4`, alt: 'Pool house tour' },
+            { src: `${cdn}/videos/web/mdl/phone-mashup.mp4`, alt: 'Property mashup reel' },
+            { src: `${cdn}/videos/web/mdl/phone-villa.mp4`, alt: 'Villa showcase' },
+            { src: `${cdn}/videos/web/mdl/phone-roxford.mp4`, alt: 'Roxford property' },
           ].map((vid) => (
             <div class="overflow-hidden rounded-2xl" data-reveal-item>
               <video autoplay muted loop playsinline class="aspect-[9/16] w-full object-cover">

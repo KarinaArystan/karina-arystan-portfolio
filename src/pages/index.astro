@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Marquee from '../components/Marquee.astro';
 import ChromakeyHero from '../components/ChromakeyHero.astro';
+
+const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
 ---
 
 <BaseLayout>
@@ -30,7 +32,7 @@ import ChromakeyHero from '../components/ChromakeyHero.astro';
               muted
               playsinline
             >
-              <source src="/videos/about-me.mp4" type="video/mp4" />
+              <source src={`${cdn}/videos/about-me.mp4`} type="video/mp4" />
             </video>
           </div>
         </div>
@@ -81,29 +83,29 @@ import ChromakeyHero from '../components/ChromakeyHero.astro';
       <div class="flex gap-6 overflow-x-auto pb-4">
         {[
           // CGN
-          { title: '32,000 Years of Graphic Novels', slug: '32k-years', brand: 'CGN', src: '/videos/previews/32k-years', webm: true },
-          { title: 'Are Graphic Novels Classy?', slug: 'gr-novels-classy', brand: 'CGN', src: '/videos/previews/gr-novels-classy', webm: true },
-          { title: 'The Bayeux Tapestry', slug: 'bayeux-tapestry', brand: 'CGN', src: '/videos/previews/bayeux-tapestry', webm: true },
-          { title: 'Build a Graphic Novel With Me', slug: 'build-graphic-novel', brand: 'CGN', src: '/videos/previews/build-graphic-novel', webm: true },
-          { title: 'Dual Coding Theory', slug: 'dual-coding-theory', brand: 'CGN', src: '/videos/previews/dual-coding-theory', webm: true },
-          { title: 'Manga Adaptation in US', slug: 'manga-adaptation', brand: 'CGN', src: '/videos/previews/manga-adaptation', webm: true },
-          { title: 'POV: Husband', slug: 'pov-husband', brand: 'CGN', src: '/videos/previews/pov-husband', webm: true },
-          { title: 'POV: Husband Pt. 2', slug: 'pov-husband-2', brand: 'CGN', src: '/videos/previews/pov-husband-2', webm: true },
-          { title: 'Bookbinding', slug: 'bookbinding', brand: 'CGN', src: '/videos/previews/bookbinding', webm: true },
-          { title: 'Depression', slug: 'depression', brand: 'CGN', src: '/videos/previews/depression', webm: true },
+          { title: '32,000 Years of Graphic Novels', slug: '32k-years', brand: 'CGN', src: `${cdn}/videos/previews/32k-years`, webm: true },
+          { title: 'Are Graphic Novels Classy?', slug: 'gr-novels-classy', brand: 'CGN', src: `${cdn}/videos/previews/gr-novels-classy`, webm: true },
+          { title: 'The Bayeux Tapestry', slug: 'bayeux-tapestry', brand: 'CGN', src: `${cdn}/videos/previews/bayeux-tapestry`, webm: true },
+          { title: 'Build a Graphic Novel With Me', slug: 'build-graphic-novel', brand: 'CGN', src: `${cdn}/videos/previews/build-graphic-novel`, webm: true },
+          { title: 'Dual Coding Theory', slug: 'dual-coding-theory', brand: 'CGN', src: `${cdn}/videos/previews/dual-coding-theory`, webm: true },
+          { title: 'Manga Adaptation in US', slug: 'manga-adaptation', brand: 'CGN', src: `${cdn}/videos/previews/manga-adaptation`, webm: true },
+          { title: 'POV: Husband', slug: 'pov-husband', brand: 'CGN', src: `${cdn}/videos/previews/pov-husband`, webm: true },
+          { title: 'POV: Husband Pt. 2', slug: 'pov-husband-2', brand: 'CGN', src: `${cdn}/videos/previews/pov-husband-2`, webm: true },
+          { title: 'Bookbinding', slug: 'bookbinding', brand: 'CGN', src: `${cdn}/videos/previews/bookbinding`, webm: true },
+          { title: 'Depression', slug: 'depression', brand: 'CGN', src: `${cdn}/videos/previews/depression`, webm: true },
           // DLC
-          { title: 'Rosin Spin 1', slug: 'spin-rosin-1', brand: 'DLC', src: '/videos/brands/dlc/spin-rosin-1' },
-          { title: 'Rosin Spin 2', slug: 'spin-rosin-2', brand: 'DLC', src: '/videos/brands/dlc/spin-rosin-2' },
-          { title: 'Rosin Spin 3', slug: 'spin-rosin-3', brand: 'DLC', src: '/videos/brands/dlc/spin-rosin-3' },
-          { title: 'Gummies Spin 1', slug: 'spin-gummies-1', brand: 'DLC', src: '/videos/brands/dlc/spin-gummies-1' },
-          { title: 'Pop October', slug: 'pop-oct', brand: 'DLC', src: '/videos/brands/dlc/pop-oct' },
-          { title: 'Emerald Cake', slug: 'emeraldcake-vertical', brand: 'DLC', src: '/videos/brands/dlc/emeraldcake-vertical' },
+          { title: 'Rosin Spin 1', slug: 'spin-rosin-1', brand: 'DLC', src: `${cdn}/videos/brands/dlc/spin-rosin-1` },
+          { title: 'Rosin Spin 2', slug: 'spin-rosin-2', brand: 'DLC', src: `${cdn}/videos/brands/dlc/spin-rosin-2` },
+          { title: 'Rosin Spin 3', slug: 'spin-rosin-3', brand: 'DLC', src: `${cdn}/videos/brands/dlc/spin-rosin-3` },
+          { title: 'Gummies Spin 1', slug: 'spin-gummies-1', brand: 'DLC', src: `${cdn}/videos/brands/dlc/spin-gummies-1` },
+          { title: 'Pop October', slug: 'pop-oct', brand: 'DLC', src: `${cdn}/videos/brands/dlc/pop-oct` },
+          { title: 'Emerald Cake', slug: 'emeraldcake-vertical', brand: 'DLC', src: `${cdn}/videos/brands/dlc/emeraldcake-vertical` },
           // MDL
-          { title: 'House Tour', slug: 'phone-house2', brand: 'MDL', src: '/videos/web/mdl/phone-house2' },
-          { title: 'Property Mashup', slug: 'phone-mashup', brand: 'MDL', src: '/videos/web/mdl/phone-mashup' },
-          { title: 'Pool House', slug: 'phone-poolhouse', brand: 'MDL', src: '/videos/web/mdl/phone-poolhouse' },
-          { title: 'Roxford', slug: 'phone-roxford', brand: 'MDL', src: '/videos/web/mdl/phone-roxford' },
-          { title: 'Villa Tour', slug: 'phone-villa', brand: 'MDL', src: '/videos/web/mdl/phone-villa' },
+          { title: 'House Tour', slug: 'phone-house2', brand: 'MDL', src: `${cdn}/videos/web/mdl/phone-house2` },
+          { title: 'Property Mashup', slug: 'phone-mashup', brand: 'MDL', src: `${cdn}/videos/web/mdl/phone-mashup` },
+          { title: 'Pool House', slug: 'phone-poolhouse', brand: 'MDL', src: `${cdn}/videos/web/mdl/phone-poolhouse` },
+          { title: 'Roxford', slug: 'phone-roxford', brand: 'MDL', src: `${cdn}/videos/web/mdl/phone-roxford` },
+          { title: 'Villa Tour', slug: 'phone-villa', brand: 'MDL', src: `${cdn}/videos/web/mdl/phone-villa` },
         ].map((vid) => (
           <a href={`/content#${vid.slug}`} class="group flex-shrink-0">
             <div class="relative h-[391px] w-[220px] overflow-hidden bg-charcoal">
@@ -208,7 +210,7 @@ import ChromakeyHero from '../components/ChromakeyHero.astro';
               description: 'Full e-commerce platform built from scratch with AI',
               url: 'https://www.customgraphicnovels.com/',
               tags: ['Astro', 'Supabase', 'UI/UX', 'AI-Assisted Dev'],
-              preview: '/videos/web/cgn/thumbnail.mp4',
+              preview: `${cdn}/videos/web/cgn/thumbnail.mp4`,
             },
             {
               name: 'De La Creme',
@@ -217,7 +219,7 @@ import ChromakeyHero from '../components/ChromakeyHero.astro';
               description: 'UI/UX design and custom illustration for edibles brand',
               url: 'https://www.delacreme.la',
               tags: ['Figma', 'UI/UX', 'Illustration', 'Web Design'],
-              preview: '/videos/web/dlc/thumbnail.mp4',
+              preview: `${cdn}/videos/web/dlc/thumbnail.mp4`,
             },
             {
               name: 'Million Dollar Luxe',
@@ -226,7 +228,7 @@ import ChromakeyHero from '../components/ChromakeyHero.astro';
               description: 'End-to-end web design for luxury villa rental brand',
               url: 'https://www.milliondollarluxe.com',
               tags: ['Figma', 'UI/UX', 'Creative Direction', 'Web Design'],
-              preview: '/videos/web/mdl/thumbnail.mp4',
+              preview: `${cdn}/videos/web/mdl/thumbnail.mp4`,
             },
           ].map((project) => (
             <a

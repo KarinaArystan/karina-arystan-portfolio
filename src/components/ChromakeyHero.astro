@@ -1,5 +1,5 @@
 ---
-
+const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
 ---
 
 <section class="relative flex min-h-screen items-center justify-center overflow-hidden" id="hero-section">
@@ -44,8 +44,8 @@
     class="absolute opacity-0 pointer-events-none"
     style="width: 1px; height: 1px;"
   >
-    <source src="/videos/hero-old-tv-resized.webm" type="video/webm" />
-    <source src="/videos/hero-old-tv-resized.mp4" type="video/mp4" />
+    <source src={`${cdn}/videos/hero-old-tv-resized.webm`} type="video/webm" />
+    <source src={`${cdn}/videos/hero-old-tv-resized.mp4`} type="video/mp4" />
   </video>
 
   <!-- Hidden video source — mobile (portrait) -->
@@ -56,8 +56,8 @@
     class="absolute opacity-0 pointer-events-none"
     style="width: 1px; height: 1px;"
   >
-    <source src="/videos/old-tv-mobile.webm" type="video/webm" />
-    <source src="/videos/old-tv-mobile.mp4" type="video/mp4" />
+    <source src={`${cdn}/videos/old-tv-mobile.webm`} type="video/webm" />
+    <source src={`${cdn}/videos/old-tv-mobile.mp4`} type="video/mp4" />
   </video>
 </section>
 
