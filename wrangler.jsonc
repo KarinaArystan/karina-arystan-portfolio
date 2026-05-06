@@ -1,5 +1,6 @@
 {
   "name": "karina-arystan-portfolio",
+  "compatibility_date": "2026-05-06",
   "assets": {
     "directory": "./dist"
   }
