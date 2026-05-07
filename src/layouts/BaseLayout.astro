@@ -34,13 +34,25 @@ const {
     <link rel="preconnect" href="https://pub-3533267dbae54c5d81969005ee934878.r2.dev" crossorigin />
     <link rel="dns-prefetch" href="https://pub-3533267dbae54c5d81969005ee934878.r2.dev" />
 
-    <!-- Fonts -->
+    <!-- Fonts — preload custom fonts to break CSS→font chain -->
+    <link rel="preload" href="/fonts/Mosca Laroke.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/fonts/Strong.ttf" as="font" type="font/ttf" crossorigin />
+
+    <!-- Google Fonts — loaded async to avoid render-blocking -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <link rel="icon" type="image/png" href="/images/favicon.png" />
     <title>{title}</title>
