@@ -42,7 +42,6 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
     muted
     playsinline
     crossorigin="anonymous"
-    preload="metadata"
     class="absolute opacity-0 pointer-events-none"
     style="width: 1px; height: 1px;"
   >
@@ -56,7 +55,6 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
     muted
     playsinline
     crossorigin="anonymous"
-    preload="metadata"
     class="absolute opacity-0 pointer-events-none"
     style="width: 1px; height: 1px;"
   >
@@ -77,7 +75,13 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
     video.preload = 'auto';
     video.autoplay = true;
     video.load();
-    video.play().catch(() => {});
+
+    // Try to play — retry on canplay if first attempt fails (common on mobile)
+    video.play().catch(() => {
+      video!.addEventListener('canplay', () => {
+        video!.play().catch(() => {});
+      }, { once: true });
+    });
   }
 
   // Chromakey parameters
