@@ -60,18 +60,24 @@ const {
 
       gsap.registerPlugin(ScrollTrigger);
 
-      const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add((time) => lenis.raf(time * 1000));
-      gsap.ticker.lagSmoothing(0);
+      const isMobile = window.innerWidth < 768;
+
+      // Skip Lenis on mobile — native scroll is smoother and saves RAF cycles
+      let lenis: InstanceType<typeof Lenis> | null = null;
+      if (!isMobile) {
+        lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis!.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+      }
 
       // Pause animations when tab is hidden (save CPU/battery)
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-          lenis.stop();
+          lenis?.stop();
           gsap.ticker.sleep();
         } else {
-          lenis.start();
+          lenis?.start();
           gsap.ticker.wake();
         }
       });

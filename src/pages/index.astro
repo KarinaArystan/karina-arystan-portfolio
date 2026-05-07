@@ -43,6 +43,7 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
             src="/images/nice-to-meet-you-text.png"
             alt="Nice to meet you — I create content that connects and brands that last"
             class="w-3/4"
+            loading="lazy"
           />
           <p class="text-lg leading-[30px] text-warm-gray">
             With 10+ years in creative production, I bring brands to life through
@@ -878,6 +879,6 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
         videoObserver.unobserve(video);
       }
     });
-  }, { rootMargin: '200px' });
+  }, { rootMargin: window.innerWidth < 768 ? '50px' : '200px' });
   lazyVideos.forEach((v) => videoObserver.observe(v));
 </script>

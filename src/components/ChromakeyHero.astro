@@ -42,6 +42,7 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
     muted
     playsinline
     crossorigin="anonymous"
+    preload="metadata"
     class="absolute opacity-0 pointer-events-none"
     style="width: 1px; height: 1px;"
   >
@@ -55,6 +56,7 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
     muted
     playsinline
     crossorigin="anonymous"
+    preload="metadata"
     class="absolute opacity-0 pointer-events-none"
     style="width: 1px; height: 1px;"
   >
@@ -86,7 +88,7 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
     if (ctx) {
-      const MAX_PROCESS_WIDTH = 960;
+      const MAX_PROCESS_WIDTH = isMobile ? 480 : 960;
       let isRunning = false;
 
       function resizeCanvas() {

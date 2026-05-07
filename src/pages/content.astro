@@ -75,7 +75,7 @@ const videos = [
               controls
               autoplay
               playsinline
-              preload="auto"
+              preload="metadata"
             >
               <source id="featured-source-mp4" src="" type="video/mp4" />
               <source id="featured-source-webm" src="" type="video/webm" />
@@ -273,7 +273,7 @@ const videos = [
         videoObserver.unobserve(video);
       }
     });
-  }, { rootMargin: '200px' });
+  }, { rootMargin: window.innerWidth < 768 ? '50px' : '200px' });
   lazyVideos.forEach((v) => videoObserver.observe(v));
 </script>
 
