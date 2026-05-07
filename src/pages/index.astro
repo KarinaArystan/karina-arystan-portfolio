@@ -26,13 +26,13 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
           <div class="overflow-hidden">
             <video
               id="about-video"
-              class="h-[500px] w-full object-cover will-change-transform md:h-auto md:aspect-[3/4]"
-              autoplay
+              class="h-[500px] w-full object-cover will-change-transform md:h-auto md:aspect-[3/4] lazy-video"
               loop
               muted
               playsinline
+              preload="none"
             >
-              <source src={`${cdn}/videos/about-me.mp4`} type="video/mp4" />
+              <source data-src={`${cdn}/videos/about-me.mp4`} type="video/mp4" />
             </video>
           </div>
         </div>
@@ -110,15 +110,14 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
           <a href={`/content#${vid.slug}`} class="group flex-shrink-0">
             <div class="relative h-[391px] w-[220px] overflow-hidden bg-charcoal">
               <video
-                class="h-full w-full object-cover"
-                autoplay
+                class="h-full w-full object-cover lazy-video"
                 loop
                 muted
                 playsinline
-                preload="metadata"
+                preload="none"
               >
-                {vid.webm && <source src={`${vid.src}.webm`} type="video/webm" />}
-                <source src={`${vid.src}.mp4`} type="video/mp4" />
+                {vid.webm && <source data-src={`${vid.src}.webm`} type="video/webm" />}
+                <source data-src={`${vid.src}.mp4`} type="video/mp4" />
               </video>
               <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-8">
                 <p class="text-center text-xs font-medium leading-4 text-white/90">{vid.title}</p>
@@ -245,13 +244,13 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
               {/* Video preview — 16:9 with hover zoom + gradient overlay */}
               <div class="relative aspect-video overflow-hidden bg-warm-gray-light/20">
                 <video
-                  autoplay
                   muted
                   loop
                   playsinline
-                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  preload="none"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 lazy-video"
                 >
-                  <source src={project.preview} type="video/mp4" />
+                  <source data-src={project.preview} type="video/mp4" />
                 </video>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
               </div>
@@ -863,4 +862,22 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(initBowlAnimation, 200);
   });
+
+  // --- Lazy-load videos: only load src when visible ---
+  const lazyVideos = document.querySelectorAll('video.lazy-video');
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const video = entry.target as HTMLVideoElement;
+        video.querySelectorAll('source[data-src]').forEach((source) => {
+          source.setAttribute('src', source.getAttribute('data-src')!);
+          source.removeAttribute('data-src');
+        });
+        video.load();
+        video.play().catch(() => {});
+        videoObserver.unobserve(video);
+      }
+    });
+  }, { rootMargin: '200px' });
+  lazyVideos.forEach((v) => videoObserver.observe(v));
 </script>

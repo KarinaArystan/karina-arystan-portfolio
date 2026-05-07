@@ -30,6 +30,10 @@ const {
     <meta property="og:url" content={Astro.url} />
     <meta property="og:image" content="/images/about-photo.jpg" />
 
+    <!-- CDN preconnect -->
+    <link rel="preconnect" href="https://pub-3533267dbae54c5d81969005ee934878.r2.dev" crossorigin />
+    <link rel="dns-prefetch" href="https://pub-3533267dbae54c5d81969005ee934878.r2.dev" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -60,6 +64,17 @@ const {
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add((time) => lenis.raf(time * 1000));
       gsap.ticker.lagSmoothing(0);
+
+      // Pause animations when tab is hidden (save CPU/battery)
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          lenis.stop();
+          gsap.ticker.sleep();
+        } else {
+          lenis.start();
+          gsap.ticker.wake();
+        }
+      });
 
       // Reveal animations for .reveal elements
       document.querySelectorAll('.reveal').forEach((el) => {

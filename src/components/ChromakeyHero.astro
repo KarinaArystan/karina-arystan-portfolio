@@ -178,6 +178,32 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
         processFrame();
       }
 
+      // Pause chromakey when hero scrolls out of view
+      let heroVisible = true;
+      const heroObserver = new IntersectionObserver(([entry]) => {
+        heroVisible = entry.isIntersecting;
+        if (heroVisible && !video!.ended && video!.paused) {
+          video!.play().catch(() => {});
+        } else if (!heroVisible && !video!.paused) {
+          video!.pause();
+        }
+      });
+      heroObserver.observe(heroSection);
+
+      // Also pause on tab visibility change
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          isRunning = false;
+          if (!video!.paused) video!.pause();
+        } else if (heroVisible && !video!.ended) {
+          video!.play().catch(() => {});
+          if (!isRunning) {
+            isRunning = true;
+            processFrame();
+          }
+        }
+      });
+
       // Fallback: if autoplay fails, just show text without canvas
       video.addEventListener('error', () => {
         canvas!.style.display = 'none';
@@ -186,6 +212,7 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
   }
 
   // --- Floating circles ---
+  let circlesRunning = true;
   const circlesContainer = document.getElementById('floating-circles');
   if (circlesContainer) {
     const colors = [
@@ -255,16 +282,15 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
     }
 
     function animateCircles() {
+      if (!circlesRunning) return;
       time++;
       for (const c of circles) {
-        // Sinusoidal wobble for organic movement
         const wobbleX = Math.sin(time * c.wobbleSpeed + c.phase) * c.wobbleAmp;
         const wobbleY = Math.cos(time * c.wobbleSpeed * 0.7 + c.phase + 1.5) * c.wobbleAmp;
 
         c.x += c.vx + wobbleX;
         c.y += c.vy + wobbleY;
 
-        // Soft bounce — gradually reverse instead of instant flip
         if (c.x < -8) { c.vx = Math.abs(c.vx); }
         else if (c.x > 108) { c.vx = -Math.abs(c.vx); }
         if (c.y < -8) { c.vy = Math.abs(c.vy); }
@@ -281,24 +307,61 @@ const cdn = 'https://pub-3533267dbae54c5d81969005ee934878.r2.dev';
   // --- Hero background color cycling ---
   if (heroSection) {
     const palette = [
-      { bg: '#AE5146', text: '#EAD8D6' },  // terra / terra-light
-      { bg: '#505438', text: '#B1C0A1' },  // sage-deep / sage-mid
-      { bg: '#2D1F1C', text: '#E7BDAA' },  // charcoal / terra-mid
-      { bg: '#E7BDAA', text: '#AE5146' },  // terra-mid / terra
-      { bg: '#B1C0A1', text: '#EBECDE' },  // sage-mid / sage-mist
+      { bg: '#AE5146', text: '#EAD8D6' },
+      { bg: '#505438', text: '#B1C0A1' },
+      { bg: '#2D1F1C', text: '#E7BDAA' },
+      { bg: '#E7BDAA', text: '#AE5146' },
+      { bg: '#B1C0A1', text: '#EBECDE' },
     ];
 
     let index = 0;
+    let colorInterval: ReturnType<typeof setInterval> | null = null;
 
-    // Apply first color immediately
     heroSection.style.backgroundColor = palette[0].bg;
     heroSection.style.color = palette[0].text;
     heroSection.style.transition = 'background-color 0.15s ease, color 0.15s ease';
 
-    setInterval(() => {
-      index = (index + 1) % palette.length;
-      heroSection.style.backgroundColor = palette[index].bg;
-      heroSection.style.color = palette[index].text;
-    }, 1000);
+    function startColorCycle() {
+      if (colorInterval) return;
+      colorInterval = setInterval(() => {
+        index = (index + 1) % palette.length;
+        heroSection!.style.backgroundColor = palette[index].bg;
+        heroSection!.style.color = palette[index].text;
+      }, 1000);
+    }
+
+    function stopColorCycle() {
+      if (colorInterval) {
+        clearInterval(colorInterval);
+        colorInterval = null;
+      }
+    }
+
+    startColorCycle();
+
+    // Pause circles + color cycling when hero is off-screen
+    const sectionObserver = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        circlesRunning = true;
+        animateCircles();
+        startColorCycle();
+      } else {
+        circlesRunning = false;
+        stopColorCycle();
+      }
+    });
+    sectionObserver.observe(heroSection);
+
+    // Also pause on tab hidden
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        circlesRunning = false;
+        stopColorCycle();
+      } else if (heroSection!.getBoundingClientRect().top < window.innerHeight) {
+        circlesRunning = true;
+        animateCircles();
+        startColorCycle();
+      }
+    });
   }
 </script>
